@@ -11,6 +11,9 @@
     <title>$Title$</title>
   </head>
   <body>
-  CZESC 2
+  <form method="post" action="test">
+    <input type="text" name="test">
+    <button type="submit"> zapisz </button>
+  </form>
   </body>
 </html>
