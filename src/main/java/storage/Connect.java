@@ -11,7 +11,7 @@ public class Connect {
         try {
             // db parameters
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:src.main.java.storage.bookingDB.db";
+            String url = "jdbc:sqlite:C://sqlite/db/bookingDB.sqlite";
             // create a connection to the database
             conn = DriverManager.getConnection(url);
 
@@ -34,14 +34,20 @@ public class Connect {
 
     public static void createUserTable() {
         // SQLite connection string
-        String url = "jdbc:sqlite:src.main.java.storage.bookingDB.db";
+        String url = "jdbc:sqlite:C://sqlite/db/bookingDB.sqlite";
+
+        String sql = "CREATE TABLE IF NOT EXISTS warehouses (\n"
+                + "	id integer PRIMARY KEY,\n"
+                + "	name text NOT NULL,\n"
+                + "	capacity real\n"
+                + ");";
 
         // SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS user (\n" +
+       /* String sql = "CREATE TABLE IF NOT EXISTS user (\n" +
+               " id INT PRIMARY KEY," +
     " username VARCHAR(16) NOT NULL, \n"+
   "email VARCHAR(255) NULL,\n" +
-  "password VARCHAR(32) NOT NULL,\n" +
-  "create_time TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP);\n";
+  "password VARCHAR(32) NOT NULL);\n"; */
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement()) {
@@ -56,7 +62,7 @@ public class Connect {
      * @param args the command line arguments
      */
     public static void main(String[] args){
-        connect();
+        //connect();
         createUserTable();
     }
 }
