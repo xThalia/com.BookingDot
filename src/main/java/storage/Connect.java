@@ -10,7 +10,7 @@ public class Connect {
         try {
             // db parameters
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C:/sqlite/db/bookingDB.db";
+            String url = "jdbc:sqlite:src.main.java.storage.bookingDB.db";
             // create a connection to the database
             conn = DriverManager.getConnection(url);
 
