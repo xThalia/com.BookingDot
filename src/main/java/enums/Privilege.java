@@ -1,4 +1,7 @@
 package enums;
 
-public class Privilege {
+public enum  Privilege {
+    ORDINARY,
+    RECEPTIONIST,
+    OWNER
 }

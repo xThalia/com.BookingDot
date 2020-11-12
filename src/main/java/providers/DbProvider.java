@@ -94,6 +94,7 @@ public class DbProvider {
         String sql = "CREATE TABLE hotel_user(\n" +
                 "  hotel_id INTEGER,\n" +
                 "  user_id INTEGER,\n" +
+                "  timestamp INT NOT NULL,\n" +
                 "   PRIMARY KEY(hotel_id,user_id)"+
                 "   FOREIGN KEY (hotel_id) \n" +
                 "      REFERENCES hotel (id) \n" +
