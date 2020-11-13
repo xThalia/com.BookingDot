@@ -10,7 +10,7 @@ public class DbConnector {
         dbProvider.createDatabase();
     }
 
-    public static void addUser(User user) { //ja to jeszcze pozniej ladniej zrobie, zeby tu mozna bylo dawac obiekt Usera po prostu
+    public static void addUser(User user) {
         UserDataProvider userDataProvider = new UserDataProvider();
         userDataProvider.addUser(user);
 
@@ -18,6 +18,5 @@ public class DbConnector {
 
     public static void main(String[] args) {
         createDatabase();
-//        addUser();
     }
 }

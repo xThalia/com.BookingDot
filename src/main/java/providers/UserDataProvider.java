@@ -5,13 +5,12 @@ import model.User;
 import java.sql.*;
 
 public class UserDataProvider {
-    public void addUser(User user) {
+    public boolean addUser(User user) {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
             String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
 
-            System.out.println("Zaczynamy...");
             String login        = user.getLogin();
             String pass         = user.getPassword();
             String firstName    = user.getFirst_name();
@@ -42,10 +41,15 @@ public class UserDataProvider {
             if (i > 0) {
                 System.out.print("You are successfully registered...");
                 System.out.println("DB - User succesfully added.");
+                return true;
             }
+
+            return false;
 
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
+
+            return false;
         } finally {
             try {
                 if (conn != null) {
