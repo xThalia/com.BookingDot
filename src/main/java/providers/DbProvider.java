@@ -10,7 +10,7 @@ public class DbProvider {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/bookingDB.db";
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
 
             conn = DriverManager.getConnection(url);
             System.out.println("DB - Connection to SQLite has been established.");

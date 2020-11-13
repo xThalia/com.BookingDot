@@ -104,4 +104,5 @@ public class User {
     public long getTimestamp() {
         return timestamp;
     }
+
 }

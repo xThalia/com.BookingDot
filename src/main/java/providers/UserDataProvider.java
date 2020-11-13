@@ -2,27 +2,49 @@ package providers;
 
 import model.User;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class UserDataProvider {
-    public void addUser() {
+    public void addUser(User user) {
         Connection conn = null;
         try {
-            String url = "jdbc:sqlite:C://sqlite/db/bookingDB.db";
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+            System.out.println("Zaczynamy...");
+            String login        = user.getLogin();
+            String pass         = user.getPassword();
+            String firstName    = user.getFirst_name();
+            String lastName     = user.getLast_name();
+            int privilege       = 1;
+            int email_confirmed = 1;
+            int timestamp       = 1230;
 
             conn = DriverManager.getConnection(url);
-            Statement stmt = conn.createStatement();
+//            Statement stmt = conn.createStatement();
+//
+//            String sql = "INSERT INTO user (login, password, user_privilege,email_confirmed,timestamp)  \n" +
+//                    "VALUES ("+ user.getLogin() + "," + user.getPassword() + ", 1,1,1234556 + );";
+//
+//            stmt.execute(sql);
 
-            String sql = "INSERT INTO user (login, password, user_privilege,email_confirmed,timestamp)  \n" +
-                    "VALUES (\"test\", \"test1\", 1,1,1234556);";
+            PreparedStatement sql = conn.prepareStatement(
+                    "INSERT INTO user (login, password, user_privilege,first_name,last_name,email_confirmed,timestamp) VALUES(?,?,?,?,?,?,?)");
+            sql.setString(1, login);
+            sql.setString(2, pass);
+            sql.setInt(3, privilege);
+            sql.setString(4, firstName);
+            sql.setString(5, lastName);
+            sql.setInt(6, email_confirmed);
+            sql.setInt(7, timestamp);
+            int i = sql.executeUpdate();
 
-            stmt.execute(sql);
+            if (i > 0) {
+                System.out.print("You are successfully registered...");
+                System.out.println("DB - User succesfully added.");
+            }
 
-            System.out.println("DB - User succesfully added.");
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
         } finally {
             try {
