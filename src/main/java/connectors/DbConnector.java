@@ -21,8 +21,13 @@ public class DbConnector {
         userDataProvider.authenticateUserWithLoginAndPassword(user.getLogin(), user.getPassword());
     }
 
+    public static User loadUserById(int id) {
+        UserDataProvider userDataProvider = new UserDataProvider();
+        return userDataProvider.loadUserById(id);
+    }
+
     public static void main(String[] args) {
         User user = new User("mail@mail.com", "1234", Privilege.ORDINARY,"lol","lol", true, 1234);
-        addUser(user);
+        loadUserById(2);
     }
 }
