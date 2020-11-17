@@ -1,5 +1,6 @@
 package connectors;
 
+import enums.Privilege;
 import model.User;
 import providers.DbProvider;
 import providers.UserDataProvider;
@@ -13,10 +14,15 @@ public class DbConnector {
     public static void addUser(User user) {
         UserDataProvider userDataProvider = new UserDataProvider();
         userDataProvider.addUser(user);
+    }
 
+    public static void authenticateUser(User user) {
+        UserDataProvider userDataProvider = new UserDataProvider();
+        userDataProvider.authenticateUserWithLoginAndPassword(user.getLogin(), user.getPassword());
     }
 
     public static void main(String[] args) {
-        createDatabase();
+        User user = new User("mail@mail.com", "1234", Privilege.ORDINARY,"lol","lol", true, 1234);
+        addUser(user);
     }
 }

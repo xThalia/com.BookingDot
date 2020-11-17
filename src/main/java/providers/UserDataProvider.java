@@ -60,4 +60,39 @@ public class UserDataProvider {
             }
         }
     }
+
+    public int authenticateUserWithLoginAndPassword(final String login, final String password) {
+        Connection conn = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+            conn = DriverManager.getConnection(url);
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "SELECT id FROM user WHERE user.login == ? AND user.password == ?");
+            sql.setString(1, login);
+            sql.setString(2, password);
+            ResultSet rs = sql.executeQuery();
+
+            while (rs.next()) {
+                System.out.println(rs.getInt("id"));
+                return rs.getInt("id");
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+
+            return 0;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return 0;
+    }
 }
