@@ -7,5 +7,11 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/database.sqlite</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="db" uuid="92a2694a-b620-4d4a-aeea-293578976055">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\Patryk\IdeaProjects\com.BookingDot\src\main\java\storage\db.sqlite</jdbc-url>
+    </data-source>
   </component>
 </project>
