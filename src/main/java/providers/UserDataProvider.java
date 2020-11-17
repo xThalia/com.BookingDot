@@ -1,7 +1,11 @@
 package providers;
 
 import model.User;
+import tools.UsefulFunctions;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
 public class UserDataProvider {
@@ -69,10 +73,12 @@ public class UserDataProvider {
 
             conn = DriverManager.getConnection(url);
 
+            final String encodedPassword = UsefulFunctions.stringToMD5String(password);
+
             PreparedStatement sql = conn.prepareStatement(
                     "SELECT id FROM user WHERE user.login == ? AND user.password == ?");
             sql.setString(1, login);
-            sql.setString(2, password);
+            sql.setString(2, encodedPassword);
             ResultSet rs = sql.executeQuery();
 
             while (rs.next()) {
