@@ -23,31 +23,21 @@
                             User added!
                         </div>
                     </c:if>
+                    <c:if test="${sessionScope.status == 'error'}">
+                        <div class="alert alert-error" role="alert">
+                            Wrong login data!
+                        </div>
+                    </c:if>
                     <h1>Login</h1>
                     <hr>
-                    <form method="POST" action="login.jsp">
-
-                        <div class="mb-3 col-6">
+                    <form method="POST" action="${pageContext.request.contextPath}/login.jsp">
+                        <div class="mb-3 col-12">
                             <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
-                                <%--                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>--%>
+                            <input type="email" class="form-control" id="email" name="email">
                         </div>
-                        <div class="mb-3 col-6">
+                        <div class="mb-3 col-12">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" name="password">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
-                                <%--                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>--%>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password">
-                        </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>

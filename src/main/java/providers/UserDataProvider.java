@@ -16,8 +16,9 @@ public class UserDataProvider {
             Class.forName("org.sqlite.JDBC");
             String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
 
+
             String login        = user.getLogin();
-            String pass         = user.getPassword();
+            String pass         = UsefulFunctions.stringToMD5String(user.getPassword());
             String firstName    = user.getFirst_name();
             String lastName     = user.getLast_name();
             int privilege       = 1;
@@ -46,7 +47,7 @@ public class UserDataProvider {
 
             return false;
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException  e) {
             System.out.println(e.getMessage());
 
             return false;
