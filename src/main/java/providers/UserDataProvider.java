@@ -116,7 +116,6 @@ public class UserDataProvider {
             conn = DriverManager.getConnection(url);
 
             final String encodedPassword = UsefulFunctions.stringToMD5String(password);
-            System.out.println(encodedPassword);
 
             PreparedStatement sql = conn.prepareStatement(
                     "SELECT id FROM user WHERE user.login == ? AND user.password == ?");
@@ -140,7 +139,6 @@ public class UserDataProvider {
                 System.out.println(ex.getMessage());
             }
         }
-        System.out.println(resultId);
         return resultId;
     }
 }
