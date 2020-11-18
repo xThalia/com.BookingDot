@@ -26,12 +26,11 @@ public class UserDataProvider {
             int timestamp       = 1230;
 
             conn = DriverManager.getConnection(url);
-            final String encodedPassword = UsefulFunctions.stringToMD5String(pass);
 
             PreparedStatement sql = conn.prepareStatement(
                     "INSERT INTO user (login, password, user_privilege,first_name,last_name,email_confirmed,timestamp) VALUES(?,?,?,?,?,?,?)");
             sql.setString(1, login);
-            sql.setString(2, encodedPassword);
+            sql.setString(2, pass);
             sql.setInt(3, privilege);
             sql.setString(4, firstName);
             sql.setString(5, lastName);
@@ -117,6 +116,7 @@ public class UserDataProvider {
             conn = DriverManager.getConnection(url);
 
             final String encodedPassword = UsefulFunctions.stringToMD5String(password);
+            System.out.println(encodedPassword);
 
             PreparedStatement sql = conn.prepareStatement(
                     "SELECT id FROM user WHERE user.login == ? AND user.password == ?");

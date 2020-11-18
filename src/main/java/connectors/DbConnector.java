@@ -27,7 +27,7 @@ public class DbConnector {
     }
 
     public static void main(String[] args) {
-        User user = new User("mai1232335@mail.com", "12345", Privilege.ORDINARY,"lol","lol", true, 1234);
+        User user = new User("11292@mail.com", "123456", Privilege.ORDINARY,"lol","lol", true, 1234);
         addUser(user);
         authenticateUser(user);
     }
