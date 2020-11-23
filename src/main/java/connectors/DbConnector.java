@@ -3,7 +3,9 @@ package connectors;
 import enums.Privilege;
 import model.User;
 import providers.DbProvider;
+import providers.RegistrationTokenProvider;
 import providers.UserDataProvider;
+import services.RegisterService;
 
 public class DbConnector {
     public static void createDatabase() {
@@ -26,9 +28,27 @@ public class DbConnector {
         return userDataProvider.loadUserById(id);
     }
 
+    public static User loadUserByEmail(String email) {
+        UserDataProvider userDataProvider = new UserDataProvider();
+        return userDataProvider.loadUserByEmail(email);
+    }
+
+    public static String createRegistrationToken(User user) {
+        RegistrationTokenProvider registrationTokenProvider = new RegistrationTokenProvider();
+        return registrationTokenProvider.createRegistrationToken(user);
+    }
+
     public static void main(String[] args) {
-        User user = new User("11292@mail.com", "123456", Privilege.ORDINARY,"lol","lol", true, 1234);
-        addUser(user);
-        authenticateUser(user);
+        // Rejestracja uzytkownika
+         RegisterService registerService = new RegisterService();
+         User user = new User("mitela24@gmail.com", "123456", Privilege.ORDINARY,"Adam","Kowalski", false, 1234);
+       // registerService.registerUserAndSendToken(user);
+
+        // Weryfikacja tokenu i zmiana potwierdzenia na potwierdzony
+         int result = registerService.verifyUserToken(user.getLogin(), "4e0846be-14f3-4b54-8816-138dc5597a62");
+         System.out.println(result);
+        //addUser(user);
+        // authenticateUser(user);
+        // createDatabase();
     }
 }

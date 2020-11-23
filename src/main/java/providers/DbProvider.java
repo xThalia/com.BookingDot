@@ -15,10 +15,11 @@ public class DbProvider {
             conn = DriverManager.getConnection(url);
             System.out.println("DB - Connection to SQLite has been established.");
 
-            createUserTable(conn);
-            createHotelTable(conn);
-            createRoomTable(conn);
-            createHotelUserTable(conn);
+         //   createUserTable(conn);
+         //   createHotelTable(conn);
+          //  createRoomTable(conn);
+         //   createHotelUserTable(conn);
+            createRegistrationTokenTable(conn);
             System.out.println("DB - Database schema succesfully created.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -100,6 +101,24 @@ public class DbProvider {
                 "      REFERENCES hotel (id) \n" +
                 "         ON DELETE CASCADE \n" +
                 "         ON UPDATE NO ACTION,\n" +
+                "   FOREIGN KEY (user_id) \n" +
+                "      REFERENCES user (id) \n" +
+                "         ON DELETE CASCADE \n" +
+                "         ON UPDATE NO ACTION)\n";
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void createRegistrationTokenTable(Connection conn) {
+        String sql = "CREATE TABLE registration_token (\n" +
+                "  id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "  value TEXT NOT NULL,\n" +
+                "  user_id INTEGER NOT NULL,\n" +
+                "  timestamp INT NOT NULL,\n" +
                 "   FOREIGN KEY (user_id) \n" +
                 "      REFERENCES user (id) \n" +
                 "         ON DELETE CASCADE \n" +
