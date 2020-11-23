@@ -195,7 +195,7 @@ public class UserDataProvider {
                     "UPDATE user\n" +
                             "SET email_confirmed = 1\n" +
                             "WHERE\n" +
-                            "    user_id == ? ");
+                            "    id == ? ");
             sql.setInt(1, userId);
             sql.executeUpdate();
 

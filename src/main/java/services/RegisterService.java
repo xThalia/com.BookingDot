@@ -27,8 +27,10 @@ public class RegisterService {
         User resultUser;
         if(resultToken != null && resultToken.getUserId() != 0) {
             resultUser = userDataProvider.loadUserByEmail(login);
-            if(resultUser != null && resultUser.getId() == resultToken.getUserId())
+            if(resultUser != null && resultUser.getId() == resultToken.getUserId()) {
+                userDataProvider.setEmailConfirmed(resultUser.getId());
                 return resultUser.getId();
+            }
             else
                 return 0;
         } else return 0;
