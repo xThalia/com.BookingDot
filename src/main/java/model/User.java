@@ -23,7 +23,7 @@ public class User {
         this.timestamp = System.currentTimeMillis();
     }
 
-    public User(String login, String password, Privilege user_privilege, boolean email_confirmed, int timestamp) {
+    public User(String login, String password, Privilege user_privilege, boolean email_confirmed, long timestamp) {
         this.login = login;
         this.password = password;
         this.user_privilege = user_privilege;

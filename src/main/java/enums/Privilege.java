@@ -3,7 +3,8 @@ package enums;
 public enum  Privilege {
     ORDINARY(1),
     RECEPTIONIST(2),
-    OWNER(3);
+    OWNER(3),
+    ADMIN(4);
 
     private final int id;
 
@@ -20,6 +21,8 @@ public enum  Privilege {
                 return RECEPTIONIST;
             case (3):
                 return OWNER;
+            case (4):
+                return ADMIN;
         }
     }
 }

@@ -15,10 +15,10 @@ public class DbProvider {
             conn = DriverManager.getConnection(url);
             System.out.println("DB - Connection to SQLite has been established.");
 
-         //   createUserTable(conn);
-         //   createHotelTable(conn);
-          //  createRoomTable(conn);
-         //   createHotelUserTable(conn);
+            createUserTable(conn);
+            createHotelTable(conn);
+            createRoomTable(conn);
+            createHotelUserTable(conn);
             createRegistrationTokenTable(conn);
             System.out.println("DB - Database schema succesfully created.");
         } catch (SQLException e) {
@@ -45,7 +45,8 @@ public class DbProvider {
                 "  first_name TEXT,\n" +
                 "  last_name TEXT,\n" +
                 "  email_confirmed INT NOT NULL,\n" +
-                "  timestamp INT NOT NULL)\n";
+                "  timestamp INT NOT NULL,\n"+
+                "CONSTRAINT user_login_unique UNIQUE (login))\n";
 
         try {
             Statement stmt = conn.createStatement();

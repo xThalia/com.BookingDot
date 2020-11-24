@@ -11,6 +11,12 @@ public class DbConnector {
     public static void createDatabase() {
         DbProvider dbProvider = new DbProvider();
         dbProvider.createDatabase();
+        createAdminAccount();
+    }
+
+    public static void createAdminAccount() {
+        final User user = new User("admin","admin", Privilege.ADMIN, true, System.currentTimeMillis());
+        addUser(user);
     }
 
     public static void addUser(User user) {
@@ -45,15 +51,16 @@ public class DbConnector {
 
     public static void main(String[] args) {
         // Rejestracja uzytkownika
-         RegisterService registerService = new RegisterService();
+      //   RegisterService registerService = new RegisterService();
          User user = new User("mitela24@gmail.com", "123456", Privilege.ORDINARY,"Adam","Kowalski", false, 1234);
        // registerService.registerUserAndSendToken(user);
 
         // Weryfikacja tokenu i zmiana potwierdzenia na potwierdzony
-         int result = registerService.verifyUserToken(user.getLogin(), "4e0846be-14f3-4b54-8816-138dc5597a62");
-         System.out.println(result);
+       //  int result = registerService.verifyUserToken(user.getLogin(), "4e0846be-14f3-4b54-8816-138dc5597a62");
+       //  System.out.println(result);
+
         //addUser(user);
         // authenticateUser(user);
-        // createDatabase();
+         createDatabase();
     }
 }

@@ -21,8 +21,8 @@ public class UserDataProvider {
             String pass         = UsefulFunctions.stringToMD5String(user.getPassword());
             String firstName    = user.getFirst_name();
             String lastName     = user.getLast_name();
-            int privilege       = 1;
-            int email_confirmed = 0;
+            int privilege       = user.getUser_privilege() == null ? 1 : user.getUser_privilege().getValue();
+            int email_confirmed = user.isEmail_confirmed() ? 1 : 0;
             long timestamp       = System.currentTimeMillis();
 
             conn = DriverManager.getConnection(url);
