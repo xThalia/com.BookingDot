@@ -21,8 +21,8 @@ public class UserDataProvider {
             String pass         = UsefulFunctions.stringToMD5String(user.getPassword());
             String firstName    = user.getFirst_name();
             String lastName     = user.getLast_name();
-            int privilege       = 1;
-            int email_confirmed = 0;
+            int privilege       = user.getUser_privilege() == null ? 1 : user.getUser_privilege().getValue();
+            int email_confirmed = user.isEmail_confirmed() ? 1 : 0;
             long timestamp       = System.currentTimeMillis();
 
             conn = DriverManager.getConnection(url);
@@ -204,6 +204,37 @@ public class UserDataProvider {
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
             return  false;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+    public void changeUserPrivilege(int id, Privilege privilege) {
+        Connection conn = null;
+        int resultId = 0;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+            conn = DriverManager.getConnection(url);
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "UPDATE user\n" +
+                            "SET user_privilege = ?\n" +
+                            "WHERE\n" +
+                            "    id == ? ");
+            sql.setInt(1, privilege.getValue());
+            sql.setInt(2, id);
+            sql.executeUpdate();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
         } finally {
             try {
                 if (conn != null) {

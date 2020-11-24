@@ -4,6 +4,7 @@ import connectors.DbConnector;
 import enums.Privilege;
 import model.User;
 import providers.UserDataProvider;
+import services.RegisterService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,8 +35,8 @@ public class RegisterController extends HttpServlet {
         user.setUser_privilege(Privilege.ORDINARY);
         user.setTimestamp(123);
 
-        UserDataProvider userDataProvider = new UserDataProvider();
-        status = userDataProvider.addUser(user);
+        RegisterService registerService = new RegisterService();
+        status = registerService.registerUserAndSendToken(user);
 
         if(status) {
             request.getSession().setAttribute("status", "success");
