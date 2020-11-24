@@ -15,7 +15,7 @@ public class DbConnector {
     }
 
     public static void createAdminAccount() {
-        final User user = new User("admin","admin", Privilege.ADMIN, true, System.currentTimeMillis());
+        final User user = new User("admin","adminadmin", Privilege.ADMIN, true, System.currentTimeMillis());
         addUser(user);
     }
 
