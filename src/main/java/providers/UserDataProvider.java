@@ -214,4 +214,35 @@ public class UserDataProvider {
             }
         }
     }
+
+    public void changeUserPrivilege(int id, Privilege privilege) {
+        Connection conn = null;
+        int resultId = 0;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+            conn = DriverManager.getConnection(url);
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "UPDATE user\n" +
+                            "SET user_privilege = ?\n" +
+                            "WHERE\n" +
+                            "    id == ? ");
+            sql.setInt(1, privilege.getValue());
+            sql.setInt(2, id);
+            sql.executeUpdate();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
 }

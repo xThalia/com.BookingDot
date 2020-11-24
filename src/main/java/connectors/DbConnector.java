@@ -38,6 +38,11 @@ public class DbConnector {
         return registrationTokenProvider.createRegistrationToken(user);
     }
 
+    public static void changeUserPrivilege(int id, Privilege privilege) {
+        UserDataProvider userDataProvider = new UserDataProvider();
+        userDataProvider.changeUserPrivilege(id, privilege);
+    }
+
     public static void main(String[] args) {
         // Rejestracja uzytkownika
          RegisterService registerService = new RegisterService();
