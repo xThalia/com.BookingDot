@@ -11,6 +11,7 @@ public class RegisterService {
         boolean result = false;
         final SendEmailService emailService = new SendEmailService();
         DbConnector.addUser(user);
+        System.out.print("XDDDDDDDDDD");
         final User resultUser = DbConnector.loadUserByEmail(user.getLogin());
 
         if (resultUser != null) {

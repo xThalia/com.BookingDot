@@ -1,9 +1,7 @@
 package pl.servlets.auth;
 
-import connectors.DbConnector;
 import enums.Privilege;
 import model.User;
-import providers.UserDataProvider;
 import services.RegisterService;
 
 import javax.servlet.ServletException;
@@ -25,16 +23,17 @@ public class RegisterController extends HttpServlet {
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        System.out.print("AJAJAJA");
         boolean status;
         User user = new User();
+        System.out.print("AJAJAJA2");
         user.setLogin(request.getParameter("email"));
         user.setPassword(request.getParameter("password"));
         user.setFirst_name(request.getParameter("firstName"));
         user.setLast_name(request.getParameter("lastName"));
-        user.setEmail_confirmed(true);
+        user.setEmail_confirmed(false);
         user.setUser_privilege(Privilege.ORDINARY);
         user.setTimestamp(123);
-
         RegisterService registerService = new RegisterService();
         status = registerService.registerUserAndSendToken(user);
 

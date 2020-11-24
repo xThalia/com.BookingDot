@@ -37,4 +37,14 @@
         <servlet-name>Logout</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Token</servlet-name>
+        <servlet-class>pl.servlets.auth.TokenController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Token</servlet-name>
+        <url-pattern>/token</url-pattern>
+    </servlet-mapping>
+
 </web-app>

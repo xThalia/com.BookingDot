@@ -17,8 +17,6 @@ public class LoginController extends HttpServlet {
         if(session.getAttribute("currentSessionUser") != null ) {
             response.sendRedirect("views/home.jsp");
         } else {
-            PrintWriter writer = response.getWriter();
-            writer.println("XD");
             response.sendRedirect("views/auth/login.jsp");
         }
     }

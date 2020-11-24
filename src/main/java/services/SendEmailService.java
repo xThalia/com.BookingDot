@@ -25,7 +25,7 @@ public class SendEmailService {
         });
 
         // Used to debug SMTP issues
-        //session.setDebug(true);
+        session.setDebug(true);
 
         try {
             MimeMessage message = new MimeMessage(session);
