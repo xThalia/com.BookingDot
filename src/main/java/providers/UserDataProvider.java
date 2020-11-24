@@ -1,5 +1,6 @@
 package providers;
 
+import enums.Privilege;
 import model.User;
 import tools.UsefulFunctions;
 
@@ -15,21 +16,16 @@ public class UserDataProvider {
             Class.forName("org.sqlite.JDBC");
             String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
 
+
             String login        = user.getLogin();
-            String pass         = user.getPassword();
+            String pass         = UsefulFunctions.stringToMD5String(user.getPassword());
             String firstName    = user.getFirst_name();
             String lastName     = user.getLast_name();
             int privilege       = 1;
-            int email_confirmed = 1;
-            int timestamp       = 1230;
+            int email_confirmed = 0;
+            long timestamp       = System.currentTimeMillis();
 
             conn = DriverManager.getConnection(url);
-//            Statement stmt = conn.createStatement();
-//
-//            String sql = "INSERT INTO user (login, password, user_privilege,email_confirmed,timestamp)  \n" +
-//                    "VALUES ("+ user.getLogin() + "," + user.getPassword() + ", 1,1,1234556 + );";
-//
-//            stmt.execute(sql);
 
             PreparedStatement sql = conn.prepareStatement(
                     "INSERT INTO user (login, password, user_privilege,first_name,last_name,email_confirmed,timestamp) VALUES(?,?,?,?,?,?,?)");
@@ -39,7 +35,7 @@ public class UserDataProvider {
             sql.setString(4, firstName);
             sql.setString(5, lastName);
             sql.setInt(6, email_confirmed);
-            sql.setInt(7, timestamp);
+            sql.setLong(7, timestamp);
             int i = sql.executeUpdate();
 
             if (i > 0) {
@@ -50,7 +46,7 @@ public class UserDataProvider {
 
             return false;
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException  e) {
             System.out.println(e.getMessage());
 
             return false;
@@ -65,8 +61,94 @@ public class UserDataProvider {
         }
     }
 
+    public User loadUserById(int id) {
+        Connection conn = null;
+        User user = new User();
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+            conn = DriverManager.getConnection(url);
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "SELECT id, login, password, user_privilege, first_name, last_name, email_confirmed, timestamp " +
+                         "FROM user " +
+                         "WHERE user.id == ? ");
+
+
+            sql.setInt(1, id);
+            createUserObjectFromResult(user, sql);
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+
+            return null;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return user;
+    }
+
+    public User loadUserByEmail(String email) {
+        Connection conn = null;
+        User user = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+            conn = DriverManager.getConnection(url);
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "SELECT id, login, password, user_privilege, first_name, last_name, email_confirmed, timestamp " +
+                            "FROM user " +
+                            "WHERE user.login == ? ");
+
+
+            sql.setString(1, email);
+
+            user = new User();
+            createUserObjectFromResult(user, sql);
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+
+            return null;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return user;
+    }
+
+    private void createUserObjectFromResult(User user, PreparedStatement sql) throws SQLException {
+        ResultSet rs = sql.executeQuery();
+
+        while (rs.next()) {
+            user.setId(rs.getInt("id"));
+            user.setLogin(rs.getString("login"));
+            user.setPassword(rs.getString("password"));
+            user.setUser_privilege(Privilege.getPrivilage(rs.getInt("user_privilege")));
+            user.setFirst_name(rs.getString("first_name"));
+            user.setLast_name(rs.getString("last_name"));
+            user.setEmail_confirmed(rs.getInt("email_confirmed") == 1);
+            user.setTimestamp(rs.getInt("timestamp"));
+        }
+    }
+
     public int authenticateUserWithLoginAndPassword(final String login, final String password) {
         Connection conn = null;
+        int resultId = 0;
         try {
             Class.forName("org.sqlite.JDBC");
             String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
@@ -83,13 +165,11 @@ public class UserDataProvider {
 
             while (rs.next()) {
                 System.out.println(rs.getInt("id"));
-                return rs.getInt("id");
+                resultId = rs.getInt("id");
             }
 
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
-
-            return 0;
         } finally {
             try {
                 if (conn != null) {
@@ -99,6 +179,39 @@ public class UserDataProvider {
                 System.out.println(ex.getMessage());
             }
         }
-        return 0;
+        return resultId;
+    }
+
+    public boolean setEmailConfirmed(final int userId) {
+        Connection conn = null;
+        int resultId = 0;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+            conn = DriverManager.getConnection(url);
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "UPDATE user\n" +
+                            "SET email_confirmed = 1\n" +
+                            "WHERE\n" +
+                            "    id == ? ");
+            sql.setInt(1, userId);
+            sql.executeUpdate();
+
+            return true;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+            return  false;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
     }
 }

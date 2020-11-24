@@ -9,12 +9,16 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <t:layout>
     <jsp:attribute name="header">
     </jsp:attribute>
     <jsp:attribute name="footer">
     </jsp:attribute>
     <jsp:body>
+        <c:if  test="${sessionScope.currentSessionUser != null }">
+            <c:redirect url="/views/home.jsp"/>
+        </c:if>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
@@ -27,7 +31,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password">
+                            <input type="password" class="form-control" id="password" name="password" minlength="8" required>
                         </div>
                         <div class="mb-3">
                             <label for="firstName" class="form-label">First Name</label>

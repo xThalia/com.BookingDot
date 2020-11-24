@@ -15,7 +15,12 @@ import java.io.IOException;
 public class RegisterController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        response.sendRedirect("views/auth/register.jsp");
+        HttpSession session = request.getSession();
+        if(session.getAttribute("currentSessionUser") != null ) {
+            response.sendRedirect("views/home.jsp");
+        } else {
+            response.sendRedirect("views/auth/register.jsp");
+        }
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

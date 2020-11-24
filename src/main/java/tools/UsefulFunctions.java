@@ -1,20 +1,30 @@
 package tools;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class UsefulFunctions {
     public static String stringToMD5String(String string) {
+        final String MD5 = "MD5";
         try {
-            byte[] bytesOfMessage = string.getBytes("UTF-8");
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] thedigest = md.digest(bytesOfMessage);
-            return thedigest.toString();
-        }
-        catch (UnsupportedEncodingException e) { e.printStackTrace(); }
-        catch (NoSuchAlgorithmException a) { a.printStackTrace(); }
+            MessageDigest digest = java.security.MessageDigest.getInstance(MD5);
+            digest.update(string.getBytes());
+            byte[] messageDigest = digest.digest();
 
-        return null;
+            StringBuilder hexString = new StringBuilder();
+            for (byte aMessageDigest : messageDigest) {
+                StringBuilder h = new StringBuilder(Integer.toHexString(0xFF & aMessageDigest));
+                while (h.length() < 2)
+                    h.insert(0, "0");
+                hexString.append(h);
+            }
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
