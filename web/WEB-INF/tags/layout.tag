@@ -11,12 +11,13 @@
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-CuOF+2SnTUfTwSZjCXf01h7uYhfOBuxIhGKPbfEJ3+FqH/s6cIFN9bGr1HmAg4fQ" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-popRpmFF9JQgExhfw5tZT4I9/CI5e2QcuUZPOVXb1m7qUmeR2b50u+YFEYe1wgzy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
 <div id="pageheader">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img src="${pageContext.request.contextPath}/img/logo1.png"  height="70"></a>
+            <a class="navbar-brand" href="#"><img src="${pageContext.request.contextPath}/img/logo.png"  height="70"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -46,7 +47,7 @@
                 <% if(session.getAttribute("currentSessionUser") == null) {%>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item ml-auto">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/login.jsp">Login</a>
+                    <li><a class="nav-link" href="${pageContext.request.contextPath}/login.jsp">Login</a>
                     </li>
                     <li class="nav-item ml-auto">
                         <a class="nav-link" href="${pageContext.request.contextPath}/register.jsp">Register</a>

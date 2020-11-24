@@ -20,9 +20,9 @@
             <c:redirect url="/views/home.jsp"/>
         </c:if>
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <h1>Register</h1>
+            <div class="row justify-content-center ">
+                <div class="col-md-6">
+                    <h3 class="text-center">Register</h3>
                     <hr>
                     <form method="POST" action="${pageContext.request.contextPath}/register.jsp">
                         <div class="mb-3">
@@ -46,6 +46,7 @@
                             <label class="form-check-label" for="exampleCheck1">Check me out</label>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
+                        <p class="message">Already registered? <a href="${pageContext.request.contextPath}/login.jsp">Log in</a></p>
                     </form>
                 </div>
             </div>

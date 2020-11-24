@@ -20,8 +20,8 @@
             <c:redirect url="/views/home.jsp"/>
         </c:if>
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-6">
                     <c:if test="${sessionScope.status == 'success'}">
                         <div class="alert alert-success" role="alert">
                             User added!
@@ -32,7 +32,7 @@
                             Wrong login data!
                         </div>
                     </c:if>
-                    <h1>Login</h1>
+                        <h3 class="text-center">Login</h3>
                     <hr>
                     <form method="POST" action="${pageContext.request.contextPath}/login.jsp">
                         <div class="mb-3 col-12">
@@ -44,6 +44,7 @@
                             <input type="password" class="form-control" id="password" name="password">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
+                        <p class="message">Not registered? <a href="${pageContext.request.contextPath}/register.jsp">Create an account</a></p>
                     </form>
                 </div>
             </div>

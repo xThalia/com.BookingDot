@@ -5,6 +5,7 @@
       <map>
         <entry key="file://$PROJECT_DIR$/web/WEB-INF/tags/layout.tag" value="file://$PROJECT_DIR$/web/WEB-INF/tags" />
         <entry key="file://$PROJECT_DIR$/web/views/auth/login.jsp" value="file://$PROJECT_DIR$/web/views/auth" />
+        <entry key="file://$PROJECT_DIR$/web/views/auth/register.jsp" value="file://$PROJECT_DIR$/web/views/auth" />
       </map>
     </option>
   </component>

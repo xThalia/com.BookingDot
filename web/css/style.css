@@ -1,0 +1,68 @@
+body {
+    background-color: #184A4A;
+}
+.nav-link{
+    font-size: 20px;
+}
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #184A4A;
+}
+
+.dropdown ul{
+
+    background-color: #212529;
+}
+.dropdown a{
+    color: #9b9d97;
+    background-color: #212529;
+}
+.dropdown a:hover{
+    color: #184A4A;
+    background-color: #212529;
+}
+
+.btn-primary{
+    text-transform: uppercase;
+    outline: 0;
+    background: #212529;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #9b9d97;
+    font-size: 20px;
+    cursor: pointer;
+    border-color: #212529;
+
+}
+.btn-primary:hover,.btn-primary:focus,.btn-primary:active {
+    text-transform: uppercase;
+    outline: 0;
+    background: #212529;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #184A4A;
+    font-size: 20px;
+    cursor: pointer;
+    border-color: #212529;
+}
+.message {
+    margin: 15px 0 0;
+    color: #9b9d97;
+    font-size: 20px;
+}
+.message a{
+    color: #212529;
+    text-decoration: none;
+}
+.form-label{
+    color: #9b9d97;
+    font-size: 25px;
+    text-align: center;
+}
+.text-center {
+    padding-top: 50px;
+    color: #9b9d97;
+    font-size: 35px;
+
+}
