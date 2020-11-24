@@ -6,7 +6,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public class SendEmailService {
-    public boolean sendEmailWithRegistrationToken(String email, String token) {
+    static public boolean sendEmailWithRegistrationToken(String email, String token) {
        final String to = email;
        final String from = "bookingdotproject@gmail.com";
 

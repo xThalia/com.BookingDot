@@ -9,14 +9,13 @@ import providers.UserDataProvider;
 public class RegisterService {
     public boolean registerUserAndSendToken(final User user) {
         boolean result = false;
-        final SendEmailService emailService = new SendEmailService();
         DbConnector.addUser(user);
         System.out.print("XDDDDDDDDDD");
         final User resultUser = DbConnector.loadUserByEmail(user.getLogin());
 
         if (resultUser != null) {
             final String token = DbConnector.createRegistrationToken(resultUser);
-            result = emailService.sendEmailWithRegistrationToken(resultUser.getLogin(), token);
+            result = SendEmailService.sendEmailWithRegistrationToken(resultUser.getLogin(), token);
         }
         return result;
     }
