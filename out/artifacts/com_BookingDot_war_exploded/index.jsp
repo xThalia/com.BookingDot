@@ -25,11 +25,9 @@
                       <div class="card-header">Dashboard</div>
 
                       <div class="card-body">
-                          <c:if test="${requestScope.status == 'success'}">
                               <div class="alert alert-success" role="alert">
                                   You are log out!
                               </div>
-                          </c:if>
 
 
                       </div>

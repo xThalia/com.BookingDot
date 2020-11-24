@@ -64,9 +64,9 @@
                             %>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarUserMenu">
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
                             <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
