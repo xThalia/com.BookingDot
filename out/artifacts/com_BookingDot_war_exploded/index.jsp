@@ -9,20 +9,33 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <t:layout>
     <jsp:attribute name="header">
-      <h1>Welcome</h1>
+<%--      <h1>Welcome</h1>--%>
     </jsp:attribute>
   <jsp:attribute name="footer">
-      <p id="copyright">Copyright 2020, com.BookingDot</p>
+<%--      <p id="copyright">Copyright 2020, com.BookingDot</p>--%>
     </jsp:attribute>
   <jsp:body>
-    <form method="post" action="test">
-      <div class="form-group col-6">
-        <input class="form-control" type="text" name="test">
+      <div class="container">
+          <div class="row justify-content-center">
+              <div class="col-md-8">
+                  <div class="card">
+                      <div class="card-header">Dashboard</div>
+
+                      <div class="card-body">
+                          <c:if test="${requestScope.status == 'success'}">
+                              <div class="alert alert-success" role="alert">
+                                  You are log out!
+                              </div>
+                          </c:if>
+
+
+                      </div>
+                  </div>
+              </div>
+          </div>
       </div>
-      <button class="btn btn-lg btn-primary" type="submit"> zapisz </button>
-    </form>
-      <a class="nav-link" href="login.jsp">Login</a>
   </jsp:body>
 </t:layout>

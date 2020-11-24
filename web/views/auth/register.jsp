@@ -9,12 +9,16 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <t:layout>
     <jsp:attribute name="header">
     </jsp:attribute>
     <jsp:attribute name="footer">
     </jsp:attribute>
     <jsp:body>
+        <c:if  test="${sessionScope.currentSessionUser != null }">
+            <c:redirect url="/views/home.jsp"/>
+        </c:if>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">

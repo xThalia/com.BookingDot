@@ -13,9 +13,14 @@ import java.io.PrintWriter;
 public class LoginController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        PrintWriter writer = response.getWriter();
-        writer.println("XD");
-        response.sendRedirect("views/auth/login.jsp");
+        HttpSession session = request.getSession();
+        if(session.getAttribute("currentSessionUser") != null ) {
+            response.sendRedirect("views/home.jsp");
+        } else {
+            PrintWriter writer = response.getWriter();
+            writer.println("XD");
+            response.sendRedirect("views/auth/login.jsp");
+        }
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
@@ -25,12 +30,13 @@ public class LoginController extends HttpServlet {
        UserDataProvider userDataProvider = new UserDataProvider();
 
        System.out.println(login + " password " + password);
+       System.out.println(userDataProvider.authenticateUserWithLoginAndPassword(login, password));
        if (userDataProvider.authenticateUserWithLoginAndPassword(login, password) != 0) {
            System.out.println("ok2");
            id = userDataProvider.authenticateUserWithLoginAndPassword(login, password);
            HttpSession session = request.getSession(true);
            session.setAttribute("currentSessionUser",id);
-           response.sendRedirect("testredirect.jsp");
+           response.sendRedirect("views/home.jsp");
        } else {
            System.out.println("nie ok");
            request.getSession().setAttribute("status", "error");
