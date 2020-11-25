@@ -13,7 +13,9 @@
 <div id="pageheader">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img src="${pageContext.request.contextPath}/img/logo.png"  height="70"></a>
+            <a class="navbar-brand" href="#">
+                <img src="${pageContext.request.contextPath}/img/logo.png"  height="70">
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -22,9 +24,11 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/home.jsp">Home</a>
                     </li>
+                    <% if(session.getAttribute("currentSessionUser") == null) {%>
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/token">Token verify</a>
                     </li>
+                    <%}%>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Pricing</a>
                     </li>
@@ -50,7 +54,7 @@
                     </li>
                 </ul>
                 <%} else {%>
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav mr-4 ml-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarUserMenu" role="button" data-toggle="dropdown" aria-expanded="false">
                             <% User user = DbConnector.loadUserById((int)session.getAttribute("currentSessionUser"));
@@ -60,7 +64,7 @@
                             out.print(lastName);
                             %>
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarUserMenu">
+                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarUserMenu">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
                             <li><a class="dropdown-item" href="#">Another action</a></li>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Logout</a></li>

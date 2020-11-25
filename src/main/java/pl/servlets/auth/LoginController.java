@@ -30,15 +30,12 @@ public class LoginController extends HttpServlet {
        System.out.println(login + " password " + password);
        System.out.println(userDataProvider.authenticateUserWithLoginAndPassword(login, password));
        if (userDataProvider.authenticateUserWithLoginAndPassword(login, password) != 0) {
-           System.out.println("ok2");
            id = userDataProvider.authenticateUserWithLoginAndPassword(login, password);
            HttpSession session = request.getSession(true);
            session.setAttribute("currentSessionUser",id);
            response.sendRedirect("views/home.jsp");
        } else {
-           System.out.println("nie ok");
-           request.getSession().setAttribute("status", "error");
-           response.sendRedirect("views/auth/login.jsp");
+           response.sendRedirect("views/auth/login.jsp?status=error");
         }
     }
 }

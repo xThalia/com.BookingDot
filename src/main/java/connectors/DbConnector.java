@@ -20,9 +20,9 @@ public class DbConnector {
     }
 
     public static void addUser(User user) {
+        System.out.println("XD2 db connector");
         UserDataProvider userDataProvider = new UserDataProvider();
         userDataProvider.addUser(user);
-        System.out.println("XD2");
     }
 
     public static void authenticateUser(User user) {

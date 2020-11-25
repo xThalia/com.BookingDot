@@ -23,10 +23,8 @@ public class RegisterController extends HttpServlet {
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        System.out.print("AJAJAJA");
         boolean status;
         User user = new User();
-        System.out.print("AJAJAJA2");
         user.setLogin(request.getParameter("email"));
         user.setPassword(request.getParameter("password"));
         user.setFirst_name(request.getParameter("firstName"));
@@ -36,10 +34,10 @@ public class RegisterController extends HttpServlet {
         user.setTimestamp(123);
         RegisterService registerService = new RegisterService();
         status = registerService.registerUserAndSendToken(user);
+        System.out.println(status);
 
         if(status) {
-            request.getSession().setAttribute("status", "success");
-            response.sendRedirect("views/auth/login.jsp");
+            response.sendRedirect("views/auth/login.jsp?status=success");
         }
 
     }

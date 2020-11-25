@@ -11,7 +11,7 @@ public class SendEmailService {
        final String to = email;
        final String from = "bookingdotproject@gmail.com";
 
-        String host = "smtp.gmail.com";
+       String host = "smtp.gmail.com";
 
         Properties properties = System.getProperties();
         properties.put("mail.smtp.host", host);
@@ -26,7 +26,7 @@ public class SendEmailService {
         });
 
         // Used to debug SMTP issues
-        session.setDebug(true);
+        //session.setDebug(true);
 
         try {
             MimeMessage message = new MimeMessage(session);

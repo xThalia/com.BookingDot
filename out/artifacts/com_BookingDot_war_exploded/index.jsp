@@ -14,26 +14,34 @@
     <jsp:attribute name="header">
 <%--      <h1>Welcome</h1>--%>
     </jsp:attribute>
-  <jsp:attribute name="footer">
+    <jsp:attribute name="footer">
 <%--      <p id="copyright">Copyright 2020, com.BookingDot</p>--%>
     </jsp:attribute>
-  <jsp:body>
-      <div class="container">
-          <div class="row justify-content-center">
-              <div class="col-md-8">
-                  <div class="card">
-                      <div class="card-header">Dashboard</div>
+    <jsp:body>
+        <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-header">Dashboard</div>
 
-                      <div class="card-body">
-                              <div class="alert alert-success" role="alert">
-                                  You are log out!
-                              </div>
-
-
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </jsp:body>
+                    <div class="card-body">
+                        <c:if test="${param.token == 'success'}">
+                            <div class="alert alert-success" role="alert">
+                                You are log out!
+                            </div>
+                        </c:if>
+                        <div class="row">
+                            <div class="col-4">
+                                <img src="${pageContext.request.contextPath}/img/logo.png"  height="70"/>
+                            </div>
+                            <div class="col-8">
+                                <h3>Reservation App</h3>
+                            </div>
+                            </divrow>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </jsp:body>
 </t:layout>

@@ -22,13 +22,18 @@
         <div class="container">
             <div class="row justify-content-center align-items-center">
                 <div class="col-md-6">
-                    <c:if test="${sessionScope.status == 'success'}">
+                    <c:if test="${param.status == 'success'}">
                         <div class="alert alert-success" role="alert">
                             User added!
                         </div>
                     </c:if>
-                    <c:if test="${sessionScope.status == 'error'}">
-                        <div class="alert alert-error" role="alert">
+                    <c:if test="${param.token == 'success'}">
+                        <div class="alert alert-success" role="alert">
+                            Account verified!
+                        </div>
+                    </c:if>
+                    <c:if test="${param.status == 'error'}">
+                        <div class="alert alert-danger" role="alert">
                             Wrong login data!
                         </div>
                     </c:if>

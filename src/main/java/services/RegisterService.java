@@ -11,11 +11,10 @@ public class RegisterService {
         boolean result = false;
         SendEmailService sendEmailService = new SendEmailService();
         DbConnector.addUser(user);
-        System.out.print("XDDDDDDDDDD");
         final User resultUser = DbConnector.loadUserByEmail(user.getLogin());
 
         if (resultUser != null) {
-            final String token = DbConnector.createRegistrationToken(resultUser);
+            String token = DbConnector.createRegistrationToken(resultUser);
             result = sendEmailService.sendEmailWithRegistrationToken(resultUser.getLogin(), token);
         }
         return result;
