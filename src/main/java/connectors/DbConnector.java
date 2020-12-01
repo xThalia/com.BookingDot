@@ -1,10 +1,10 @@
 package connectors;
 
 import enums.Privilege;
+import model.Hotel;
+import model.Room;
 import model.User;
-import providers.DbProvider;
-import providers.RegistrationTokenProvider;
-import providers.UserDataProvider;
+import providers.*;
 import services.RegisterService;
 
 public class DbConnector {
@@ -20,7 +20,6 @@ public class DbConnector {
     }
 
     public static void addUser(User user) {
-        System.out.println("XD2 db connector");
         UserDataProvider userDataProvider = new UserDataProvider();
         userDataProvider.addUser(user);
     }
@@ -50,10 +49,29 @@ public class DbConnector {
         userDataProvider.changeUserPrivilege(id, privilege);
     }
 
+    public static void addHotel(Hotel hotel, int user_id) {
+        HotelProvider hotelProvider = new HotelProvider();
+        HotelUserProvider hotelUserProvider = new HotelUserProvider();
+
+        hotelProvider.addHotel(hotel);
+        int hotel_id = hotelProvider.getHotelIdByHotelData(hotel);
+
+        if (hotel_id != 0) {
+            hotelUserProvider.addHotelUser(hotel_id, user_id);
+        }
+    }
+
+    public static void addRoom(Room room, int hotel_id) {
+        RoomProvider roomProvider = new RoomProvider();
+        room.setHotelId(hotel_id);
+
+        roomProvider.addRoom(room);
+    }
+
     public static void main(String[] args) {
         // Rejestracja uzytkownika
       //   RegisterService registerService = new RegisterService();
-         User user = new User("mitela24@gmail.com", "123456", Privilege.ORDINARY,"Adam","Kowalski", false, 1234);
+    //     User user = new User("mitela24@gmail.com", "123456", Privilege.ORDINARY,"Adam","Kowalski", false, 1234);
        // registerService.registerUserAndSendToken(user);
 
         // Weryfikacja tokenu i zmiana potwierdzenia na potwierdzony
@@ -62,6 +80,11 @@ public class DbConnector {
 
         //addUser(user);
         // authenticateUser(user);
-         createDatabase();
+       //  createDatabase();
+
+         User user = new User("login", "password", Privilege.ORDINARY, true, System.currentTimeMillis());
+         Hotel hotel = new Hotel("nazwa", "mickiewicza", "ZG", System.currentTimeMillis());
+    //     addUser(user);
+         addHotel(hotel, user.getId());
     }
 }

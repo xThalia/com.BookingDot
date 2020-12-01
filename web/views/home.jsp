@@ -34,8 +34,8 @@
                             <c:out value="JSTL works."></c:out>
                             <c:if test="${sessionScope.status == 'success'}">
                                 <div class="alert alert-success" role="alert">
-                                    User: ${user.first_name}
-                                          ${user.last_name}
+                                    User: ${user.firstName}
+                                          ${user.lastName}
                                     Successful!
                                 </div>
                             </c:if>

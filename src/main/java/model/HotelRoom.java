@@ -1,29 +1,29 @@
 package model;
 
 public class HotelRoom {
-    private int hotel_id;
-    private int room_id;
+    private int hotelId;
+    private int roomId;
     private long timestamp;
 
     public HotelRoom() {
-        this.hotel_id = 0;
-        this.room_id = 0;
+        this.hotelId = 0;
+        this.roomId = 0;
         this.timestamp = System.currentTimeMillis();
     }
 
-    public int getHotel_id() {
-        return hotel_id;
+    public int getHotelId() {
+        return hotelId;
     }
 
-    public int getRoom_id() {
-        return room_id;
+    public int getRoomId() {
+        return roomId;
     }
 
-    public void setHotel_id(int hotel_id) {
-        this.hotel_id = hotel_id;
+    public void setHotelId(int hotelId) {
+        this.hotelId = hotelId;
     }
 
-    public void setRoom_id(int room_id) {
-        this.room_id = room_id;
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
     }
 }

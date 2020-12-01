@@ -5,21 +5,24 @@ public class Room {
     private int capacity;
     private int price;
     private long timestamp;
-    private int hotel_id;
+    private String picture;
+    private int hotelId;
 
     public Room() {
         this.id = 0;
         this.capacity = 0;
         this.price = 0;
         this.timestamp = System.currentTimeMillis();
-        this.hotel_id = 0;
+        this.picture = "";
+        this.hotelId = 0;
     }
 
-    public Room(int capacity, int price, int timestamp, int hotel_id) {
+    public Room(int capacity, int price, int timestamp, String picture, int hotelId) {
         this.capacity = capacity;
         this.price = price;
         this.timestamp = timestamp;
-        this.hotel_id = hotel_id;
+        this.picture = picture;
+        this.hotelId = hotelId;
     }
 
     public int getId() {
@@ -38,9 +41,11 @@ public class Room {
         return timestamp;
     }
 
-    public int getHotel_id() {
-        return hotel_id;
+    public int getHotelId() {
+        return hotelId;
     }
+
+    public String getPicture() { return picture; }
 
     public void setId(int id) {
         this.id = id;
@@ -58,7 +63,9 @@ public class Room {
         this.timestamp = timestamp;
     }
 
-    public void setHotel_id(int hotel_id) {
-        this.hotel_id = hotel_id;
+    public void setHotelId(int hotelId) {
+        this.hotelId = hotelId;
     }
+
+    public void setPicture(String picture) { this.picture = picture; }
 }

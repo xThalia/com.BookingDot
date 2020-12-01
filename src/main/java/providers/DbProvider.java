@@ -78,6 +78,7 @@ public class DbProvider {
                 "  capacity INT NOT NULL,\n" +
                 "  price INT NOT NULL,\n" +
                 "  timestamp INT NOT NULL,\n" +
+                "  picture TEXT NOT NULL,\n" +
                 "  hotel_id INT NOT NULL,\n" +
                 "   FOREIGN KEY (hotel_id) \n" +
                 "      REFERENCES hotel (id) \n" +

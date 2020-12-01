@@ -15,13 +15,13 @@ public class Hotel {
         this.timestamp = System.currentTimeMillis();
     }
 
-    public Hotel(String name, String city, int timestamp) {
+    public Hotel(String name, String city, long timestamp) {
         this.name = name;
         this.city = city;
         this.timestamp = timestamp;
     }
 
-    public Hotel(String name, String address, String city, int timestamp) {
+    public Hotel(String name, String address, String city, long timestamp) {
         this.name = name;
         this.address = address;
         this.city = city;

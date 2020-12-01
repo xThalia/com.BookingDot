@@ -27,10 +27,10 @@ public class RegisterController extends HttpServlet {
         User user = new User();
         user.setLogin(request.getParameter("email"));
         user.setPassword(request.getParameter("password"));
-        user.setFirst_name(request.getParameter("firstName"));
-        user.setLast_name(request.getParameter("lastName"));
-        user.setEmail_confirmed(false);
-        user.setUser_privilege(Privilege.ORDINARY);
+        user.setFirstName(request.getParameter("firstName"));
+        user.setLastName(request.getParameter("lastName"));
+        user.setEmailConfirmed(false);
+        user.setUserPrivilege(Privilege.ORDINARY);
         user.setTimestamp(123);
         RegisterService registerService = new RegisterService();
         status = registerService.registerUserAndSendToken(user);

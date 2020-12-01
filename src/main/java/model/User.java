@@ -6,38 +6,38 @@ public class User {
     private int id;
     private String login;
     private String password;
-    private Privilege user_privilege;
-    private String first_name;
-    private String last_name;
-    private boolean email_confirmed;
+    private Privilege userPrivilege;
+    private String firstName;
+    private String lastName;
+    private boolean emailConfirmed;
     private long timestamp;
 
     public User() {
         this.id = 0;
         this.login = "";
         this.password = "";
-        this.user_privilege = Privilege.ORDINARY;
-        this.first_name = "";
-        this.last_name = "";
-        this.email_confirmed = false;
+        this.userPrivilege = Privilege.ORDINARY;
+        this.firstName = "";
+        this.lastName = "";
+        this.emailConfirmed = false;
         this.timestamp = System.currentTimeMillis();
     }
 
-    public User(String login, String password, Privilege user_privilege, boolean email_confirmed, long timestamp) {
+    public User(String login, String password, Privilege userPrivilege, boolean emailConfirmed, long timestamp) {
         this.login = login;
         this.password = password;
-        this.user_privilege = user_privilege;
-        this.email_confirmed = email_confirmed;
+        this.userPrivilege = userPrivilege;
+        this.emailConfirmed = emailConfirmed;
         this.timestamp = timestamp;
     }
 
-    public User(String login, String password, Privilege user_privilege, String first_name, String last_name, boolean email_confirmed, int timestamp) {
+    public User(String login, String password, Privilege userPrivilege, String firstName, String lastName, boolean emailConfirmed, int timestamp) {
         this.login = login;
         this.password = password;
-        this.user_privilege = user_privilege;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.email_confirmed = email_confirmed;
+        this.userPrivilege = userPrivilege;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailConfirmed = emailConfirmed;
         this.timestamp = timestamp;
     }
 
@@ -53,20 +53,20 @@ public class User {
         this.password = password;
     }
 
-    public void setUser_privilege(Privilege user_privilege) {
-        this.user_privilege = user_privilege;
+    public void setUserPrivilege(Privilege userPrivilege) {
+        this.userPrivilege = userPrivilege;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public void setEmail_confirmed(boolean email_confirmed) {
-        this.email_confirmed = email_confirmed;
+    public void setEmailConfirmed(boolean emailConfirmed) {
+        this.emailConfirmed = emailConfirmed;
     }
 
     public void setTimestamp(int timestamp) {
@@ -85,20 +85,20 @@ public class User {
         return password;
     }
 
-    public Privilege getUser_privilege() {
-        return user_privilege;
+    public Privilege getUserPrivilege() {
+        return userPrivilege;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public boolean isEmail_confirmed() {
-        return email_confirmed;
+    public boolean isEmailConfirmed() {
+        return emailConfirmed;
     }
 
     public long getTimestamp() {
