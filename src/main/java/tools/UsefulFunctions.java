@@ -1,9 +1,12 @@
 package tools;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 public class UsefulFunctions {
     public static String stringToMD5String(String string) {
@@ -26,5 +29,13 @@ public class UsefulFunctions {
             e.printStackTrace();
         }
         return "";
+    }
+
+    private static String encodeFileToBase64Binary(File file) throws Exception{
+        FileInputStream fileInputStreamReader = new FileInputStream(file);
+        byte[] bytes = new byte[(int)file.length()];
+        fileInputStreamReader.read(bytes);
+
+        return new String(Base64.getMimeEncoder().encode(bytes), "UTF-8");
     }
 }
