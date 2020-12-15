@@ -165,7 +165,7 @@ public class DbConnector {
         } */
 
       //PRZYKLAD UZYCIA LISTY Z PRIVILEGAMI
-    /*  List <Privilege> list = Privilege.getAllPrivileges();
+   /*   List <Privilege> list = Privilege.getAllPrivileges();
         for (Privilege p: list) {
             System.out.println(p.toString());
             System.out.println(p.getValue());
