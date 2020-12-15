@@ -7,6 +7,9 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.InputMismatchException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UsefulFunctions {
     public static String stringToMD5String(String string) {
@@ -37,5 +40,20 @@ public class UsefulFunctions {
         fileInputStreamReader.read(bytes);
 
         return new String(Base64.getMimeEncoder().encode(bytes), "UTF-8");
+    }
+
+    public static boolean isImageFile(String str)
+    {
+        String regex
+                = "([^\\s]+(\\.(?i)(jpe?g|png|gif|bmp))$)";
+        Pattern p = Pattern.compile(regex);
+
+        if (str == null) {
+            return false;
+        }
+
+        Matcher m = p.matcher(str);
+
+        return m.matches();
     }
 }
