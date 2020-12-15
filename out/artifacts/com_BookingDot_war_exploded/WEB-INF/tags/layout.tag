@@ -58,8 +58,8 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarUserMenu" role="button" data-toggle="dropdown" aria-expanded="false">
                             <% User user = DbConnector.loadUserById((int)session.getAttribute("currentSessionUser"));
-                            String firstName = user.getFirst_name();
-                            String lastName = user.getLast_name();
+                            String firstName = user.getFirstName();
+                            String lastName = user.getLastName();
                             out.print(firstName);
                             out.print(lastName);
                             %>

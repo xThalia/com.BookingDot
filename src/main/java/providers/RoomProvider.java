@@ -1,5 +1,6 @@
 package providers;
 
+import enums.Privilege;
 import model.Hotel;
 import model.Room;
 import tools.UsefulFunctions;
@@ -96,6 +97,39 @@ public class RoomProvider {
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
+        }
+    }
+
+    public int changeUserImage(int userId, String picturePath) {
+        Connection conn = null;
+        int resultId = 0;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+            conn = DriverManager.getConnection(url);
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "UPDATE room\n" +
+                            "SET picture = ?\n" +
+                            "WHERE\n" +
+                            "    id == ? ");
+            sql.setString(1, picturePath);
+            sql.setInt(2, userId);
+
+            return sql.executeUpdate();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+            return 0;
         }
     }
 }

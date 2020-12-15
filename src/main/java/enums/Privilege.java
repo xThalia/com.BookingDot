@@ -1,5 +1,9 @@
 package enums;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public enum  Privilege {
     ORDINARY(1),
     RECEPTIONIST(2),
@@ -24,5 +28,14 @@ public enum  Privilege {
             case (4):
                 return ADMIN;
         }
+    }
+
+    public static List<String> getAllPrivileges() {
+        Privilege [] privileges = Privilege.values();
+        List <String> list = new ArrayList<>();
+        for (Privilege p: privileges) {
+            list.add(p.toString());
+        }
+        return list;
     }
 }
