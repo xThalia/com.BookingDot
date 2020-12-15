@@ -1,6 +1,10 @@
 package providers;
 
+import model.Hotel;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HotelUserProvider {
     public boolean addHotelUser(int hotelId, int userId) {
@@ -62,6 +66,46 @@ public class HotelUserProvider {
             ResultSet rs = sql.executeQuery();
 
             if (rs.next()) return rs.getInt("id");
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+
+            return 0;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return 0;
+    }
+
+    public int getHotelIdByUserIdAndHotelName(String name, int userId) {
+        Connection conn = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+            conn = DriverManager.getConnection(url);
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "SELECT hotel_user.hotel_id FROM hotel_user, hotel " +
+                            "WHERE " +
+                            "hotel_user.user_id == ? " +
+                            "AND hotel_user.hotel_id == hotel.id AND hotel.name == ?");
+
+
+            sql.setInt(1, userId);
+            sql.setString( 2, name);
+
+            ResultSet rs = sql.executeQuery();
+
+            while (rs.next()) {
+                return rs.getInt("hotel_id");
+            }
 
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println(e.getMessage());

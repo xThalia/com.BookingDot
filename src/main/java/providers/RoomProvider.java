@@ -1,12 +1,13 @@
 package providers;
 
+import enums.Privilege;
+import model.Hotel;
 import model.Room;
 import tools.UsefulFunctions;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RoomProvider {
     public boolean addRoom(Room room) { //required with hotel id
@@ -18,14 +19,16 @@ public class RoomProvider {
             int price           = room.getPrice();
             long timestamp      = System.currentTimeMillis();
             int hotelId         = room.getHotelId();
+            String picturePath = room.getPicturePath();
             conn = DriverManager.getConnection(url);
 
             PreparedStatement sql = conn.prepareStatement(
-                    "INSERT INTO room (capacity, price, timestamp, hotel_id) VALUES(?,?,?,?)");
+                    "INSERT INTO room (capacity, price, timestamp, hotel_id, picture) VALUES(?,?,?,?,?)");
             sql.setInt(1, capacity);
             sql.setInt(2, price);
             sql.setLong(3, timestamp);
             sql.setInt(4, hotelId);
+            sql.setString(5, picturePath);
 
             int i = sql.executeUpdate();
 
@@ -48,6 +51,85 @@ public class RoomProvider {
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
+        }
+    }
+
+    public List<Room> getAllHotelRoom(int hotel_id) {
+        Connection conn = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+            conn = DriverManager.getConnection(url);
+
+            List <Room> hotelRooms = new ArrayList<>();
+            PreparedStatement sql = conn.prepareStatement(
+                    "SELECT * FROM room " +
+                            "WHERE " +
+                            "hotel_id == ? ");
+
+
+            sql.setInt(1, hotel_id);
+
+            ResultSet rs = sql.executeQuery();
+
+            while (rs.next()) {
+                Room room = new Room();
+                room.setId(rs.getInt("id"));
+                room.setCapacity(rs.getInt("capacity"));
+                room.setPrice(rs.getInt("price"));
+                room.setTimestamp(rs.getInt("timestamp"));
+                room.setPicturePath(rs.getString("picture"));
+                room.setHotelId(rs.getInt("hotel_id"));
+                hotelRooms.add(room);
+            }
+            return hotelRooms;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+
+            return null;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+    public int changeUserImage(int userId, String picturePath) {
+        Connection conn = null;
+        int resultId = 0;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+            conn = DriverManager.getConnection(url);
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "UPDATE room\n" +
+                            "SET picture = ?\n" +
+                            "WHERE\n" +
+                            "    id == ? ");
+            sql.setString(1, picturePath);
+            sql.setInt(2, userId);
+
+            return sql.executeUpdate();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+            return 0;
         }
     }
 }

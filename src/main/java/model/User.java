@@ -105,4 +105,17 @@ public class User {
         return timestamp;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", userPrivilege=" + userPrivilege +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", emailConfirmed=" + emailConfirmed +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }

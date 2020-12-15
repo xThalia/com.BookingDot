@@ -5,6 +5,8 @@ import model.User;
 import tools.UsefulFunctions;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDataProvider {
     public boolean addUser(User user) {
@@ -55,6 +57,53 @@ public class UserDataProvider {
                 System.out.println(ex.getMessage());
             }
         }
+    }
+
+    public List<User> loadAllUser() {
+            Connection conn = null;
+
+            try {
+                List<User> allUser = new ArrayList<>();
+                Class.forName("org.sqlite.JDBC");
+                String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+                conn = DriverManager.getConnection(url);
+
+                PreparedStatement sql = conn.prepareStatement(
+                        "SELECT * " +
+                                "FROM user ");
+
+
+                ResultSet rs = sql.executeQuery();
+
+                while (rs.next()) {
+                    User user = new User();
+                    user.setId(rs.getInt("id"));
+                    user.setLogin(rs.getString("login"));
+                    user.setPassword(rs.getString("password"));
+                    user.setUserPrivilege(Privilege.getPrivilage(rs.getInt("user_privilege")));
+                    user.setFirstName(rs.getString("first_name"));
+                    user.setLastName(rs.getString("last_name"));
+                    user.setEmailConfirmed(rs.getInt("email_confirmed") == 1);
+                    user.setTimestamp(rs.getInt("timestamp"));
+                    allUser.add(user);
+                }
+
+                return allUser;
+
+            } catch (SQLException | ClassNotFoundException e) {
+                System.out.println(e.getMessage());
+
+                return null;
+            } finally {
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
     }
 
     public User loadUserById(int id) {

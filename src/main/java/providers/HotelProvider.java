@@ -6,6 +6,8 @@ import model.User;
 import tools.UsefulFunctions;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HotelProvider {
 
@@ -95,5 +97,49 @@ public class HotelProvider {
             return 0;
     }
 
+    public List<Hotel> getAllUserHotel(int userId) {
+        Connection conn = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
 
+            conn = DriverManager.getConnection(url);
+
+            List <Hotel> userHotels = new ArrayList<>();
+            PreparedStatement sql = conn.prepareStatement(
+                    "SELECT * FROM hotel, hotel_user " +
+                            "WHERE " +
+                            "hotel_user.user_id == ? " +
+                            "AND hotel_user.hotel_id == hotel.id");
+
+
+            sql.setInt(1, userId);
+
+            ResultSet rs = sql.executeQuery();
+
+            while (rs.next()) {
+                Hotel hotel = new Hotel();
+                hotel.setId(rs.getInt("id"));
+                hotel.setName(rs.getString("name"));
+                hotel.setAddress(rs.getString("address"));
+                hotel.setCity(rs.getString("city"));
+                hotel.setTimestamp(rs.getInt("timestamp"));
+                userHotels.add(hotel);
+            }
+            return userHotels;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+
+            return null;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
 }

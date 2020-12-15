@@ -67,4 +67,15 @@ public class Hotel {
     public void setTimestamp(int timestamp) {
         this.timestamp = timestamp;
     }
+
+    @Override
+    public String toString() {
+        return "Hotel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }
