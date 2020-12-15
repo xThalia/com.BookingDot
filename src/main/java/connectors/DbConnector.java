@@ -52,7 +52,7 @@ public class DbConnector {
         return userDataProvider.loadUserByEmail(email);
     }
 
-    public static void changeUserPrivilege(int id, Privilege privilege) {
+    public static void changeUserPrivilege(int id, int privilege) {
         UserDataProvider userDataProvider = new UserDataProvider();
         userDataProvider.changeUserPrivilege(id, privilege);
     }

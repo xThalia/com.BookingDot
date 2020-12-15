@@ -260,7 +260,7 @@ public class UserDataProvider {
         }
     }
 
-    public void changeUserPrivilege(int id, Privilege privilege) {
+    public void changeUserPrivilege(int id, int privilege) {
         Connection conn = null;
         int resultId = 0;
         try {
@@ -274,7 +274,7 @@ public class UserDataProvider {
                             "SET user_privilege = ?\n" +
                             "WHERE\n" +
                             "    id == ? ");
-            sql.setInt(1, privilege.getValue());
+            sql.setInt(1, privilege);
             sql.setInt(2, id);
             sql.executeUpdate();
 
