@@ -37,17 +37,17 @@
                     </table>
                 </c:if>
                 <c:if test="${emptyList == 'true'}">
-                <div class="col-md-8">
-                    <div class="card">
-                        <div class="card-header">Add new hotel</div>
-                        <div class="card-body">
-                            You have any hotel!
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">Add new hotel</div>
+                            <div class="card-body">
+                                You have any hotel!
+                            </div>
                         </div>
                     </div>
-                </div>
                 </c:if>
             </div>
         </div>
-        </div>
+
     </jsp:body>
 </t:layout>

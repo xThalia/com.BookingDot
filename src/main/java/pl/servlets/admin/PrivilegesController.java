@@ -1,5 +1,7 @@
 package pl.servlets.admin;
 
+import connectors.DbConnector;
+import model.User;
 import providers.UserDataProvider;
 
 import javax.servlet.ServletException;
@@ -8,14 +10,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 public class PrivilegesController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         HttpSession session = request.getSession();
+
         if(session.getAttribute("currentSessionUser") != null ) {
-            response.sendRedirect("views/admin/privileges.jsp");
-        } else {
+
+            List<User> userList = DbConnector.getAllUser(); // Obtain all products.
+            request.setAttribute("userList", userList); // Store products in request scope.
+
+
+            if (userList.isEmpty()) {
+                request.setAttribute("emptyList", "true");
+            } else {
+                request.setAttribute("emptyList", "false");
+            }
+            request.getRequestDispatcher("views/admin/privileges.jsp").forward(request, response);
+              }
+
+        else {
             response.sendRedirect("views/auth/login.jsp");
         }
     }

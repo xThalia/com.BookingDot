@@ -32,7 +32,23 @@ body {
     font-size: 20px;
     cursor: pointer;
     border-color: #212529;
-
+    box-shadow: none;
+}
+.btn-dark{
+    text-transform: uppercase;
+    outline: 0;
+    background: #184A4A;
+    color: #212529;
+    border-color: #184A4A;
+    box-shadow: none;
+}
+.btn-dark:focus, btn-secondary:active{
+    text-transform: uppercase;
+    outline: 0;
+    background: #184A4A;
+    color: #212529;
+    border-color: #184A4A;
+    box-shadow: none;
 }
 .btn-primary:hover,.btn-primary:focus,.btn-primary:active {
     text-transform: uppercase;
@@ -45,6 +61,7 @@ body {
     font-size: 20px;
     cursor: pointer;
     border-color: #212529;
+    box-shadow: none;
 }
 .message {
     margin: 15px 0 0;

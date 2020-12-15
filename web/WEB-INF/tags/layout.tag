@@ -60,13 +60,13 @@
                             <% User user = DbConnector.loadUserById((int)session.getAttribute("currentSessionUser"));
                             String firstName = user.getFirstName();
                             String lastName = user.getLastName();
-                            out.print(firstName);
+                            out.print(firstName+" ");
                             out.print(" ");
                             out.print(lastName);
                             %>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarUserMenu">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/profile.jsp">Profile</a></li>
                             <% if(user.getUserPrivilege().getValue() == 3) {%>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/hotels">Manage your Hotels</a></li>
                             <%}%>
