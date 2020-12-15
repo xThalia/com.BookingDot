@@ -1,5 +1,7 @@
 package pl.servlets.hotel;
 
+import connectors.DbConnector;
+import model.Hotel;
 import providers.UserDataProvider;
 
 import javax.servlet.ServletException;
@@ -8,13 +10,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 public class HotelsController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         HttpSession session = request.getSession();
+
         if(session.getAttribute("currentSessionUser") != null ) {
-            response.sendRedirect("views/hotel/hotels.jsp");
+            List<Hotel> hotelList = DbConnector.getAllUserHotel((int)session.getAttribute("currentSessionUser")); // Obtain all products.
+            request.setAttribute("hotelList", hotelList); // Store products in request scope.
+            if (hotelList.isEmpty()) {
+                request.setAttribute("emptyList", "true");
+            } else {
+                request.setAttribute("emptyList", "false");
+            }
+            request.getRequestDispatcher("views/hotel/hotels.jsp").forward(request, response); // Forward to JSP page to display them in a HTML table
         } else {
             response.sendRedirect("views/auth/login.jsp");
         }
