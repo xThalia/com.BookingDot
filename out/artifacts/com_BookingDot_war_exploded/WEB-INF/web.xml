@@ -29,6 +29,25 @@
         <servlet-name>Register</servlet-name>
         <url-pattern>/register.jsp</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Hotels</servlet-name>
+        <servlet-class>pl.servlets.hotel.HotelsController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Hotels</servlet-name>
+        <url-pattern>/hotels</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Privileges</servlet-name>
+        <servlet-class>pl.servlets.admin.PrivilegesController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Privileges</servlet-name>
+        <url-pattern>/privileges</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>Logout</servlet-name>
         <servlet-class>pl.servlets.auth.LogoutController</servlet-class>

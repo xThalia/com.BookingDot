@@ -58,15 +58,21 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarUserMenu" role="button" data-toggle="dropdown" aria-expanded="false">
                             <% User user = DbConnector.loadUserById((int)session.getAttribute("currentSessionUser"));
-                            String firstName = user.getFirst_name();
-                            String lastName = user.getLast_name();
+                            String firstName = user.getFirstName();
+                            String lastName = user.getLastName();
                             out.print(firstName);
+                            out.print(" ");
                             out.print(lastName);
                             %>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarUserMenu">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <% if(user.getUserPrivilege().getValue() == 3) {%>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/hotels">Manage your Hotels</a></li>
+                            <%}%>
+                            <% if(user.getUserPrivilege().getValue() == 4) {%>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/privileges">Manage Privileges</a></li>
+                            <%}%>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Logout</a></li>
                         </ul>
                     </li>
