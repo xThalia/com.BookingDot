@@ -132,4 +132,37 @@ public class RoomProvider {
             return 0;
         }
     }
+
+    public int deleteRoom(int roomId) {
+        Connection conn = null;
+        int resultId = 0;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+            conn = DriverManager.getConnection(url);
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "DELETE FROM room\n" +
+                            "WHERE id = ? ");
+            sql.setInt(1, roomId);
+
+            return sql.executeUpdate();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+            return 0;
+        }
+    }
+
+
+
 }

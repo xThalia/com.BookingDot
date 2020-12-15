@@ -142,4 +142,72 @@ public class HotelProvider {
             }
         }
     }
+
+    public int deleteHotel(int hotelId) {
+        Connection conn = null;
+        int resultId = 0;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+            conn = DriverManager.getConnection(url);
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "DELETE FROM hotel\n" +
+                            "WHERE id = ? ");
+            sql.setInt(1, hotelId);
+
+            return sql.executeUpdate();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+            return 0;
+        }
+    }
+
+    public int editHotel(int hotelId, String name, String address, String city) {
+        Connection conn = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+            conn = DriverManager.getConnection(url);
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "UPDATE hotel\n" +
+                            "SET name = ?,\n" +
+                            "address = ?,\n" +
+                            "city = ?,\n" +
+                            "timestamp = ?" +
+                            "WHERE\n" +
+                            "    id == ? ");
+            sql.setString(1, name);
+            sql.setString(2, address);
+            sql.setString(3, city);
+            sql.setInt(4, (int) System.currentTimeMillis());
+            sql.setInt(5, hotelId);
+
+            return sql.executeUpdate();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+            return 0;
+        }
+    }
 }
