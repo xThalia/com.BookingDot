@@ -163,5 +163,23 @@ public class DbConnector {
         for (Room r: rooms) {
             System.out.println(r.toString());
         } */
+
+      //PRZYKLAD UZYCIA LISTY Z PRIVILEGAMI
+    /*  List <Privilege> list = Privilege.getAllPrivileges();
+        for (Privilege p: list) {
+            System.out.println(p.toString());
+            System.out.println(p.getValue());
+        } */
+
+      //  WYNIK:
+      //  ORDINARY
+      //  1
+       // RECEPTIONIST
+      //  2
+      //  OWNER
+      //  3
+      //  ADMIN
+      //  4
+
     }
 }

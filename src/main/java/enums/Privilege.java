@@ -30,12 +30,8 @@ public enum  Privilege {
         }
     }
 
-    public static List<String> getAllPrivileges() {
+    public static List<Privilege> getAllPrivileges() {
         Privilege [] privileges = Privilege.values();
-        List <String> list = new ArrayList<>();
-        for (Privilege p: privileges) {
-            list.add(p.toString());
-        }
-        return list;
+        return Arrays.asList(privileges);
     }
 }
