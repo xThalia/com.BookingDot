@@ -11,7 +11,12 @@
             <c:redirect url="/views/auth/login.jsp"/>
         </c:if>
         <div class="container">
-            <h3 class="text-center">Login</h3>
+            <h3 class="text-center">Hotels</h3>
+            <c:if test="${sessionScope.status == 'success'}">
+                <div class="alert alert-success" role="alert">
+                    Hotel added!
+                </div>
+            </c:if>
             <div class="row justify-content-center align-items-center">
                 <c:if test="${emptyList == 'false'}">
                     <table class="table table-dark">
@@ -21,19 +26,33 @@
                             <th scope="col">Name</th>
                             <th scope="col">Address</th>
                             <th scope="col">City</th>
+                            <th scope="col">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <c:forEach items="${hotelList}" var="hotel">
-                                <th scope="row">x</th>
+                        <c:forEach items="${hotelList}" var="hotel">
+                            <tr>
+                                <th scope="row">${hotelList.indexOf(hotel)+1}</th>
                                 <td>${hotel.getName()}</td>
                                 <td>${hotel.getAddress()}</td>
                                 <td>${hotel.getCity()}</td>
-                            </c:forEach>
-                        </tr>
+                                <td>
+                                    <form class="d-inline-block" method="POST" action="${pageContext.request.contextPath}/editHotel">
+                                        <input type="hidden" name="hotelId" value="${hotel.getId()}">
+                                        <button type="submit" class="btn btn-sm btn-success">
+                                            Edit
+                                        </button>
+                                    </form>
+                                    <form class="d-inline-block" method="POST" action="${pageContext.request.contextPath}/deleteHotel">
+                                        <input type="hidden" name="hotelId" value="${hotel.getId()}">
+                                        <button type="submit" class="btn btn-sm btn-danger ml-2">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:forEach>
                         </tbody>
-
                     </table>
                 </c:if>
                 <c:if test="${emptyList == 'true'}">
@@ -46,6 +65,11 @@
                         </div>
                     </div>
                 </c:if>
+                <a href="${pageContext.request.contextPath}/addHotel">
+                    <button type="button" class="btn btn-lg btn-success ml-2 float-right">
+                        Add Hotel
+                    </button>
+                </a>
             </div>
         </div>
 

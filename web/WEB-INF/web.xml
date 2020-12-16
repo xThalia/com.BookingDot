@@ -40,6 +40,33 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>AddHotel</servlet-name>
+        <servlet-class>pl.servlets.hotel.AddHotelController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddHotel</servlet-name>
+        <url-pattern>/addHotel</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EditHotel</servlet-name>
+        <servlet-class>pl.servlets.hotel.EditHotelController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditHotel</servlet-name>
+        <url-pattern>/editHotel</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteHotel</servlet-name>
+        <servlet-class>pl.servlets.hotel.DeleteHotelController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteHotel</servlet-name>
+        <url-pattern>/deleteHotel</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>Privileges</servlet-name>
         <servlet-class>pl.servlets.admin.PrivilegesController</servlet-class>
     </servlet>

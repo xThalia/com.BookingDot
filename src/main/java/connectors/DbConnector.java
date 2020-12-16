@@ -60,13 +60,16 @@ public class DbConnector {
     public static void addHotel(Hotel hotel, int user_id) {
         HotelProvider hotelProvider = new HotelProvider();
         HotelUserProvider hotelUserProvider = new HotelUserProvider();
+        System.out.println("1");
 
         hotelProvider.addHotel(hotel);
         int hotel_id = hotelProvider.getHotelIdByHotelData(hotel);
-
+        System.out.println("2");
         if (hotel_id != 0) {
             hotelUserProvider.addHotelUser(hotel_id, user_id);
+            System.out.println("4");
         }
+        System.out.println("3");
     }
 
     public static List<Hotel> getAllUserHotel(int userId) {
