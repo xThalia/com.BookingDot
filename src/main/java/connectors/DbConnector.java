@@ -15,10 +15,22 @@ public class DbConnector {
         DbProvider dbProvider = new DbProvider();
         dbProvider.createDatabase();
         createAdminAccount();
+        createRecepionistAccount();
+        createOwnerAccount();
     }
 
     public static void createAdminAccount() {
-        final User user = new User("admin@admin","adminadmin", Privilege.ADMIN, true, System.currentTimeMillis());
+        final User user = new User("admin@admin","adminadmin", Privilege.ADMIN,"admin","admin", true, System.currentTimeMillis());
+        addUser(user);
+    }
+
+    public static void createRecepionistAccount() {
+        final User user = new User("rec@rec","receptionist", Privilege.RECEPTIONIST,"receptionist","receptionist", true, System.currentTimeMillis());
+        addUser(user);
+    }
+
+    public static void createOwnerAccount() {
+        final User user = new User("owner@owner","ownerowner", Privilege.OWNER,"owner","owner", true, System.currentTimeMillis());
         addUser(user);
     }
 
@@ -77,6 +89,17 @@ public class DbConnector {
         return provider.getAllUserHotel(userId);
     }
 
+    public static Hotel getHotelByIdAndUserId(int hotelId, int userId) {
+        List<Hotel> hotelList = DbConnector.getAllUserHotel(userId);
+
+        for (Hotel hotel:hotelList) {
+            if(hotel.getId() == hotelId) {
+                return hotel;
+            }
+        }
+        return null;
+    }
+
     public static int getHotelByHotelNameAndUserId(String name, int userId) {
         HotelUserProvider provider = new HotelUserProvider();
         return  provider.getHotelIdByUserIdAndHotelName(name, userId);
@@ -84,7 +107,6 @@ public class DbConnector {
 
     public static void addRoom(Room room) {
         RoomProvider roomProvider = new RoomProvider();
-
         roomProvider.addRoom(room);
     }
 
@@ -93,7 +115,19 @@ public class DbConnector {
         return  roomProvider.getAllHotelRoom(hotelId);
     }
 
+    public static Room getRoomByIdAndHotelId(int roomId, int hotelId) {
+        List<Room> roomList = DbConnector.getAllHotelRooms(hotelId);
+
+        for (Room room:roomList) {
+            if(room.getId() == roomId) {
+                return room;
+            }
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
+        DbConnector.createDatabase();
         // Rejestracja uzytkownika
         //RegisterService registerService = new RegisterService();
         //User user = new User("mitela24@gmail.com", "123456", Privilege.ORDINARY,"Adam","Kowalski", true, 1234);

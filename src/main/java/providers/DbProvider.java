@@ -75,6 +75,7 @@ public class DbProvider {
     private void createRoomTable(Connection conn) {
         String sql = "CREATE TABLE room (\n" +
                 "  id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "  name TEXT NOT NULL,\n" +
                 "  capacity INT NOT NULL,\n" +
                 "  price INT NOT NULL,\n" +
                 "  timestamp INT NOT NULL,\n" +

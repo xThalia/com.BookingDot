@@ -31,7 +31,7 @@ public class User {
         this.timestamp = timestamp;
     }
 
-    public User(String login, String password, Privilege userPrivilege, String firstName, String lastName, boolean emailConfirmed, int timestamp) {
+    public User(String login, String password, Privilege userPrivilege, String firstName, String lastName, boolean emailConfirmed, long timestamp) {
         this.login = login;
         this.password = password;
         this.userPrivilege = userPrivilege;

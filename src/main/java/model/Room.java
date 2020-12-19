@@ -2,6 +2,7 @@ package model;
 
 public class Room {
     private int id;
+    private String name;
     private int capacity;
     private int price;
     private long timestamp;
@@ -10,6 +11,7 @@ public class Room {
 
     public Room() {
         this.id = 0;
+        this.name = "";
         this.capacity = 0;
         this.price = 0;
         this.timestamp = System.currentTimeMillis();
@@ -17,7 +19,8 @@ public class Room {
         this.hotelId = 0;
     }
 
-    public Room(int capacity, int price, int timestamp, String picturePath, int hotelId) {
+    public Room(String name, int capacity, int price, int timestamp, String picturePath, int hotelId) {
+        this.name = name;
         this.capacity = capacity;
         this.price = price;
         this.timestamp = timestamp;
@@ -28,6 +31,8 @@ public class Room {
     public int getId() {
         return id;
     }
+
+    public String getName() { return name; }
 
     public int getCapacity() {
         return capacity;
@@ -47,9 +52,9 @@ public class Room {
 
     public String getPicturePath() { return picturePath; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int id) { this.id = id; }
+
+    public void setName(String name) { this.name = name; }
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
@@ -73,6 +78,7 @@ public class Room {
     public String toString() {
         return "Room{" +
                 "id=" + id +
+                ", name=" + name + '\'' +
                 ", capacity=" + capacity +
                 ", price=" + price +
                 ", timestamp=" + timestamp +

@@ -15,20 +15,22 @@ public class RoomProvider {
         try {
             Class.forName("org.sqlite.JDBC");
             String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String name         = room.getName();
             int capacity        = room.getCapacity();
             int price           = room.getPrice();
             long timestamp      = System.currentTimeMillis();
             int hotelId         = room.getHotelId();
-            String picturePath = room.getPicturePath();
+            String picturePath  = room.getPicturePath();
             conn = DriverManager.getConnection(url);
 
             PreparedStatement sql = conn.prepareStatement(
-                    "INSERT INTO room (capacity, price, timestamp, hotel_id, picture) VALUES(?,?,?,?,?)");
-            sql.setInt(1, capacity);
-            sql.setInt(2, price);
-            sql.setLong(3, timestamp);
-            sql.setInt(4, hotelId);
-            sql.setString(5, picturePath);
+                    "INSERT INTO room (name, capacity, price, timestamp, hotel_id, picture) VALUES(?,?,?,?,?,?)");
+            sql.setString(1, name);
+            sql.setInt(2, capacity);
+            sql.setInt(3, price);
+            sql.setLong(4, timestamp);
+            sql.setInt(5, hotelId);
+            sql.setString(6, picturePath);
 
             int i = sql.executeUpdate();
 
@@ -76,6 +78,7 @@ public class RoomProvider {
             while (rs.next()) {
                 Room room = new Room();
                 room.setId(rs.getInt("id"));
+                room.setName(rs.getString("name"));
                 room.setCapacity(rs.getInt("capacity"));
                 room.setPrice(rs.getInt("price"));
                 room.setTimestamp(rs.getInt("timestamp"));
@@ -163,6 +166,41 @@ public class RoomProvider {
         }
     }
 
+    public int editRoom(int roomId, String name, int capacity, int price) {
+        Connection conn = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
 
+            conn = DriverManager.getConnection(url);
 
+            PreparedStatement sql = conn.prepareStatement(
+                    "UPDATE room\n" +
+                            "SET name = ?,\n" +
+                            "capacity = ?,\n" +
+                            "price = ?,\n" +
+                            "timestamp = ?" +
+                            "WHERE\n" +
+                            "    id == ? ");
+            sql.setString(1, name);
+            sql.setInt(2, capacity);
+            sql.setInt(3, price);
+            sql.setInt(4, (int) System.currentTimeMillis());
+            sql.setInt(5, roomId);
+
+            return sql.executeUpdate();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+            return 0;
+        }
+    }
 }

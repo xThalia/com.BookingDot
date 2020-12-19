@@ -17,6 +17,16 @@
                     Hotel added!
                 </div>
             </c:if>
+            <c:if test="${sessionScope.status == 'successEdit'}">
+                <div class="alert alert-success" role="alert">
+                    Hotel saved!
+                </div>
+            </c:if>
+            <c:if test="${sessionScope.status == 'successDelete'}">
+                <div class="alert alert-success" role="alert">
+                    Hotel deleted!
+                </div>
+            </c:if>
             <div class="row justify-content-center align-items-center">
                 <c:if test="${emptyList == 'false'}">
                     <table class="table table-dark">

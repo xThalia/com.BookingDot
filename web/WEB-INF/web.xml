@@ -58,12 +58,57 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>SaveHotel</servlet-name>
+        <servlet-class>pl.servlets.hotel.SaveHotelController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SaveHotel</servlet-name>
+        <url-pattern>/saveHotel</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>DeleteHotel</servlet-name>
         <servlet-class>pl.servlets.hotel.DeleteHotelController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DeleteHotel</servlet-name>
         <url-pattern>/deleteHotel</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddRoom</servlet-name>
+        <servlet-class>pl.servlets.hotel.room.AddRoomController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddRoom</servlet-name>
+        <url-pattern>/addRoom</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EditRoom</servlet-name>
+        <servlet-class>pl.servlets.hotel.room.EditRoomController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditRoom</servlet-name>
+        <url-pattern>/editRoom</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SaveRoom</servlet-name>
+        <servlet-class>pl.servlets.hotel.room.SaveRoomController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SaveRoom</servlet-name>
+        <url-pattern>/saveRoom</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteRoom</servlet-name>
+        <servlet-class>pl.servlets.hotel.room.DeleteRoomController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteRoom</servlet-name>
+        <url-pattern>/deleteRoom</url-pattern>
     </servlet-mapping>
 
     <servlet>
