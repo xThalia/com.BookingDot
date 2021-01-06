@@ -142,6 +142,7 @@ public class DbProvider {
                 " user_id TEXT NOT NULL,\n" +
                 " start_date INTEGER NOT NULL,\n" +
                 " end_date INTEGER NOT NULL,\n" +
+                " registration_confirmed INTEGER NOT NULL,\n" +
                 " PRIMARY KEY(id AUTOINCREMENT),\n" +
                 " FOREIGN KEY(user_id) REFERENCES user (id),\n" +
                 " FOREIGN KEY(room_id) REFERENCES room (id))";

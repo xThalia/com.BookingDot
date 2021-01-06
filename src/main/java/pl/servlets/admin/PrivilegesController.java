@@ -18,8 +18,9 @@ public class PrivilegesController extends HttpServlet {
         HttpSession session = request.getSession();
 
         if(session.getAttribute("currentSessionUser") != null ) {
-
+            int a= 0; int b= 0;
             List<User> userList = DbConnector.getAllUser(); // Obtain all products.
+             DbConnector.changeUserPrivilege(a,b );
             request.setAttribute("userList", userList); // Store products in request scope.
 
 

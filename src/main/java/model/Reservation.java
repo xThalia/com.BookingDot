@@ -11,19 +11,23 @@ public class Reservation {
 
     private long endDate;
 
+    private boolean reservationConfirmed;
+
     public Reservation() {
         this.id = 0;
         this.roomId = 0;
         this.userId = 0;
         this.startDate = 0;
         this.endDate = 0;
+        this.reservationConfirmed = false;
     }
 
-    public Reservation(int roomId, int userId, long startDate, long endDate) {
+    public Reservation(int roomId, int userId, long startDate, long endDate, boolean reservationConfirmed) {
         this.roomId = roomId;
         this.userId = userId;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.reservationConfirmed = reservationConfirmed;
     }
 
     public int getId() {
@@ -64,5 +68,13 @@ public class Reservation {
 
     public void setEndDate(long endDate) {
         this.endDate = endDate;
+    }
+
+    public boolean isReservationConfirmed() {
+        return reservationConfirmed;
+    }
+
+    public void setReservationConfirmed(boolean reservationConfirmed) {
+        this.reservationConfirmed = reservationConfirmed;
     }
 }
