@@ -203,4 +203,45 @@ public class RoomProvider {
             return 0;
         }
     }
+
+    public int editRoomWithPicture(int roomId, String name, int capacity, int price, String picturePath) {
+        Connection conn = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+
+            conn = DriverManager.getConnection(url);
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "UPDATE room\n" +
+                            "SET name = ?,\n" +
+                            "capacity = ?,\n" +
+                            "price = ?,\n" +
+                            "timestamp = ?,\n" +
+                            "picture = ?" +
+                            "WHERE\n" +
+                            "    id == ? ");
+            sql.setString(1, name);
+            sql.setInt(2, capacity);
+            sql.setInt(3, price);
+            sql.setInt(4, (int) System.currentTimeMillis());
+            sql.setString(5, picturePath);
+            sql.setInt(6, roomId);
+
+
+            return sql.executeUpdate();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+            return 0;
+        }
+    }
 }

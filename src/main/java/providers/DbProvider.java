@@ -20,6 +20,7 @@ public class DbProvider {
             createRoomTable(conn);
             createHotelUserTable(conn);
             createRegistrationTokenTable(conn);
+            createReservationTable(conn);
             System.out.println("DB - Database schema succesfully created.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -126,6 +127,25 @@ public class DbProvider {
                 "      REFERENCES user (id) \n" +
                 "         ON DELETE CASCADE \n" +
                 "         ON UPDATE NO ACTION)\n";
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void createReservationTable(Connection conn) {
+        String sql = "CREATE TABLE reservation (\n" +
+                " id INTEGER,\n" +
+                " room_id INTEGER NOT NULL,\n" +
+                " user_id TEXT NOT NULL,\n" +
+                " start_date INTEGER NOT NULL,\n" +
+                " end_date INTEGER NOT NULL,\n" +
+                " registration_confirmed INTEGER NOT NULL,\n" +
+                " PRIMARY KEY(id AUTOINCREMENT),\n" +
+                " FOREIGN KEY(user_id) REFERENCES user (id),\n" +
+                " FOREIGN KEY(room_id) REFERENCES room (id))";
         try {
             Statement stmt = conn.createStatement();
             stmt.execute(sql);

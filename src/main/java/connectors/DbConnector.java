@@ -84,6 +84,11 @@ public class DbConnector {
         System.out.println("3");
     }
 
+    public static List<Hotel> getAllHotels() {
+        HotelProvider provider = new HotelProvider();
+        return provider.getAllHotels();
+    }
+
     public static List<Hotel> getAllUserHotel(int userId) {
         HotelProvider provider = new HotelProvider();
         return provider.getAllUserHotel(userId);
@@ -126,8 +131,14 @@ public class DbConnector {
         return null;
     }
 
+    public static boolean addReservation(int roomId, int userId, String startDate, String endDate, boolean isConfirmed) {
+        ReservationProvider provider = new ReservationProvider();
+        return provider.addReservation(roomId, userId, startDate, endDate, isConfirmed);
+    }
+
     public static void main(String[] args) {
         DbConnector.createDatabase();
+       // addReservation(1,1, "2019-06-01", "2019-06-01", false);
         // Rejestracja uzytkownika
         //RegisterService registerService = new RegisterService();
         //User user = new User("mitela24@gmail.com", "123456", Privilege.ORDINARY,"Adam","Kowalski", true, 1234);
