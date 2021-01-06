@@ -225,7 +225,6 @@ public class RoomProvider {
             sql.setInt(2, capacity);
             sql.setInt(3, price);
             sql.setInt(4, (int) System.currentTimeMillis());
-            sql.setInt(5, roomId);
             sql.setString(6, picturePath);
 
             return sql.executeUpdate();
