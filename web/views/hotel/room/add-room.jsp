@@ -13,7 +13,7 @@
         <div class="container">
             <h3 class="text-center">Create Room</h3>
             <div class="row justify-content-center align-items-center">
-                <form method="POST" action="${pageContext.request.contextPath}/addRoom">
+                <form method="POST" action="${pageContext.request.contextPath}/addRoom" enctype="multipart/form-data">
                     <input type="hidden" name="hotelId" value="${hotelId}">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
@@ -26,6 +26,10 @@
                     <div class="mb-3">
                         <label for="price" class="form-label">Price</label>
                         <input type="number" class="form-control" id="price" name="price" aria-describedby="price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="picture" class="form-label">Picture</label>
+                        <input type="file" class="form-control" id="picture" name="picture" aria-describedby="picture" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>

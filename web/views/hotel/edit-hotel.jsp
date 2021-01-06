@@ -11,7 +11,7 @@
             <c:redirect url="/views/auth/login.jsp"/>
         </c:if>
         <div class="container">
-        <h3 class="text-center">Edition ${hotel.getName()}</h3>
+        <h3 class="text-center">Edition hotel: ${hotel.getName()}</h3>
         <c:if test="${sessionScope.status == 'success'}">
             <div class="alert alert-success" role="alert">
                 Room added!

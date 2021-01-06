@@ -26,7 +26,7 @@ public class EditHotelController extends HttpServlet {
 
             request.setAttribute("hotelRoomList", hotelRoomList);
             request.setAttribute("hotel", DbConnector.getHotelByIdAndUserId(hotelId, userId));
-            if (hotelRoomList == null) {
+            if (hotelRoomList == null || hotelRoomList.size() == 0) {
                 request.setAttribute("emptyList", "true");
             } else {
                 request.setAttribute("emptyList", "false");
