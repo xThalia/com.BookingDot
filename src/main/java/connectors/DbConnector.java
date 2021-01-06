@@ -84,6 +84,11 @@ public class DbConnector {
         System.out.println("3");
     }
 
+    public static List<Hotel> getAllHotels() {
+        HotelProvider provider = new HotelProvider();
+        return provider.getAllHotels();
+    }
+
     public static List<Hotel> getAllUserHotel(int userId) {
         HotelProvider provider = new HotelProvider();
         return provider.getAllUserHotel(userId);
