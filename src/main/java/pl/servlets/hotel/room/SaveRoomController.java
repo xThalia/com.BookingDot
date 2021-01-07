@@ -24,6 +24,7 @@ public class SaveRoomController extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         HttpSession session = request.getSession();
+        request.setCharacterEncoding("UTF-8");
 
         int roomId            = Integer.parseInt(request.getParameter("roomId"));
         String name           = request.getParameter("name");

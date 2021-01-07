@@ -30,6 +30,7 @@ public class AddHotelController extends HttpServlet {
     {
 
         HttpSession session = request.getSession(true);
+        request.setCharacterEncoding("UTF-8");
         String name    = request.getParameter("name");
         String address = request.getParameter("address");
         String city = request.getParameter("city");

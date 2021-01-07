@@ -18,6 +18,7 @@ public class SaveHotelController extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         HttpSession session = request.getSession();
+        request.setCharacterEncoding("UTF-8");
 
         int hotelId    = Integer.parseInt(request.getParameter("hotelId"));
         String name    = request.getParameter("name");

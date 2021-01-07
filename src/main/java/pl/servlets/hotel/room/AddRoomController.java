@@ -39,6 +39,7 @@ public class AddRoomController extends HttpServlet {
     {
 
         HttpSession session = request.getSession(true);
+        request.setCharacterEncoding("UTF-8");
         String name  = request.getParameter("name");
         int capacity = Integer.parseInt(request.getParameter("capacity"));
         int price    = Integer.parseInt(request.getParameter("price"));
