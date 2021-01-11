@@ -1,11 +1,14 @@
 package model;
 
+import java.util.List;
+
 public class Hotel {
     private int id;
     private String name;
     private String address;
     private String city;
     private long timestamp;
+    private List<Room> hotelRooms;
 
     public Hotel() {
         this.id = 0;
@@ -19,6 +22,13 @@ public class Hotel {
         this.name = name;
         this.city = city;
         this.timestamp = timestamp;
+    }
+
+    public Hotel(String name, String city, long timestamp, List<Room> hotelRooms) {
+        this.name = name;
+        this.city = city;
+        this.timestamp = timestamp;
+        this.hotelRooms = hotelRooms;
     }
 
     public Hotel(String name, String address, String city, long timestamp) {
@@ -67,6 +77,10 @@ public class Hotel {
     public void setTimestamp(int timestamp) {
         this.timestamp = timestamp;
     }
+
+    public List<Room> getHotelRooms() { return hotelRooms; }
+
+    public void setHotelRooms(List<Room> hotelRooms) { this.hotelRooms = hotelRooms; }
 
     @Override
     public String toString() {

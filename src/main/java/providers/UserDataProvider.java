@@ -2,6 +2,7 @@ package providers;
 
 import enums.Privilege;
 import model.User;
+import tools.BookingConstants;
 import tools.UsefulFunctions;
 
 import java.sql.*;
@@ -13,11 +14,11 @@ public class UserDataProvider {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
-            String login        = user.getLogin();
-            String pass         = UsefulFunctions.stringToMD5String(user.getPassword());
-            String firstName    = user.getFirstName();
-            String lastName     = user.getLastName();
+            String url = BookingConstants.databaseUrl;
+            String login        = user.getLogin().replaceAll("'", "");
+            String pass         = UsefulFunctions.stringToMD5String(user.getPassword()).replaceAll("'", "");;
+            String firstName    = user.getFirstName().replaceAll("'", "");;
+            String lastName     = user.getLastName().replaceAll("'", "");;
             int privilege       = user.getUserPrivilege() == null ? 1 : user.getUserPrivilege().getValue();
             int email_confirmed = user.isEmailConfirmed() ? 1 : 0;
             long timestamp       = System.currentTimeMillis();
@@ -65,7 +66,7 @@ public class UserDataProvider {
             try {
                 List<User> allUser = new ArrayList<>();
                 Class.forName("org.sqlite.JDBC");
-                String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+                String url = BookingConstants.databaseUrl;
 
                 conn = DriverManager.getConnection(url);
 
@@ -111,7 +112,7 @@ public class UserDataProvider {
         User user = new User();
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 
@@ -145,7 +146,7 @@ public class UserDataProvider {
         User user = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 
@@ -190,13 +191,14 @@ public class UserDataProvider {
             user.setTimestamp(rs.getInt("timestamp"));
         }
     }
+    //String url = BookingConstants.databaseUrl;
 
     public int authenticateUserWithLoginAndPassword(final String login, final String password) {
         Connection conn = null;
         int resultId = 0;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 
@@ -204,8 +206,8 @@ public class UserDataProvider {
 
             PreparedStatement sql = conn.prepareStatement(
                     "SELECT id FROM user WHERE user.login == ? AND user.password == ?");
-            sql.setString(1, login);
-            sql.setString(2, encodedPassword);
+            sql.setString(1, login.replaceAll("'", ""));
+            sql.setString(2, encodedPassword.replaceAll("'", ""));
             ResultSet rs = sql.executeQuery();
 
             while (rs.next()) {
@@ -232,7 +234,7 @@ public class UserDataProvider {
         int resultId = 0;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 
@@ -265,7 +267,7 @@ public class UserDataProvider {
         int resultId = 0;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 

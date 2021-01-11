@@ -3,6 +3,7 @@ package providers;
 import enums.Privilege;
 import model.Hotel;
 import model.User;
+import tools.BookingConstants;
 import tools.UsefulFunctions;
 
 import java.sql.*;
@@ -15,13 +16,13 @@ public class HotelProvider {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
-            String name    = hotel.getName();
-            String address = hotel.getAddress();
-            String city    = hotel.getCity();
+            String url = BookingConstants.databaseUrl;
+            String name    = hotel.getName().replaceAll("'", "");;
+            String address = hotel.getAddress().replaceAll("'", "");;
+            String city    = hotel.getCity().replaceAll("'", "");;
             long timestamp = System.currentTimeMillis();
 
-
+//jdbc:sqlite:database.sqlite
             conn = DriverManager.getConnection(url);
 
             PreparedStatement sql = conn.prepareStatement(
@@ -59,7 +60,7 @@ public class HotelProvider {
             Connection conn = null;
             try {
                 Class.forName("org.sqlite.JDBC");
-                String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+                String url = BookingConstants.databaseUrl;
 
                 conn = DriverManager.getConnection(url);
 
@@ -101,7 +102,7 @@ public class HotelProvider {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 
@@ -141,7 +142,7 @@ public class HotelProvider {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 
@@ -188,7 +189,7 @@ public class HotelProvider {
         int resultId = 0;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 
@@ -217,7 +218,7 @@ public class HotelProvider {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 
@@ -229,9 +230,9 @@ public class HotelProvider {
                             "timestamp = ?" +
                             "WHERE\n" +
                             "    id == ? ");
-            sql.setString(1, name);
-            sql.setString(2, address);
-            sql.setString(3, city);
+            sql.setString(1, name.replaceAll("'", ""));
+            sql.setString(2, address.replaceAll("'", ""));
+            sql.setString(3, city.replaceAll("'", ""));
             sql.setInt(4, (int) System.currentTimeMillis());
             sql.setInt(5, hotelId);
 
@@ -248,6 +249,53 @@ public class HotelProvider {
                 System.out.println(ex.getMessage());
             }
             return 0;
+        }
+    }
+
+    public List<Hotel> getAllHotelsByCity(String name) {
+        Connection conn = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = BookingConstants.databaseUrl;
+            List<Hotel> hotels = new ArrayList<>();
+
+            conn = DriverManager.getConnection(url);
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "SELECT * FROM hotel " +
+                            "WHERE " +
+                            "hotel.city == ?");
+
+
+            sql.setString( 1, name);
+
+            ResultSet rs = sql.executeQuery();
+
+            while (rs.next()) {
+                Hotel hotel = new Hotel();
+                hotel.setId(rs.getInt("id"));
+                hotel.setName(rs.getString("name"));
+                hotel.setAddress(rs.getString("address"));
+                hotel.setCity(rs.getString("city"));
+                hotel.setTimestamp(rs.getInt("timestamp"));
+                hotels.add(hotel);
+            }
+
+            if(hotels.size() != 0) return hotels;
+            else return null;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+
+            return null;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
     }
 }

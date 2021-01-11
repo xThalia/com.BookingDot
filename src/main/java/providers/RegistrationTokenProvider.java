@@ -2,6 +2,7 @@ package providers;
 
 import model.RegistrationToken;
 import model.User;
+import tools.BookingConstants;
 import tools.UsefulFunctions;
 
 import java.sql.*;
@@ -12,7 +13,7 @@ public class RegistrationTokenProvider {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
 
             int userId = user.getId();
@@ -55,7 +56,7 @@ public class RegistrationTokenProvider {
         RegistrationToken resultToken = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 

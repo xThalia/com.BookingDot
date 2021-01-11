@@ -8,6 +8,12 @@ import providers.*;
 import services.RegisterService;
 
 import javax.servlet.ServletContext;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DbConnector {
@@ -136,13 +142,60 @@ public class DbConnector {
         return provider.addReservation(roomId, userId, startDate, endDate, isConfirmed);
     }
 
+    public static List<Hotel> getAllHotelsByCityAndReservationDate(String city, String startDate, String endDate) {
+        RoomProvider roomProvider = new RoomProvider();
+        ReservationProvider reservationProvider = new ReservationProvider();
+        List<Hotel> hotelsInCity = roomProvider.getHotelWithRoomsByCity(city);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+        Date startDateConverted = format.parse(startDate);
+        Date endDateConverted = format.parse(endDate);
+        Timestamp startDateTimestamp = new Timestamp(startDateConverted.getTime());
+        Timestamp endDateTimestamp = new Timestamp(endDateConverted.getTime());
+        List<Hotel> hotelFreeAtDate = new ArrayList<>();
+
+            for (Hotel hotel: hotelsInCity){
+                boolean result;
+                if(hotel.getHotelRooms() != null) {
+                    result = false;
+                    for (Room room : hotel.getHotelRooms()) {
+                        if(reservationProvider.checkReservationForRoomBetweenDate(room.getId(), startDateTimestamp, endDateTimestamp))  {
+                            result = true;
+                            break;
+                        }
+                    }
+                    if(result) hotelFreeAtDate.add(hotel);
+                }
+            }
+
+        if(hotelFreeAtDate.size() == 0) return null;
+        else return hotelFreeAtDate;
+
+        } catch (ParseException e) {
+            System.out.println("Wrong date format");
+            return null;
+        }
+
+    }
     public static void main(String[] args) {
-        DbConnector.createDatabase();
+       // DbConnector.createDatabase();
+  //     addReservation(2, 3, "2021-02-05", "2021-02-10", false);
+
+   /*     getAllHotelsByCityAndReservationDate("Zakopane", "2021-02-02", "2021-02-06");
+        getAllHotelsByCityAndReservationDate("Zakopane", "2021-02-06", "2021-02-11");
+        getAllHotelsByCityAndReservationDate("Zakopane", "2021-02-02", "2021-02-11");
+        getAllHotelsByCityAndReservationDate("Zakopane", "2021-02-06", "2021-02-09");
+        getAllHotelsByCityAndReservationDate("Zakopane", "2021-02-10", "2021-02-15");
+        getAllHotelsByCityAndReservationDate("Zakopane", "2021-02-15", "2021-02-20"); */
+    //    addReservation(1, 3, "2021-01-06", "2021-01-07", false);
+    //    addReservation(1, 3, "2021-01-06", "2021-01-07", false);
+    //    addReservation(1, 3, "2021-01-06", "2021-01-07", false);
        // addReservation(1,1, "2019-06-01", "2019-06-01", false);
         // Rejestracja uzytkownika
-        //RegisterService registerService = new RegisterService();
-        //User user = new User("mitela24@gmail.com", "123456", Privilege.ORDINARY,"Adam","Kowalski", true, 1234);
-        //registerService.registerUserAndSendToken(user);
+    /*    RegisterService registerService = new RegisterService();
+        User user = new User("mitela25@gmail.com", "123456", Privilege.ORDINARY,"Adam","Kowalski", true, 1234);
+        registerService.registerUserAndSendToken(user); */
 
         // Weryfikacja tokenu i zmiana potwierdzenia na potwierdzony
         //  int result = registerService.verifyUserToken(user.getLogin(), "4e0846be-14f3-4b54-8816-138dc5597a62");

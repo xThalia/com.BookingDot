@@ -1,6 +1,7 @@
 package providers;
 
 import model.Hotel;
+import tools.BookingConstants;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class HotelUserProvider {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
             long timestamp = System.currentTimeMillis();
 
             conn = DriverManager.getConnection(url);
@@ -50,12 +51,12 @@ public class HotelUserProvider {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 
             PreparedStatement sql = conn.prepareStatement(
-                    "SELECT hotel_id" +
+                    "SELECT hotel_id " +
                             "FROM hotel_user " +
                             "WHERE user_id == ?");
 
@@ -87,7 +88,7 @@ public class HotelUserProvider {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 
@@ -99,7 +100,7 @@ public class HotelUserProvider {
 
 
             sql.setInt(1, userId);
-            sql.setString( 2, name);
+            sql.setString( 2, name.replaceAll("'", ""));
 
             ResultSet rs = sql.executeQuery();
 

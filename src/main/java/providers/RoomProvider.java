@@ -3,6 +3,7 @@ package providers;
 import enums.Privilege;
 import model.Hotel;
 import model.Room;
+import tools.BookingConstants;
 import tools.UsefulFunctions;
 
 import java.sql.*;
@@ -14,13 +15,13 @@ public class RoomProvider {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
-            String name         = room.getName();
+            String url = BookingConstants.databaseUrl;
+            String name         = room.getName().replaceAll("'", "");;
             int capacity        = room.getCapacity();
             int price           = room.getPrice();
             long timestamp      = System.currentTimeMillis();
             int hotelId         = room.getHotelId();
-            String picturePath  = room.getPicturePath();
+            String picturePath  = room.getPicturePath().replaceAll("'", "");;
             conn = DriverManager.getConnection(url);
 
             PreparedStatement sql = conn.prepareStatement(
@@ -60,7 +61,7 @@ public class RoomProvider {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 
@@ -103,12 +104,24 @@ public class RoomProvider {
         }
     }
 
+    public List<Hotel> getHotelWithRoomsByCity(String city) {
+        HotelProvider hotelProvider = new HotelProvider();
+        RoomProvider roomProvider = new RoomProvider();
+        List<Hotel> hotels = hotelProvider.getAllHotelsByCity(city);
+        if(hotels == null) return null;
+        for (Hotel hotel : hotels) {
+            List<Room> rooms = roomProvider.getAllHotelRoom(hotel.getId());
+            hotel.setHotelRooms(rooms);
+        }
+        return hotels;
+    }
+
     public int changeUserImage(int userId, String picturePath) {
         Connection conn = null;
         int resultId = 0;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 
@@ -117,7 +130,7 @@ public class RoomProvider {
                             "SET picture = ?\n" +
                             "WHERE\n" +
                             "    id == ? ");
-            sql.setString(1, picturePath);
+            sql.setString(1, picturePath.replaceAll("'", ""));
             sql.setInt(2, userId);
 
             return sql.executeUpdate();
@@ -141,7 +154,7 @@ public class RoomProvider {
         int resultId = 0;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 
@@ -170,7 +183,7 @@ public class RoomProvider {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 
@@ -182,7 +195,7 @@ public class RoomProvider {
                             "timestamp = ?" +
                             "WHERE\n" +
                             "    id == ? ");
-            sql.setString(1, name);
+            sql.setString(1, name.replaceAll("'", ""));
             sql.setInt(2, capacity);
             sql.setInt(3, price);
             sql.setInt(4, (int) System.currentTimeMillis());
@@ -208,7 +221,7 @@ public class RoomProvider {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:C://sqlite/db/database.sqlite";
+            String url = BookingConstants.databaseUrl;
 
             conn = DriverManager.getConnection(url);
 
@@ -221,11 +234,11 @@ public class RoomProvider {
                             "picture = ?" +
                             "WHERE\n" +
                             "    id == ? ");
-            sql.setString(1, name);
+            sql.setString(1, name.replaceAll("'", ""));
             sql.setInt(2, capacity);
             sql.setInt(3, price);
             sql.setInt(4, (int) System.currentTimeMillis());
-            sql.setString(5, picturePath);
+            sql.setString(5, picturePath.replaceAll("'", ""));
             sql.setInt(6, roomId);
 
 
