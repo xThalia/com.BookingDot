@@ -3,7 +3,6 @@ package pl.servlets.admin;
 import connectors.DbConnector;
 import model.User;
 import providers.UserDataProvider;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

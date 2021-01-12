@@ -7,7 +7,6 @@ import model.Room;
 import model.User;
 import providers.*;
 import services.RegisterService;
-
 import javax.servlet.ServletContext;
 import java.sql.SQLException;
 import java.sql.Timestamp;

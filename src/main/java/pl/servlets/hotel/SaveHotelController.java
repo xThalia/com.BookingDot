@@ -2,7 +2,6 @@ package pl.servlets.hotel;
 
 import connectors.DbConnector;
 import model.Hotel;
-import model.Room;
 import providers.HotelProvider;
 
 import javax.servlet.ServletException;

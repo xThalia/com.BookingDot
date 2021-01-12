@@ -1,11 +1,6 @@
 package pl.servlets.admin;
 import connectors.DbConnector;
-import enums.Privilege;
-import model.Hotel;
-import model.Room;
 import model.User;
-import providers.HotelProvider;
-import providers.RoomProvider;
 import providers.UserDataProvider;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
