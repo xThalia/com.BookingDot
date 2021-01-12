@@ -7,10 +7,12 @@ import tools.BookingConstants;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ReservationProvider {
-    public boolean addReservation(int roomId, int userId, String startDate, String endDate, boolean isConfirmed) {
+    public boolean addReservation(int roomId, int userId, String startDate, String endDate, boolean isConfirmed, boolean isFinished) {
         Connection conn = null;
         try {
             Class.forName("org.sqlite.JDBC");
@@ -25,12 +27,13 @@ public class ReservationProvider {
 
 
             PreparedStatement sql = conn.prepareStatement(
-                    "INSERT INTO reservation (room_id, user_id, start_date, end_date, registration_confirmed) VALUES(?,?,?,?,?)");
+                    "INSERT INTO reservation (room_id, user_id, start_date, end_date, reservation_confirmed, reservation_finished) VALUES(?,?,?,?,?,?)");
             sql.setInt(1, roomId);
             sql.setInt(2, userId);
             sql.setLong(3, startDateTimestamp.getTime());
             sql.setLong(4, endDateTimestamp.getTime());
             sql.setBoolean(5, isConfirmed);
+            sql.setBoolean(6, isFinished);
 
             int i = sql.executeUpdate();
 
@@ -54,14 +57,6 @@ public class ReservationProvider {
                 System.out.println(ex.getMessage());
             }
         }
-    }
-
-    public void editReservation(){
-
-    }
-
-    public void deleteReservation() {
-
     }
 
     public boolean checkReservationForRoomBetweenDate(int roomId, Timestamp startDate, Timestamp endDate) {
@@ -100,6 +95,53 @@ public class ReservationProvider {
             System.out.println(e.getMessage());
 
             return false;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+    public List<Reservation> getCurrentAndUpcomingReservationsForRoom(int roomId) {
+        Connection conn = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = BookingConstants.databaseUrl;
+            conn = DriverManager.getConnection(url);
+            List <Reservation> reservations = new ArrayList();
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "SELECT * FROM reservation " +
+                            "WHERE (room_id == ?) AND" +
+                            "(end_date > ?)");
+            sql.setInt(1, roomId);
+            sql.setLong(2, System.currentTimeMillis());
+
+            ResultSet rs = sql.executeQuery();
+
+            while (rs.next()) {
+                Reservation reservation = new Reservation();
+                reservation.setId(rs.getInt("id"));
+                reservation.setRoomId(rs.getInt("room_id"));
+                reservation.setUserId(rs.getInt("user_id"));
+                reservation.setStartDate(rs.getInt("start_date"));
+                reservation.setEndDate(rs.getInt("end_date"));
+                reservation.setReservationConfirmed(rs.getBoolean("reservation_confirmed"));
+                reservation.setReservationFinished(rs.getBoolean("reservation_finished"));
+                reservations.add(reservation);
+            }
+
+            if(reservations.size() == 0) return null;
+            else return reservations;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+
+            return null;
         } finally {
             try {
                 if (conn != null) {

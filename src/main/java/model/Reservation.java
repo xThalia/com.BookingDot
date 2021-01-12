@@ -13,6 +13,8 @@ public class Reservation {
 
     private boolean reservationConfirmed;
 
+    private boolean reservationFinished;
+
     public Reservation() {
         this.id = 0;
         this.roomId = 0;
@@ -20,14 +22,26 @@ public class Reservation {
         this.startDate = 0;
         this.endDate = 0;
         this.reservationConfirmed = false;
+        this.reservationFinished = false;
     }
 
-    public Reservation(int roomId, int userId, long startDate, long endDate, boolean reservationConfirmed) {
+    public Reservation(int id, int roomId, int userId, long startDate, long endDate, boolean reservationConfirmed, boolean reservationFinished) {
+        this.id = id;
         this.roomId = roomId;
         this.userId = userId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.reservationConfirmed = reservationConfirmed;
+        this.reservationFinished = reservationFinished;
+    }
+
+    public Reservation(int roomId, int userId, long startDate, long endDate, boolean reservationConfirmed, boolean reservationFinished) {
+        this.roomId = roomId;
+        this.userId = userId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.reservationConfirmed = reservationConfirmed;
+        this.reservationFinished = reservationFinished;
     }
 
     public int getId() {
@@ -76,5 +90,13 @@ public class Reservation {
 
     public void setReservationConfirmed(boolean reservationConfirmed) {
         this.reservationConfirmed = reservationConfirmed;
+    }
+
+    public boolean isReservationFinished() {
+        return reservationFinished;
+    }
+
+    public void setReservationFinished(boolean reservationFinished) {
+        this.reservationFinished = reservationFinished;
     }
 }

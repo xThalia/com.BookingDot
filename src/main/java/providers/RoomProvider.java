@@ -87,6 +87,7 @@ public class RoomProvider {
                 room.setHotelId(rs.getInt("hotel_id"));
                 hotelRooms.add(room);
             }
+
             return hotelRooms;
 
         } catch (SQLException | ClassNotFoundException e) {
@@ -114,6 +115,18 @@ public class RoomProvider {
             hotel.setHotelRooms(rooms);
         }
         return hotels;
+    }
+
+    public Hotel getHotelWithRoomsById(int id) {
+        HotelProvider hotelProvider = new HotelProvider();
+        RoomProvider roomProvider = new RoomProvider();
+        Hotel hotel = hotelProvider.getHotelById(id);
+        if(hotel == null) return null;
+
+        List<Room> rooms = roomProvider.getAllHotelRoom(hotel.getId());
+        hotel.setHotelRooms(rooms);
+
+        return hotel;
     }
 
     public int changeUserImage(int userId, String picturePath) {

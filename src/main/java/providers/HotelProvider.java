@@ -138,6 +138,47 @@ public class HotelProvider {
         }
     }
 
+    public Hotel getHotelById(int id) {
+        Connection conn = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = BookingConstants.databaseUrl;
+
+            conn = DriverManager.getConnection(url);
+
+            Hotel hotel = new Hotel();
+            PreparedStatement sql = conn.prepareStatement(
+                    "SELECT * FROM hotel WHERE id = ? ");
+
+            sql.setInt(1, id);
+
+            ResultSet rs = sql.executeQuery();
+
+            while (rs.next()) {
+                hotel.setId(rs.getInt("id"));
+                hotel.setName(rs.getString("name"));
+                hotel.setAddress(rs.getString("address"));
+                hotel.setCity(rs.getString("city"));
+                hotel.setTimestamp(rs.getInt("timestamp"));
+            }
+            if(hotel.getId() != 0) return hotel;
+            else return null;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+
+            return null;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
     public List<Hotel> getAllUserHotel(int userId) {
         Connection conn = null;
         try {

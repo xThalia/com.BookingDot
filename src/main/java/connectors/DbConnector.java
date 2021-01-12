@@ -2,6 +2,7 @@ package connectors;
 
 import enums.Privilege;
 import model.Hotel;
+import model.Reservation;
 import model.Room;
 import model.User;
 import providers.*;
@@ -137,9 +138,9 @@ public class DbConnector {
         return null;
     }
 
-    public static boolean addReservation(int roomId, int userId, String startDate, String endDate, boolean isConfirmed) {
+    public static boolean addReservation(int roomId, int userId, String startDate, String endDate, boolean isConfirmed, boolean isFinished) {
         ReservationProvider provider = new ReservationProvider();
-        return provider.addReservation(roomId, userId, startDate, endDate, isConfirmed);
+        return provider.addReservation(roomId, userId, startDate, endDate, isConfirmed, isFinished);
     }
 
     public static List<Hotel> getAllHotelsByCityAndReservationDate(String city, String startDate, String endDate) {
@@ -176,8 +177,39 @@ public class DbConnector {
             System.out.println("Wrong date format");
             return null;
         }
-
     }
+
+    public static Hotel getHotelWithRoomsByHotelId(int id) {
+        RoomProvider roomProvider = new RoomProvider();
+        return roomProvider.getHotelWithRoomsById(id);
+    }
+
+    public static List<Hotel> getAllHotelsWithRoomsByOwnerId(int id) {
+        ReservationProvider reservationProvider = new ReservationProvider();
+        HotelProvider hotelProvider = new HotelProvider();
+
+        List<Hotel> hotels = getAllUserHotel(id);
+        for (Hotel hotel : hotels) {
+            List<Room> hotelRooms = getAllHotelRooms(hotel.getId());
+            if(hotelRooms.size() != 0) {
+                hotel.setHotelRooms(hotelRooms);
+            }
+        }
+
+        if(hotels != null && hotels.size() != 0) {
+            return hotels;
+        } else {
+            return null;
+        }
+    }
+
+ /*   public static List<Reservation> getAllCurrentAndUpcomingReservationsByOwnerId(int id) {
+        ReservationProvider reservationProvider = new ReservationProvider();
+        List<Hotel> hotelsWithRooms = getAllHotelsWithRoomsByOwnerId(id);
+        List<Reservation> allReservations =
+        if
+    } */
+
     public static void main(String[] args) {
        // DbConnector.createDatabase();
   //     addReservation(2, 3, "2021-02-05", "2021-02-10", false);
