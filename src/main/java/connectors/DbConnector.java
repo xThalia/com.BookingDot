@@ -15,11 +15,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DbConnector {
-    public static void createDatabase() {
-        DbProvider dbProvider = new DbProvider();
-        dbProvider.createDatabase();
+    public static void createBasicAccounts() {
+      //  DbProvider dbProvider = new DbProvider();
+     //   dbProvider.createDatabase();
         createAdminAccount();
         createRecepionistAccount();
         createOwnerAccount();
@@ -202,12 +204,24 @@ public class DbConnector {
         }
     }
 
- /*   public static List<Reservation> getAllCurrentAndUpcomingReservationsByOwnerId(int id) {
+    public static List<Reservation> getAllCurrentAndUpcomingReservationsByOwnerId(int id) {
         ReservationProvider reservationProvider = new ReservationProvider();
         List<Hotel> hotelsWithRooms = getAllHotelsWithRoomsByOwnerId(id);
-        List<Reservation> allReservations =
-        if
-    } */
+        List<Reservation> reservations = new ArrayList<>();
+
+        for (Hotel hotel : hotelsWithRooms) {
+            if(hotel.getHotelRooms() != null && hotel.getHotelRooms().size() != 0)
+                for (Room room : hotel.getHotelRooms()) {
+                        List<Reservation> tmpReservations = reservationProvider.getCurrentAndUpcomingReservationsForRoom(room.getId());
+                        if(tmpReservations != null && tmpReservations.size() != 0)
+                        reservations = Stream.concat(reservations.stream(), tmpReservations.stream())
+                            .collect(Collectors.toList());
+                }
+        }
+
+        if(reservations.size() != 0) return reservations;
+        else return null;
+    }
 
     public static void main(String[] args) {
        // DbConnector.createDatabase();
