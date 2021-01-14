@@ -231,7 +231,7 @@ public class DbConnector {
         }
     }
 
-    public static List<Room> getHotelByIdWithFreeRooms(int hotelId, String startDate, String endDate) {
+    public static List<Room> getFreeRoomsByHotelId(int hotelId, String startDate, String endDate) {
         HotelProvider hotelProvider = new HotelProvider();
         ReservationProvider reservationProvider = new ReservationProvider();
         Hotel hotel = hotelProvider.getHotelById(hotelId);
