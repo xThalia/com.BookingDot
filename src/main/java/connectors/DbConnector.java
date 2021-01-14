@@ -1,20 +1,20 @@
 package connectors;
 
 import enums.Privilege;
-import model.Hotel;
-import model.Reservation;
-import model.Room;
-import model.User;
+import model.*;
 import providers.*;
 import services.RegisterService;
 import javax.servlet.ServletContext;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,6 +44,7 @@ public class DbConnector {
 
     public static boolean addUser(User user) {
         UserDataProvider userDataProvider = new UserDataProvider();
+        createOfferInfoForUser(user.getLogin());
         return userDataProvider.addUser(user);
     }
 
@@ -139,7 +140,17 @@ public class DbConnector {
         return null;
     }
 
-    public static boolean addReservation(int roomId, int userId, String startDate, String endDate, boolean isConfirmed, boolean isFinished) {
+    public static Room getRoomById(int id) {
+        RoomProvider roomProvider = new RoomProvider();
+        return roomProvider.getRoomById(id);
+    }
+
+    public static Hotel getHotelById(int id) {
+        HotelProvider hotelProvider = new HotelProvider();
+        return hotelProvider.getHotelById(id);
+    }
+
+    public static boolean addReservation(int roomId, int userId, String startDate, String endDate, int isConfirmed, boolean isFinished) {
         ReservationProvider provider = new ReservationProvider();
         return provider.addReservation(roomId, userId, startDate, endDate, isConfirmed, isFinished);
     }
@@ -173,6 +184,46 @@ public class DbConnector {
 
         if(hotelFreeAtDate.size() == 0) return null;
         else return hotelFreeAtDate;
+
+        } catch (ParseException e) {
+            System.out.println("Wrong date format");
+            return null;
+        }
+    }
+
+    public static List<Hotel> getAllHotelsByCityAndReservationDateWithFreeRooms(String city, String startDate, String endDate) {
+        RoomProvider roomProvider = new RoomProvider();
+        ReservationProvider reservationProvider = new ReservationProvider();
+        List<Hotel> hotelsInCity = roomProvider.getHotelWithRoomsByCity(city);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            Date startDateConverted = format.parse(startDate);
+            Date endDateConverted = format.parse(endDate);
+            Timestamp startDateTimestamp = new Timestamp(startDateConverted.getTime());
+            Timestamp endDateTimestamp = new Timestamp(endDateConverted.getTime());
+            List<Hotel> hotelFreeAtDate = new ArrayList<>();
+
+            for (Hotel hotel: hotelsInCity){
+                boolean result;
+                if(hotel.getHotelRooms() != null) {
+                    result = false;
+                    List<Room> freeRooms = new ArrayList<>();
+                    for (Room room : hotel.getHotelRooms()) {
+                        if(reservationProvider.checkReservationForRoomBetweenDate(room.getId(), startDateTimestamp, endDateTimestamp))  {
+                            freeRooms.add(room);
+                            if(!result) result = true;
+                        }
+                    }
+                    if(result) {
+                        hotel.setHotelRooms(freeRooms);
+                        hotelFreeAtDate.add(hotel);
+                    }
+                }
+            }
+
+            if(hotelFreeAtDate.size() == 0) return null;
+            else return hotelFreeAtDate;
 
         } catch (ParseException e) {
             System.out.println("Wrong date format");
@@ -223,7 +274,89 @@ public class DbConnector {
         else return null;
     }
 
+    public static List<ReservationInfoToShow> getAllReservationsInfo(List<Reservation> reservations) {
+        List <ReservationInfoToShow> reservationsInfoList = new ArrayList<>();
+
+        for (Reservation reservation : reservations) {
+            User user = loadUserById(reservation.getUserId());
+            Room room = getRoomById(reservation.getId());
+            Hotel hotel = new Hotel();
+            if(room.getHotelId() != 0) {
+                hotel = getHotelById(room.getHotelId());
+            }
+
+            if(user != null && room != null && hotel.getId() != 0) {
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+                Date startDate = new Date(reservation.getStartDate());
+                Date endDate = new Date(reservation.getEndDate());
+                long lengthOfStay = TimeUnit.DAYS.convert(reservation.getStartDate() - reservation.getEndDate(), TimeUnit.MILLISECONDS);
+                String startDateString = dateFormat.format(startDate);
+                String endDateString = dateFormat.format(endDate);
+
+                ReservationInfoToShow info = new ReservationInfoToShow(user, room, hotel, reservation, room.getCapacity()*room.getPrice()*lengthOfStay,  startDateString, endDateString);
+                reservationsInfoList.add(info);
+            }
+        }
+        if (reservationsInfoList.size() == 0) return null;
+        else return reservationsInfoList;
+    }
+
+    public static int updateReservationWithConfirmation(int reservationId, int isAccepted) {
+        ReservationProvider reservationProvider = new ReservationProvider();
+        return reservationProvider.updateReservationWithConfirmation(reservationId, isAccepted);
+    }
+
+    public static boolean addComment(String text, int hotelId, int userId) {
+        CommentProvider commentProvider = new CommentProvider();
+        return commentProvider.addComment(text, hotelId, userId);
+    }
+
+    public static List<Comment> getAllHotelComments(int hotelId) {
+        CommentProvider commentProvider = new CommentProvider();
+        return commentProvider.getAllHotelComments(hotelId);
+    }
+
+    public static boolean createOfferInfoForUser(String login) {
+        User user = loadUserByEmail(login);
+        OfferProvider offerProvider = new OfferProvider();
+        return offerProvider.addOffer(user.getId());
+    }
+
+    public static void sendOfferToUser(int userId) {
+        OfferProvider offerProvider = new OfferProvider();
+        long diff = System.currentTimeMillis() - offerProvider.getTimestampByUserId(userId);
+
+        if (diff > 0) {
+            long diffInDays = TimeUnit.MILLISECONDS.toDays(
+                    System.currentTimeMillis() - diff);
+            if(diffInDays >= 1) {
+                //wyslij maila
+            }
+        }
+    }
+
+    //do stanu zajetosci pokoi
+    public static List<Reservation> getReservationForCurrentDayByOwnerId(int id) {
+        ReservationProvider reservationProvider = new ReservationProvider();
+        List<Hotel> hotelsWithRooms = getAllHotelsWithRoomsByOwnerId(id);
+        List<Reservation> reservations = new ArrayList<>();
+
+        for (Hotel hotel : hotelsWithRooms) {
+            if(hotel.getHotelRooms() != null && hotel.getHotelRooms().size() != 0)
+                for (Room room : hotel.getHotelRooms()) {
+                    List<Reservation> tmpReservations = reservationProvider.getReservationsForRoomInCurrentDay(room.getId());
+                    if(tmpReservations != null && tmpReservations.size() != 0)
+                        reservations = Stream.concat(reservations.stream(), tmpReservations.stream())
+                                .collect(Collectors.toList());
+                }
+        }
+
+        if(reservations.size() != 0) return reservations;
+        else return null;
+    }
+
     public static void main(String[] args) {
+        createBasicAccounts();
        // DbConnector.createDatabase();
   //     addReservation(2, 3, "2021-02-05", "2021-02-10", false);
 

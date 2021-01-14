@@ -15,6 +15,7 @@ public class UserDataProvider {
         try {
             Class.forName("org.sqlite.JDBC");
             String url = BookingConstants.databaseUrl;
+
             String login        = user.getLogin().replaceAll("'", "");
             String pass         = UsefulFunctions.stringToMD5String(user.getPassword()).replaceAll("'", "");;
             String firstName    = user.getFirstName().replaceAll("'", "");;
@@ -61,50 +62,50 @@ public class UserDataProvider {
     }
 
     public List<User> loadAllUser() {
-            Connection conn = null;
+        Connection conn = null;
 
-            try {
-                List<User> allUser = new ArrayList<>();
-                Class.forName("org.sqlite.JDBC");
-                String url = BookingConstants.databaseUrl;
+        try {
+            List<User> allUser = new ArrayList<>();
+            Class.forName("org.sqlite.JDBC");
+            String url = BookingConstants.databaseUrl;
 
-                conn = DriverManager.getConnection(url);
+            conn = DriverManager.getConnection(url);
 
-                PreparedStatement sql = conn.prepareStatement(
-                        "SELECT * " +
-                                "FROM user ");
+            PreparedStatement sql = conn.prepareStatement(
+                    "SELECT * " +
+                            "FROM user ");
 
 
-                ResultSet rs = sql.executeQuery();
+            ResultSet rs = sql.executeQuery();
 
-                while (rs.next()) {
-                    User user = new User();
-                    user.setId(rs.getInt("id"));
-                    user.setLogin(rs.getString("login"));
-                    user.setPassword(rs.getString("password"));
-                    user.setUserPrivilege(Privilege.getPrivilage(rs.getInt("user_privilege")));
-                    user.setFirstName(rs.getString("first_name"));
-                    user.setLastName(rs.getString("last_name"));
-                    user.setEmailConfirmed(rs.getInt("email_confirmed") == 1);
-                    user.setTimestamp(rs.getInt("timestamp"));
-                    allUser.add(user);
-                }
-
-                return allUser;
-
-            } catch (SQLException | ClassNotFoundException e) {
-                System.out.println(e.getMessage());
-
-                return null;
-            } finally {
-                try {
-                    if (conn != null) {
-                        conn.close();
-                    }
-                } catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setLogin(rs.getString("login"));
+                user.setPassword(rs.getString("password"));
+                user.setUserPrivilege(Privilege.getPrivilage(rs.getInt("user_privilege")));
+                user.setFirstName(rs.getString("first_name"));
+                user.setLastName(rs.getString("last_name"));
+                user.setEmailConfirmed(rs.getInt("email_confirmed") == 1);
+                user.setTimestamp(rs.getInt("timestamp"));
+                allUser.add(user);
             }
+
+            return allUser;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+
+            return null;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
     }
 
     public User loadUserById(int id) {

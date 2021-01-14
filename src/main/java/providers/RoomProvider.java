@@ -57,6 +57,53 @@ public class RoomProvider {
         }
     }
 
+    public Room getRoomById(int id) {
+        Connection conn = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = BookingConstants.databaseUrl;
+
+            conn = DriverManager.getConnection(url);
+
+            Room room = new Room();
+            PreparedStatement sql = conn.prepareStatement(
+                    "SELECT * FROM room " +
+                            "WHERE " +
+                            "id == ? ");
+
+
+            sql.setInt(1, id);
+
+            ResultSet rs = sql.executeQuery();
+
+            while (rs.next()) {
+                room.setId(rs.getInt("id"));
+                room.setName(rs.getString("name"));
+                room.setCapacity(rs.getInt("capacity"));
+                room.setPrice(rs.getInt("price"));
+                room.setTimestamp(rs.getInt("timestamp"));
+                room.setPicturePath(rs.getString("picture"));
+                room.setHotelId(rs.getInt("hotel_id"));
+            }
+
+            if(room.getId() == 0) return null;
+            else return room;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+
+            return null;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
     public List<Room> getAllHotelRoom(int hotel_id) {
         Connection conn = null;
         try {

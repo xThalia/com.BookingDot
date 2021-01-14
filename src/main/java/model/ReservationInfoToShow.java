@@ -1,72 +1,62 @@
 package model;
 
 public class ReservationInfoToShow {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String hotelName;
-    private String roomName;
-    private int roomCapacity;
+    private User user;
+    private Room room;
+    private Hotel hotel;
+    private Reservation reservation;
+    private float price;
     private String startDate;
     private String endDate;
 
-    public ReservationInfoToShow(String firstName, String lastName, String email, String hotelName, String roomName, int roomCapacity, String startDate, String endDate) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.hotelName = hotelName;
-        this.roomName = roomName;
-        this.roomCapacity = roomCapacity;
+    public ReservationInfoToShow(User user, Room room, Hotel hotel, Reservation reservation, float price, String startDate, String endDate) {
+        this.user = user;
+        this.room = room;
+        this.hotel = hotel;
+        this.reservation = reservation;
+        this.price = price;
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public User getUser() {
+        return user;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public String getLastName() {
-        return lastName;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
-    public String getEmail() {
-        return email;
+    public Hotel getHotel() {
+        return hotel;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 
-    public String getHotelName() {
-        return hotelName;
+    public Reservation getReservation() {
+        return reservation;
     }
 
-    public void setHotelName(String hotelName) {
-        this.hotelName = hotelName;
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 
-    public String getRoomName() {
-        return roomName;
+    public float getPrice() {
+        return price;
     }
 
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
-    }
-
-    public int getRoomCapacity() {
-        return roomCapacity;
-    }
-
-    public void setRoomCapacity(int roomCapacity) {
-        this.roomCapacity = roomCapacity;
+    public void setPrice(float price) {
+        this.price = price;
     }
 
     public String getStartDate() {
