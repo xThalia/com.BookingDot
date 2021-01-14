@@ -191,6 +191,46 @@ public class DbConnector {
         }
     }
 
+    public static List<Hotel> getAllHotelsByCityAndReservationDateWithFreeRooms(String city, String startDate, String endDate) {
+        RoomProvider roomProvider = new RoomProvider();
+        ReservationProvider reservationProvider = new ReservationProvider();
+        List<Hotel> hotelsInCity = roomProvider.getHotelWithRoomsByCity(city);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            Date startDateConverted = format.parse(startDate);
+            Date endDateConverted = format.parse(endDate);
+            Timestamp startDateTimestamp = new Timestamp(startDateConverted.getTime());
+            Timestamp endDateTimestamp = new Timestamp(endDateConverted.getTime());
+            List<Hotel> hotelFreeAtDate = new ArrayList<>();
+
+            for (Hotel hotel: hotelsInCity){
+                boolean result;
+                if(hotel.getHotelRooms() != null) {
+                    result = false;
+                    List<Room> freeRooms = new ArrayList<>();
+                    for (Room room : hotel.getHotelRooms()) {
+                        if(reservationProvider.checkReservationForRoomBetweenDate(room.getId(), startDateTimestamp, endDateTimestamp))  {
+                            freeRooms.add(room);
+                            if(!result) result = true;
+                        }
+                    }
+                    if(result) {
+                        hotel.setHotelRooms(freeRooms);
+                        hotelFreeAtDate.add(hotel);
+                    }
+                }
+            }
+
+            if(hotelFreeAtDate.size() == 0) return null;
+            else return hotelFreeAtDate;
+
+        } catch (ParseException e) {
+            System.out.println("Wrong date format");
+            return null;
+        }
+    }
+
     public static Hotel getHotelWithRoomsByHotelId(int id) {
         RoomProvider roomProvider = new RoomProvider();
         return roomProvider.getHotelWithRoomsById(id);
@@ -253,7 +293,7 @@ public class DbConnector {
                 String startDateString = dateFormat.format(startDate);
                 String endDateString = dateFormat.format(endDate);
 
-                ReservationInfoToShow info = new ReservationInfoToShow(user.getFirstName(), user.getLastName(), user.getLogin(), hotel.getName(), hotel.getCity(), room.getName(), room.getCapacity(), room.getCapacity()*room.getPrice()*lengthOfStay,  startDateString, endDateString, reservation.isReservationConfirmed());
+                ReservationInfoToShow info = new ReservationInfoToShow(user, room, hotel, reservation, room.getCapacity()*room.getPrice()*lengthOfStay,  startDateString, endDateString);
                 reservationsInfoList.add(info);
             }
         }
@@ -280,6 +320,39 @@ public class DbConnector {
         User user = loadUserByEmail(login);
         OfferProvider offerProvider = new OfferProvider();
         return offerProvider.addOffer(user.getId());
+    }
+
+    public static void sendOfferToUser(int userId) {
+        OfferProvider offerProvider = new OfferProvider();
+        long diff = System.currentTimeMillis() - offerProvider.getTimestampByUserId(userId);
+
+        if (diff > 0) {
+            long diffInDays = TimeUnit.MILLISECONDS.toDays(
+                    System.currentTimeMillis() - diff);
+            if(diffInDays >= 1) {
+                //wyslij maila
+            }
+        }
+    }
+
+    //do stanu zajetosci pokoi
+    public static List<Reservation> getReservationForCurrentDayByOwnerId(int id) {
+        ReservationProvider reservationProvider = new ReservationProvider();
+        List<Hotel> hotelsWithRooms = getAllHotelsWithRoomsByOwnerId(id);
+        List<Reservation> reservations = new ArrayList<>();
+
+        for (Hotel hotel : hotelsWithRooms) {
+            if(hotel.getHotelRooms() != null && hotel.getHotelRooms().size() != 0)
+                for (Room room : hotel.getHotelRooms()) {
+                    List<Reservation> tmpReservations = reservationProvider.getReservationsForRoomInCurrentDay(room.getId());
+                    if(tmpReservations != null && tmpReservations.size() != 0)
+                        reservations = Stream.concat(reservations.stream(), tmpReservations.stream())
+                                .collect(Collectors.toList());
+                }
+        }
+
+        if(reservations.size() != 0) return reservations;
+        else return null;
     }
 
     public static void main(String[] args) {

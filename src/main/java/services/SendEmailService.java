@@ -49,7 +49,7 @@ public class SendEmailService {
     }
 
     public boolean sendEmailWithReservationConfirmation(ReservationInfoToShow info, boolean isConfirmed) {
-        final String to = info.getEmail();
+        final String to = info.getUser().getLogin();
         final String from = "bookingdotproject@gmail.com";
 
         String host = "smtp.gmail.com";
@@ -77,12 +77,12 @@ public class SendEmailService {
             message.setSubject("Reservation confirmation");
             message.setText("Dear User, your reservation has been " + (isConfirmed ? "accepted" : "rejected") +"\n" +
                     "Reservation info: \n" +
-                    "City: " + info.getCity() + "\n" +
-                    "Hotel name: " + info.getHotelName() + "\n" +
-                    "Room: " + info.getRoomName() + "\n" +
+                    "City: " + info.getHotel().getCity() + "\n" +
+                    "Hotel name: " + info.getHotel().getName() + "\n" +
+                    "Room: " + info.getRoom().getName() + "\n" +
                     "Start date: " + info.getStartDate() + "\n" +
                     "End date: " + info.getEndDate() + "\n" +
-                    "Price for whole stay: " + info.getPriceForStay() + "\n");
+                    "Price for whole stay: " + info.getPrice() + "\n");
 
             System.out.println("EMAIL SERVICE - sending message");
             Transport.send(message);
