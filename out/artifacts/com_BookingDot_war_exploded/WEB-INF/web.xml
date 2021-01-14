@@ -155,4 +155,22 @@
         <servlet-name>Search</servlet-name>
         <url-pattern>/search</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>searchHotel</servlet-name>
+        <servlet-class>pl.servlets.reservation.SearchHotelController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>searchHotel</servlet-name>
+        <url-pattern>/searchHotel</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>viewHotel</servlet-name>
+        <servlet-class>pl.servlets.reservation.ViewHotelController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>viewHotel</servlet-name>
+        <url-pattern>/viewHotel</url-pattern>
+    </servlet-mapping>
 </web-app>
