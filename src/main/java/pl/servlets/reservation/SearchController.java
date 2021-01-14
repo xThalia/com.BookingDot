@@ -24,6 +24,8 @@ public class SearchController extends HttpServlet {
         } else {
             request.setAttribute("emptyList", "false");
         }
+        request.setAttribute("startDate", "2021-01-07");
+        request.setAttribute("endDate", "2021-01-09");
         request.getRequestDispatcher("views/reservation/search.jsp").forward(request, response);
     }
 }

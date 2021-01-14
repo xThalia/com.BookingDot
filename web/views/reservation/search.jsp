@@ -7,12 +7,6 @@
     <jsp:attribute name="footer">
     </jsp:attribute>
     <jsp:body>
-        <script>
-            $(document).ready(function(){
-                $('#datepicker').datepicker();
-                $('#datepicker2').datepicker();
-            });
-        </script>
         <div class="container" id="container">
             <h3 class="text-center">Search Hotel</h3>
             <form method="POST" action="${pageContext.request.contextPath}/searchHotel">
@@ -23,11 +17,11 @@
                     </div>
                     <div class="mb-3" style="width: 26%; margin-right: 2%;">
                         <label for="datepicker" class="form-label">Check-in</label>
-                        <input type="text" class="form-control" value="07-01-2021" id="datepicker">
+                        <input type="text" class="form-control" value="${startDate}" name="datepicker" id="datepicker">
                     </div>
                     <div class="mb-3" style="width: 26%; margin-right: 2%;">
                         <label for="datepicker2" class="form-label">Check-out</label>
-                        <input type="text" class="form-control" value="09-01-2021" id="datepicker2">
+                        <input type="text" class="form-control" value="${endDate}" name="datepicker2" id="datepicker2">
                     </div>
                     <div class="mb-3" style="width: 12%; margin-right: 2%;">
                         <button type="submit" class="btn btn-primary" style="height: 100%;">Search</button>
@@ -57,6 +51,8 @@
                                 <td>
                                     <form class="d-inline-block mb-0" method="POST" action="${pageContext.request.contextPath}/viewHotel">
                                         <input type="hidden" name="hotelId" value="${hotel.getId()}">
+                                        <input type="hidden" name="hotelId" value="${startDate}">
+                                        <input type="hidden" name="hotelId" value="${endDate}">
                                         <button type="submit" class="btn btn-sm btn-success ml-2">
                                             View more
                                         </button>
@@ -81,10 +77,21 @@
         </div>
         <script>
             $(document).ready(function(){
-                $('#datepicker').datepicker();
-                $('#datepicker2').datepicker();
-                $('#datepicker').click(function () {
-                    console.log("XD");
+                $('#datepicker').datepicker({
+                    format: "yyyy-mm-dd",
+                    maxViewMode: 2,
+                    todayBtn: "linked",
+                    daysOfWeekDisabled: "0,6",
+                    daysOfWeekHighlighted: "0,6",
+                    autoclose: true
+                });
+                $('#datepicker2').datepicker({
+                    format: "yyyy-mm-dd",
+                    maxViewMode: 2,
+                    todayBtn: "linked",
+                    daysOfWeekDisabled: "0,6",
+                    daysOfWeekHighlighted: "0,6",
+                    autoclose: true
                 });
             });
         </script>

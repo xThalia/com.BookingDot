@@ -11,13 +11,25 @@
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\Patryk\IdeaProjects\com.BookingDot\src\main\java\storage\db.sqlite</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/database.sqlite</jdbc-url>
     </data-source>
     <data-source source="LOCAL" name="src.main.java.storage.db" uuid="f87db6e5-4c58-4994-9a26-f11bcf13a956">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\Patryk\IdeaProjects\com.BookingDot\src.main.java.storage.db.sqlite</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="src.main.java.storage.db [2]" uuid="b9e89c77-5270-4eda-8921-05152221d798">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\Administrator\Desktop\Java\3 ROK\com.BookingDot\src.main.java.storage.db.sqlite</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <libraries>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.34.0/sqlite-jdbc-3.34.0.jar</url>
+        </library>
+      </libraries>
     </data-source>
   </component>
 </project>
