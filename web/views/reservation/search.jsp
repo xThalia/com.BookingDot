@@ -82,6 +82,7 @@
                     format: "yyyy-mm-dd",
                     maxViewMode: 2,
                     todayBtn: "linked",
+                    weekStart: 1,
                     daysOfWeekDisabled: "0,6",
                     daysOfWeekHighlighted: "0,6",
                     autoclose: true
@@ -90,6 +91,7 @@
                     format: "yyyy-mm-dd",
                     maxViewMode: 2,
                     todayBtn: "linked",
+                    weekStart: 1,
                     daysOfWeekDisabled: "0,6",
                     daysOfWeekHighlighted: "0,6",
                     autoclose: true
