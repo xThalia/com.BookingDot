@@ -1,6 +1,7 @@
 package pl.servlets.reservation;
 
 import connectors.DbConnector;
+import model.Comment;
 import model.Hotel;
 
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 public class ViewRoomController extends HttpServlet {
 
@@ -21,6 +23,7 @@ public class ViewRoomController extends HttpServlet {
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         Hotel hotel = DbConnector.getHotelById(hotelId);
+
         if(session.getAttribute("currentSessionUser") != null ) {
             request.setAttribute("room", DbConnector.getRoomByIdAndHotelId(roomId, hotelId));
             request.setAttribute("hotelId", hotelId);

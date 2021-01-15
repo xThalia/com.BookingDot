@@ -338,7 +338,7 @@ public class DbConnector {
 
     public static boolean addComment(String text, int hotelId, int userId) {
         CommentProvider commentProvider = new CommentProvider();
-        return commentProvider.addComment(text, hotelId, userId);
+        return commentProvider.addComment(text, userId, hotelId);
     }
 
     public static List<Comment> getAllHotelComments(int hotelId) {

@@ -191,4 +191,13 @@
         <servlet-name>bookRoom</servlet-name>
         <url-pattern>/bookRoom</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>addComment</servlet-name>
+        <servlet-class>pl.servlets.reservation.AddCommentController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>addComment</servlet-name>
+        <url-pattern>/addComment</url-pattern>
+    </servlet-mapping>
 </web-app>

@@ -1,6 +1,7 @@
 package pl.servlets.reservation;
 
 import connectors.DbConnector;
+import model.Comment;
 import model.Hotel;
 import model.Room;
 
@@ -29,20 +30,24 @@ public class ViewHotelController extends HttpServlet {
         endDate = request.getParameter("endDate");
 
         hotelRoomList = DbConnector.getFreeRoomsByHotelId(hotelId, startDate, endDate);
+        List<Comment> comments = DbConnector.getAllHotelComments(hotelId);
         request.setAttribute("hotelRoomList", hotelRoomList);
         request.setAttribute("startDate", startDate);
         request.setAttribute("endDate", endDate);
+        request.setAttribute("comments", comments);
 
-        System.out.println(hotelRoomList);
+        System.out.println(comments);
         System.out.println(hotelId);
-        System.out.println(startDate);
-        System.out.println(endDate);
         if (hotelRoomList == null || hotelRoomList.isEmpty()) {
             request.setAttribute("emptyList", "true");
         } else {
             request.setAttribute("emptyList", "false");
         }
-
+        if (comments == null || comments.isEmpty()) {
+            request.setAttribute("emptyCommentList", "true");
+        } else {
+            request.setAttribute("emptyCommentList", "false");
+        }
         request.getRequestDispatcher("views/reservation/view-hotel.jsp").forward(request, response);
     }
 }

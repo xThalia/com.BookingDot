@@ -1,5 +1,7 @@
 package model;
 
+import connectors.DbConnector;
+
 public class Comment {
     private int id;
 
@@ -61,6 +63,11 @@ public class Comment {
 
     public int getUserId() {
         return userId;
+    }
+
+    public String getUserNameToShow() {
+        User user = DbConnector.loadUserById(this.getUserId());
+        return user.getFirstName() + " " + user.getLastName();
     }
 
     public void setUserId(int userId) {
