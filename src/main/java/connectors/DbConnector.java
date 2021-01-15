@@ -232,9 +232,10 @@ public class DbConnector {
     }
 
     public static List<Room> getFreeRoomsByHotelId(int hotelId, String startDate, String endDate) {
+        RoomProvider roomProvider = new RoomProvider();
         HotelProvider hotelProvider = new HotelProvider();
         ReservationProvider reservationProvider = new ReservationProvider();
-        Hotel hotel = hotelProvider.getHotelById(hotelId);
+        Hotel hotel = roomProvider.getHotelWithRoomsById(hotelId);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
         try {
