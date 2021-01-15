@@ -242,16 +242,14 @@ public class DbConnector {
             Date endDateConverted = format.parse(endDate);
             Timestamp startDateTimestamp = new Timestamp(startDateConverted.getTime());
             Timestamp endDateTimestamp = new Timestamp(endDateConverted.getTime());
-
                 List<Room> freeRooms = new ArrayList<>();
-                if(hotel != null && hotel.getHotelRooms() != null) {
-                    for (Room room : hotel.getHotelRooms()) {
+                if(hotel != null && DbConnector.getAllHotelRooms(hotel.getId()) != null) {
+                    for (Room room : DbConnector.getAllHotelRooms(hotel.getId()) ) {
                         if(reservationProvider.checkReservationForRoomBetweenDate(room.getId(), startDateTimestamp, endDateTimestamp))  {
                             freeRooms.add(room);
                         }
                     }
                 }
-
             if(freeRooms.size() == 0) return null;
             else return freeRooms;
 

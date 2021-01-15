@@ -51,8 +51,9 @@
                                 <td>
                                     <form class="d-inline-block mb-0" method="POST" action="${pageContext.request.contextPath}/viewHotel">
                                         <input type="hidden" name="hotelId" value="${hotel.getId()}">
-                                        <input type="hidden" name="hotelId" value="${startDate}">
-                                        <input type="hidden" name="hotelId" value="${endDate}">
+                                        <input type="hidden" name="hotel" value="${hotel}">
+                                        <input type="hidden" name="startDate" value="${startDate}">
+                                        <input type="hidden" name="endDate" value="${endDate}">
                                         <button type="submit" class="btn btn-sm btn-success ml-2">
                                             View more
                                         </button>

@@ -173,4 +173,22 @@
         <servlet-name>viewHotel</servlet-name>
         <url-pattern>/viewHotel</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>viewRoom</servlet-name>
+        <servlet-class>pl.servlets.reservation.ViewRoomController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>viewRoom</servlet-name>
+        <url-pattern>/viewRoom</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>bookRoom</servlet-name>
+        <servlet-class>pl.servlets.reservation.BookRoomController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>bookRoom</servlet-name>
+        <url-pattern>/bookRoom</url-pattern>
+    </servlet-mapping>
 </web-app>

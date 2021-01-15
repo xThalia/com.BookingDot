@@ -2,6 +2,7 @@ package pl.servlets.reservation;
 
 import connectors.DbConnector;
 import model.Hotel;
+import model.Room;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,21 +16,33 @@ public class ViewHotelController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
 
-        List<Hotel> hotelList = DbConnector.getAllHotels();
+        List<Room> hotelRoomList;
+        int hotelId;
+        String startDate, endDate;
+        Hotel hotel;
 
-        String City, startDate, endDate;
+        hotelId = Integer.parseInt(request.getParameter("hotelId"));
+        hotel = DbConnector.getHotelById(hotelId);
+        request.setAttribute("hotel", hotel);
 
-        City = request.getParameter("city");
-        startDate = request.getParameter("datepicker");
-        endDate = request.getParameter("datepicker2");
-        System.out.println(startDate + endDate);
-        hotelList = DbConnector.getAllHotelsByCityAndReservationDate(City, startDate, endDate);
-        request.setAttribute("hotelList", hotelList);
-        if (hotelList == null || hotelList.isEmpty()) {
+        startDate = request.getParameter("startDate");
+        endDate = request.getParameter("endDate");
+
+        hotelRoomList = DbConnector.getFreeRoomsByHotelId(hotelId, startDate, endDate);
+        request.setAttribute("hotelRoomList", hotelRoomList);
+        request.setAttribute("startDate", startDate);
+        request.setAttribute("endDate", endDate);
+
+        System.out.println(hotelRoomList);
+        System.out.println(hotelId);
+        System.out.println(startDate);
+        System.out.println(endDate);
+        if (hotelRoomList == null || hotelRoomList.isEmpty()) {
             request.setAttribute("emptyList", "true");
         } else {
             request.setAttribute("emptyList", "false");
         }
-        request.getRequestDispatcher("views/reservation/viewHotel.jsp").forward(request, response);
+
+        request.getRequestDispatcher("views/reservation/view-hotel.jsp").forward(request, response);
     }
 }
