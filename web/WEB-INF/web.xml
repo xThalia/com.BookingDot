@@ -130,6 +130,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>Reservations</servlet-name>
+        <servlet-class>pl.servlets.reservation.ManageReservationsController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Reservations</servlet-name>
+        <url-pattern>/reservations</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>Logout</servlet-name>
         <servlet-class>pl.servlets.auth.LogoutController</servlet-class>
     </servlet>

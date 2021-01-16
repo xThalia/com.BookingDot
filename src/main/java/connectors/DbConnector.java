@@ -232,32 +232,32 @@ public class DbConnector {
     }
 
     public static List<Room> getFreeRoomsByHotelId(int hotelId, String startDate, String endDate) {
-        RoomProvider roomProvider = new RoomProvider();
         HotelProvider hotelProvider = new HotelProvider();
         ReservationProvider reservationProvider = new ReservationProvider();
-        Hotel hotel = roomProvider.getHotelWithRoomsById(hotelId);
+        Hotel hotel = hotelProvider.getHotelById(hotelId);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
         try {
             Date startDateConverted = format.parse(startDate);
             Date endDateConverted = format.parse(endDate);
             Timestamp startDateTimestamp = new Timestamp(startDateConverted.getTime());
             Timestamp endDateTimestamp = new Timestamp(endDateConverted.getTime());
-                List<Room> freeRooms = new ArrayList<>();
-                if(hotel != null && DbConnector.getAllHotelRooms(hotel.getId()) != null) {
-                    for (Room room : DbConnector.getAllHotelRooms(hotel.getId()) ) {
-                        if(reservationProvider.checkReservationForRoomBetweenDate(room.getId(), startDateTimestamp, endDateTimestamp))  {
-                            freeRooms.add(room);
-                        }
+
+            List<Room> freeRooms = new ArrayList<>();
+            if(hotel != null && DbConnector.getAllHotelRooms(hotel.getId()) != null) {
+                for (Room room : DbConnector.getAllHotelRooms(hotel.getId()) ) {
+                    if(reservationProvider.checkReservationForRoomBetweenDate(room.getId(), startDateTimestamp, endDateTimestamp))  {
+                        freeRooms.add(room);
                     }
                 }
+            }
+
             if(freeRooms.size() == 0) return null;
             else return freeRooms;
 
-        } catch (ParseException e) {
-            System.out.println("Wrong date format");
-            return null;
-        }
+            } catch (ParseException e) {
+                System.out.println("Wrong date format");
+                return null;
+            }
     }
 
 

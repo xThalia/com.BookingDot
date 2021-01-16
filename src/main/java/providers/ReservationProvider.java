@@ -101,10 +101,10 @@ public class ReservationProvider {
             PreparedStatement sql = conn.prepareStatement(
                     "SELECT * FROM reservation " +
                             "WHERE (room_id == ?) AND" +
-                            "((start_date > ? AND end_date < ?) OR " +
-                            "(start_date > ? AND start_date < ?) OR " +
-                            "(end_date > ? AND end_date < ?) OR " +
-                            "(start_date < ? AND end_date > ?))");
+                            "((start_date >= ? AND end_date <= ?) OR " +
+                            "(start_date >= ? AND start_date <= ?) OR " +
+                            "(end_date >= ? AND end_date <= ?) OR " +
+                            "(start_date <= ? AND end_date >= ?))");
             sql.setInt(1, roomId);
             sql.setLong(2, startDate.getTime());
             sql.setLong(3, endDate.getTime());

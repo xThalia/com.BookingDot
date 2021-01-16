@@ -271,9 +271,9 @@ public class HotelProvider {
                             "timestamp = ?" +
                             "WHERE\n" +
                             "    id == ? ");
-            sql.setString(1, name.replaceAll("'", ""));
-            sql.setString(2, address.replaceAll("'", ""));
-            sql.setString(3, city.replaceAll("'", ""));
+            sql.setString(1, name);
+            sql.setString(2, address);
+            sql.setString(3, city);
             sql.setInt(4, (int) System.currentTimeMillis());
             sql.setInt(5, hotelId);
 
@@ -305,7 +305,7 @@ public class HotelProvider {
             PreparedStatement sql = conn.prepareStatement(
                     "SELECT * FROM hotel " +
                             "WHERE " +
-                            "hotel.city == ?");
+                            "UPPER(hotel.city) LIKE UPPER(?)");
 
 
             sql.setString( 1, name);

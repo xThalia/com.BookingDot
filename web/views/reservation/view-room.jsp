@@ -28,7 +28,8 @@
                     </div>
                     <div class="card-body">
                         <p class="card-text">Capacity: ${room.getCapacity()}</p>
-                        <p class="card-text"><strong>Price: ${room.getPrice()}</strong></p>
+                        <p class="card-text"><strong>Price for the room: ${room.getPrice() * room.getCapacity()}</strong></p>
+                        <p class="card-text"><strong>Price for whole stay: ${lengthOfStay * room.getCapacity() * room.getPrice()}</strong></p>
 
                         <c:if test="${room.getPicturePath() != ''}">
                             <img src="${room.getPicturePath()}" class="mb-2" style="max-height: 500px;height: auto; max-width: 500px; width:auto;" />

@@ -81,6 +81,9 @@
                             <% if(user.getUserPrivilege().getValue() == 4) {%>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/privileges">Manage Privileges</a></li>
                             <%}%>
+                            <% if(user.getUserPrivilege().getValue() == 3 || user.getUserPrivilege().getValue() == 2) {%>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/reservations">Manage Reservations</a></li>
+                            <%}%>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Logout</a></li>
                         </ul>
                     </li>

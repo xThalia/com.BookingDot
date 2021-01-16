@@ -14,6 +14,7 @@ import java.util.List;
 public class SearchHotelController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
+        request.setCharacterEncoding("UTF-8");
 
         List<Hotel> hotelList = DbConnector.getAllHotels();
 

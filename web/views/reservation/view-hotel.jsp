@@ -29,7 +29,8 @@
                             <th scope="col">No</th>
                             <th scope="col">Name</th>
                             <th scope="col">Capacity</th>
-                            <th scope="col">Price</th>
+                            <th scope="col">Price for the room</th>
+                            <th scope="col">Price for whole stay</th>
                             <th scope="col">Actions</th>
                         </tr>
                         </thead>
@@ -39,7 +40,8 @@
                                 <th scope="row">${hotelRoomList.indexOf(room) + 1}</th>
                                 <td>${room.getName()}</td>
                                 <td>${room.getCapacity()}</td>
-                                <td>${room.getPrice()}</td>
+                                <td>${room.getPrice() * room.getCapacity()}</td>
+                                <td>${room.getPrice() * room.getCapacity() * lengthOfStay}</td>
                                 <td>
                                     <form class="d-inline-block" method="POST" action="${pageContext.request.contextPath}/viewRoom">
                                         <input type="hidden" name="roomId" value="${room.getId()}">

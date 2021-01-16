@@ -11,7 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ViewHotelController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -31,10 +35,22 @@ public class ViewHotelController extends HttpServlet {
 
         hotelRoomList = DbConnector.getFreeRoomsByHotelId(hotelId, startDate, endDate);
         List<Comment> comments = DbConnector.getAllHotelComments(hotelId);
+
+        long lengthOfStay;
+        try {
+            Date startDateObject = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
+            Date endDateObject = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
+            lengthOfStay = TimeUnit.DAYS.convert(endDateObject.getTime() - startDateObject.getTime(), TimeUnit.MILLISECONDS);
+        }
+        catch (ParseException e) {
+            lengthOfStay = 0;
+        }
+
         request.setAttribute("hotelRoomList", hotelRoomList);
         request.setAttribute("startDate", startDate);
         request.setAttribute("endDate", endDate);
         request.setAttribute("comments", comments);
+        request.setAttribute("lengthOfStay", lengthOfStay);
 
         System.out.println(comments);
         System.out.println(hotelId);
