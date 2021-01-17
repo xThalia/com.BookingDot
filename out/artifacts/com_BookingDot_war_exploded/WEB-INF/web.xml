@@ -85,6 +85,24 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>DeclineReservation</servlet-name>
+        <servlet-class>pl.servlets.reservation.DeclineReservationController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeclineReservation</servlet-name>
+        <url-pattern>/declineReservation</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AcceptReservation</servlet-name>
+        <servlet-class>pl.servlets.reservation.AcceptReservationController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AcceptReservation</servlet-name>
+        <url-pattern>/acceptReservation</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>AddRoom</servlet-name>
         <servlet-class>pl.servlets.hotel.room.AddRoomController</servlet-class>
     </servlet>

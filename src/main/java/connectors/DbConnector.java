@@ -4,6 +4,8 @@ import enums.Privilege;
 import model.*;
 import providers.*;
 import services.RegisterService;
+import services.SendEmailService;
+
 import javax.servlet.ServletContext;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -290,6 +292,7 @@ public class DbConnector {
         List<Hotel> hotelsWithRooms = getAllHotelsWithRoomsByOwnerId(id);
         List<Reservation> reservations = new ArrayList<>();
 
+        if(hotelsWithRooms == null || hotelsWithRooms.size() == 0) return null;
         for (Hotel hotel : hotelsWithRooms) {
             if(hotel.getHotelRooms() != null && hotel.getHotelRooms().size() != 0)
                 for (Room room : hotel.getHotelRooms()) {
@@ -316,10 +319,10 @@ public class DbConnector {
             }
 
             if(user != null && room != null && hotel.getId() != 0) {
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Date startDate = new Date(reservation.getStartDate());
                 Date endDate = new Date(reservation.getEndDate());
-                long lengthOfStay = TimeUnit.DAYS.convert(reservation.getStartDate() - reservation.getEndDate(), TimeUnit.MILLISECONDS);
+                long lengthOfStay = TimeUnit.DAYS.convert(reservation.getEndDate() - reservation.getStartDate(), TimeUnit.MILLISECONDS);
                 String startDateString = dateFormat.format(startDate);
                 String endDateString = dateFormat.format(endDate);
 
@@ -331,9 +334,30 @@ public class DbConnector {
         else return reservationsInfoList;
     }
 
-    public static int updateReservationWithConfirmation(int reservationId, int isAccepted) {
+    public static ReservationInfoToShow getReservationInfoByReservationId(int reservationId) {
         ReservationProvider reservationProvider = new ReservationProvider();
-        return reservationProvider.updateReservationWithConfirmation(reservationId, isAccepted);
+        Reservation reservation = reservationProvider.getReservationById(reservationId);
+
+        List<Reservation> tmpReservationList = new ArrayList<>();
+        List<ReservationInfoToShow> tmpReservationInfoList;
+        tmpReservationList.add(reservation);
+
+        tmpReservationInfoList = getAllReservationsInfo(tmpReservationList);
+        if(tmpReservationInfoList == null || tmpReservationInfoList.size() == 0)
+            return null;
+        else
+            return tmpReservationInfoList.get(0);
+    }
+
+    public static boolean updateReservationWithConfirmation(ReservationInfoToShow reservationInfo, int isAccepted) {
+        ReservationProvider reservationProvider = new ReservationProvider();
+        SendEmailService sendEmailService = new SendEmailService();
+        int resultUpdateReservation = reservationProvider.updateReservationWithConfirmation(reservationInfo.getReservation().getId(), isAccepted);
+        boolean resultSendEmail = false;
+        if(resultUpdateReservation > 0) {
+            resultSendEmail = sendEmailService.sendEmailWithReservationConfirmation(reservationInfo, isAccepted == 1);
+        }
+        return resultSendEmail;
     }
 
     public static boolean addComment(String text, int hotelId, int userId) {

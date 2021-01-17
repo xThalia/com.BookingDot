@@ -83,7 +83,7 @@
                     maxViewMode: 2,
                     todayBtn: "linked",
                     weekStart: 1,
-                    daysOfWeekDisabled: "0,6",
+                    minDate: 0,
                     daysOfWeekHighlighted: "0,6",
                     autoclose: true
                 });
@@ -92,7 +92,7 @@
                     maxViewMode: 2,
                     todayBtn: "linked",
                     weekStart: 1,
-                    daysOfWeekDisabled: "0,6",
+                    minDate: 1,
                     daysOfWeekHighlighted: "0,6",
                     autoclose: true
                 });

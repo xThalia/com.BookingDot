@@ -1,7 +1,9 @@
 package providers;
 
+import enums.Privilege;
 import model.Reservation;
 import model.Room;
+import model.User;
 import tools.BookingConstants;
 
 import java.sql.*;
@@ -57,6 +59,51 @@ public class ReservationProvider {
                 System.out.println(ex.getMessage());
             }
         }
+    }
+
+    public Reservation getReservationById(int id) {
+        Connection conn = null;
+        Reservation reservation = new Reservation();
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = BookingConstants.databaseUrl;
+
+            conn = DriverManager.getConnection(url);
+
+            PreparedStatement sql = conn.prepareStatement(
+                    "SELECT * " +
+                            "FROM reservation " +
+                            "WHERE id == ? ");
+
+
+            sql.setInt(1, id);
+
+            ResultSet rs = sql.executeQuery();
+
+            while (rs.next()) {
+                reservation.setId(rs.getInt("id"));
+                reservation.setRoomId(rs.getInt("room_id"));
+                reservation.setUserId(rs.getInt("user_id"));
+                reservation.setStartDate(rs.getLong("start_date"));
+                reservation.setEndDate(rs.getLong("end_date"));
+                reservation.setReservationConfirmed(rs.getInt("reservation_confirmed"));
+                reservation.setReservationFinished(rs.getBoolean("reservation_finished"));
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+
+            return null;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        return reservation;
     }
 
     public int updateReservationWithConfirmation(int reservationId, int isAccepted) { //0 - niepotwierdzona 1 - zaakceptowana 2 - odrzucona
@@ -209,8 +256,8 @@ public class ReservationProvider {
                 reservation.setId(rs.getInt("id"));
                 reservation.setRoomId(rs.getInt("room_id"));
                 reservation.setUserId(rs.getInt("user_id"));
-                reservation.setStartDate(rs.getInt("start_date"));
-                reservation.setEndDate(rs.getInt("end_date"));
+                reservation.setStartDate(rs.getLong("start_date"));
+                reservation.setEndDate(rs.getLong("end_date"));
                 reservation.setReservationConfirmed(rs.getInt("reservation_confirmed"));
                 reservation.setReservationFinished(rs.getBoolean("reservation_finished"));
                 reservations.add(reservation);

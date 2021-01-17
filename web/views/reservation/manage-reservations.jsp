@@ -12,7 +12,12 @@
             <c:redirect url="/views/auth/login.jsp"/>
         </c:if>
         <div class="container">
-            <h3 class="text-center">Privileges</h3>
+            <c:if test="${sessionScope.status == 'successConfirmation'}">
+                <div class="alert alert-success" role="alert">
+                    Success confirmation
+                </div>
+            </c:if>
+            <h3 class="text-center">Manage your reservations</h3>
             <div class="row justify-content-center align-items-center">
                 <c:if test="${emptyList == 'false'}">
                     <table class="table table-dark">
@@ -21,37 +26,56 @@
                             <th scope="col">No</th>
                             <th scope="col">Name</th>
                             <th scope="col">LastName</th>
-                            <th scope="col">Privilege</th>
-                            <th scope="col">Edit</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Hotel</th>
+                            <th scope="col">Room</th>
+                            <th scope="col">Number of people</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Start date</th>
+                            <th scope="col">End date</th>
+                            <th scope="col">Action</th>
 
                         </tr>
                         </thead>
                         <tbody>
 
-                        <c:forEach items="${userList}" var="user">
+                        <c:forEach items="${reservationsInfo}" var="reservationInfo">
                             <tr>
-                                <form class="d-inline-block" method="POST" action="${pageContext.request.contextPath}/savePrivileges">
-                                    <td>${userList.indexOf(user)+1}</td>
-                                    <td>${user.getFirstName()}</td>
-                                    <td>${user.getLastName()}</td>
+                                <form class="d-inline-block" method="POST" action="${pageContext.request.contextPath}/acceptReservation">
+                                    <td>${reservationsInfo.indexOf(reservationInfo)+1}</td>
+                                    <td>${reservationInfo.getUser().getFirstName()}</td>
+                                    <td>${reservationInfo.getUser().getLastName()}</td>
+                                    <td>${reservationInfo.getUser().getLogin()}</td>
+                                    <td>${reservationInfo.getHotel().getName()}</td>
+                                    <td>${reservationInfo.getRoom().getName()}</td>
+                                    <td>${reservationInfo.getRoom().getCapacity()}</td>
+                                    <td>${reservationInfo.getPrice()}</td>
+                                    <td>${reservationInfo.getStartDate()}</td>
+                                    <td>${reservationInfo.getEndDate()}</td>
+                                    <c:if test="${reservationInfo.getReservation().isReservationConfirmed() == 0}">
                                     <td>
-
-                                        <div class="form-group">
-                                            <select class="form-control" id="privilege" name="privilege">
-                                                <option value="1"<c:if test="${user.getUserPrivilege().getValue() == 1}">  selected </c:if> >Ordinary</option>
-                                                <option value="2" <c:if test="${user.getUserPrivilege().getValue() == 2}">  selected </c:if> >Receptionist</option>
-                                                <option value="3" <c:if test="${user.getUserPrivilege().getValue() == 3}">  selected </c:if>>Owner</option>
-                                                <option value="4" <c:if test="${user.getUserPrivilege().getValue() == 4}">  selected </c:if> >Admin</option>
-                                            </select>
-                                        </div>
+                                        <form class="d-inline-block" method="POST" action="${pageContext.request.contextPath}/acceptReservation">
+                                            <input type="hidden" name="reservationId" value="${reservationInfo.getReservation().getId()}">
+                                            <input type="hidden" name="isAccepted" value="1">
+                                            <button type="submit" class="btn btn-sm btn-success">
+                                                Accept
+                                            </button>
+                                        </form>
+                                        <form class="d-inline-block" method="POST" action="${pageContext.request.contextPath}/acceptReservation">
+                                            <input type="hidden" name="reservationId" value="${reservationInfo.getReservation().getId()}">
+                                            <input type="hidden" name="isAccepted" value="2">
+                                            <button type="submit" class="btn btn-sm btn-danger ml-2">
+                                                Decline
+                                            </button>
+                                        </form>
                                     </td>
-                                    <td>
-
-                                        <input type="hidden" name="userId" value="${user.getId()}">
-                                        <button type="submit" class="btn btn-dark btn-rounded btn-sm my-0"> Save
-                                        </button>
-
-                                    </td>
+                                    </c:if>
+                                    <c:if test="${reservationInfo.getReservation().isReservationConfirmed() == 1}">
+                                        <td>Confirmed</td>
+                                    </c:if>
+                                    <c:if test="${reservationInfo.getReservation().isReservationConfirmed() == 2}">
+                                        <td>Declined</td>
+                                    </c:if>
                                 </form>
                             </tr>
                         </c:forEach>
@@ -64,7 +88,7 @@
                         <div class="card">
 
                             <div class="card-body">
-                                No users
+                                No reservations
                             </div>
                         </div>
                     </div>
