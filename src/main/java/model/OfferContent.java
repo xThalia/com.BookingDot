@@ -20,31 +20,16 @@ public class OfferContent {
         return where;
     }
 
-    public void setWhere(String where) {
-        this.where = where;
-    }
-
     public String getWhatPrice() {
         return whatPrice;
-    }
-
-    public void setWhatPrice(String whatPrice) {
-        this.whatPrice = whatPrice;
     }
 
     public String getWhatHotel() {
         return whatHotel;
     }
 
-    public void setWhatHotel(String whatHotel) {
-        this.whatHotel = whatHotel;
-    }
-
     public String getRest() {
         return rest;
     }
 
-    public void setRest(String rest) {
-        this.rest = rest;
-    }
 }

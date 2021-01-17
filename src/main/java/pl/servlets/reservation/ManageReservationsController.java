@@ -4,7 +4,6 @@ import connectors.DbConnector;
 import model.Reservation;
 import model.ReservationInfoToShow;
 import model.User;
-import providers.DbProvider;
 import providers.UserDataProvider;
 
 import javax.servlet.ServletException;

@@ -209,28 +209,6 @@ public class DbConnector {
             }
     }
 
-    public static List<Room> filterOccupiedRooms(int hotelId, List<Room> freeRooms) {
-        List<Room> allHotelRooms =  DbConnector.getAllHotelRooms(hotelId);
-        List<Room> occupiedRooms = new ArrayList<>();
-
-        for (Room room : allHotelRooms) {
-            boolean isFree = false;
-            for (Room freeRoom : freeRooms) {
-                if (room.getId() == freeRoom.getId()) {
-                    isFree = true;
-                    break;
-                }
-            }
-            if(!isFree) occupiedRooms.add(room);
-        }
-        return occupiedRooms;
-    }
-
-    public static Hotel getHotelWithRoomsByHotelId(int id) {
-        RoomProvider roomProvider = new RoomProvider();
-        return roomProvider.getHotelWithRoomsById(id);
-    }
-
     public static List<Hotel> getAllHotelsWithRoomsByOwnerId(int id) {
 
         List<Hotel> hotels = getAllUserHotel(id);
@@ -385,7 +363,15 @@ public class DbConnector {
                     if (tmpReservations == null || tmpReservations.size() == 0) {
                         freeAndOccupiedRooms.getFreeRooms().add(room);
                     } else {
-                        freeAndOccupiedRooms.getOccupiedRooms().add(room);
+                        boolean add = true;
+                        for (Reservation reservation: tmpReservations ) {
+                            if (reservation.isReservationConfirmed() == 2) { //odrzucona
+                                add = false;
+                                break;
+                            }
+                        }
+                        if (add) freeAndOccupiedRooms.getOccupiedRooms().add(room);
+                        else freeAndOccupiedRooms.getFreeRooms().add(room);
                     }
                 }
 

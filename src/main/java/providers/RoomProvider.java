@@ -164,51 +164,6 @@ public class RoomProvider {
         return hotels;
     }
 
-    public Hotel getHotelWithRoomsById(int id) {
-        HotelProvider hotelProvider = new HotelProvider();
-        RoomProvider roomProvider = new RoomProvider();
-        Hotel hotel = hotelProvider.getHotelById(id);
-        if(hotel == null) return null;
-
-        List<Room> rooms = roomProvider.getAllHotelRoom(hotel.getId());
-        hotel.setHotelRooms(rooms);
-
-        return hotel;
-    }
-
-    public int changeUserImage(int userId, String picturePath) {
-        Connection conn = null;
-        int resultId = 0;
-        try {
-            Class.forName("org.sqlite.JDBC");
-            String url = BookingConstants.databaseUrl;
-
-            conn = DriverManager.getConnection(url);
-
-            PreparedStatement sql = conn.prepareStatement(
-                    "UPDATE room\n" +
-                            "SET picture = ?\n" +
-                            "WHERE\n" +
-                            "    id == ? ");
-            sql.setString(1, picturePath.replaceAll("'", ""));
-            sql.setInt(2, userId);
-
-            return sql.executeUpdate();
-
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-            return 0;
-        }
-    }
-
     public int deleteRoom(int roomId) {
         Connection conn = null;
         int resultId = 0;

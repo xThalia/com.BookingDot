@@ -1,10 +1,7 @@
 package providers;
 
-import enums.Privilege;
 import model.Hotel;
-import model.User;
 import tools.BookingConstants;
-import tools.UsefulFunctions;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -22,7 +19,6 @@ public class HotelProvider {
             String city    = hotel.getCity().replaceAll("'", "");;
             long timestamp = System.currentTimeMillis();
 
-//jdbc:sqlite:database.sqlite
             conn = DriverManager.getConnection(url);
 
             PreparedStatement sql = conn.prepareStatement(

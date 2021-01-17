@@ -16,6 +16,13 @@ public class FreeAndOccupiedRooms {
         this.occupiedRooms = new ArrayList<>();
     }
 
+    public FreeAndOccupiedRooms(String name, String city, List<Room> freeRooms, List<Room> occupiedRooms) {
+        this.name = name;
+        this.city = city;
+        this.freeRooms = freeRooms;
+        this.occupiedRooms = occupiedRooms;
+    }
+
     public String getName() {
         return name;
     }
@@ -36,7 +43,15 @@ public class FreeAndOccupiedRooms {
         return freeRooms;
     }
 
+    public void setFreeRooms(List<Room> freeRooms) {
+        this.freeRooms = freeRooms;
+    }
+
     public List<Room> getOccupiedRooms() {
         return occupiedRooms;
+    }
+
+    public void setOccupiedRooms(List<Room> occupiedRooms) {
+        this.occupiedRooms = occupiedRooms;
     }
 }

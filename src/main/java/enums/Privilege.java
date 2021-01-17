@@ -29,10 +29,4 @@ public enum  Privilege {
                 return ADMIN;
         }
     }
-
-
-    public static List<Privilege> getAllPrivileges() {
-        Privilege [] privileges = Privilege.values();
-        return Arrays.asList(privileges);
-    }
 }

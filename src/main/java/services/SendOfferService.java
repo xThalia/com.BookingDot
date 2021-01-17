@@ -2,6 +2,7 @@ package services;
 
 import connectors.DbConnector;
 import model.*;
+import providers.OfferProvider;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -45,6 +46,9 @@ public class SendOfferService {
         }
 
         if (chosenRoom.getId() == 0) return false;
+
+        OfferProvider offerProvider = new OfferProvider();
+        offerProvider.updateOfferTimestamp(userId);
 
         final String to = user.getLogin();
         final String from = "bookingdotproject@gmail.com";

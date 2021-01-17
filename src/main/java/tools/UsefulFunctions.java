@@ -34,14 +34,6 @@ public class UsefulFunctions {
         return "";
     }
 
-    private static String encodeFileToBase64Binary(File file) throws Exception{
-        FileInputStream fileInputStreamReader = new FileInputStream(file);
-        byte[] bytes = new byte[(int)file.length()];
-        fileInputStreamReader.read(bytes);
-
-        return new String(Base64.getMimeEncoder().encode(bytes), "UTF-8");
-    }
-
     public static boolean isImageFile(String str)
     {
         String regex
