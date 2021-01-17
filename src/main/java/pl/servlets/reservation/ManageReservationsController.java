@@ -48,22 +48,4 @@ public class ManageReservationsController extends HttpServlet {
             response.sendRedirect("views/auth/login.jsp");
         }
     }
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
-        String login    = request.getParameter("email");
-        String password = request.getParameter("password");
-        int id          = 0;
-        UserDataProvider userDataProvider = new UserDataProvider();
-
-        System.out.println(login + " password " + password);
-        System.out.println(userDataProvider.authenticateUserWithLoginAndPassword(login, password));
-        if (userDataProvider.authenticateUserWithLoginAndPassword(login, password) != 0) {
-            id = userDataProvider.authenticateUserWithLoginAndPassword(login, password);
-            HttpSession session = request.getSession(true);
-            session.setAttribute("currentSessionUser",id);
-            response.sendRedirect("views/home.jsp");
-        } else {
-            response.sendRedirect("views/auth/login.jsp?status=error");
-        }
-    }
 }

@@ -3,16 +3,14 @@ package connectors;
 import enums.Privilege;
 import model.*;
 import providers.*;
-import services.RegisterService;
-import services.SendEmailService;
 
-import javax.servlet.ServletContext;
-import java.sql.SQLException;
+import services.SendEmailService;
+import services.SendOfferService;
+
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,8 +20,6 @@ import java.util.stream.Stream;
 
 public class DbConnector {
     public static void createBasicAccounts() {
-      //  DbProvider dbProvider = new DbProvider();
-     //   dbProvider.createDatabase();
         createAdminAccount();
         createRecepionistAccount();
         createOwnerAccount();
@@ -46,18 +42,14 @@ public class DbConnector {
 
     public static boolean addUser(User user) {
         UserDataProvider userDataProvider = new UserDataProvider();
+        boolean result = userDataProvider.addUser(user);
         createOfferInfoForUser(user.getLogin());
-        return userDataProvider.addUser(user);
+        return result;
     }
 
     public static String createRegistrationToken(User user) {
         RegistrationTokenProvider registrationTokenProvider = new RegistrationTokenProvider();
         return registrationTokenProvider.createRegistrationToken(user);
-    }
-
-    public static void authenticateUser(User user) {
-        UserDataProvider userDataProvider = new UserDataProvider();
-        userDataProvider.authenticateUserWithLoginAndPassword(user.getLogin(), user.getPassword());
     }
 
     public static List<User> getAllUser() {
@@ -114,11 +106,6 @@ public class DbConnector {
             }
         }
         return null;
-    }
-
-    public static int getHotelByHotelNameAndUserId(String name, int userId) {
-        HotelUserProvider provider = new HotelUserProvider();
-        return  provider.getHotelIdByUserIdAndHotelName(name, userId);
     }
 
     public static void addRoom(Room room) {
@@ -193,46 +180,6 @@ public class DbConnector {
         }
     }
 
-    public static List<Hotel> getAllHotelsByCityAndReservationDateWithFreeRooms(String city, String startDate, String endDate) {
-        RoomProvider roomProvider = new RoomProvider();
-        ReservationProvider reservationProvider = new ReservationProvider();
-        List<Hotel> hotelsInCity = roomProvider.getHotelWithRoomsByCity(city);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-        try {
-            Date startDateConverted = format.parse(startDate);
-            Date endDateConverted = format.parse(endDate);
-            Timestamp startDateTimestamp = new Timestamp(startDateConverted.getTime());
-            Timestamp endDateTimestamp = new Timestamp(endDateConverted.getTime());
-            List<Hotel> hotelFreeAtDate = new ArrayList<>();
-
-            for (Hotel hotel: hotelsInCity){
-                boolean result;
-                if(hotel.getHotelRooms() != null) {
-                    result = false;
-                    List<Room> freeRooms = new ArrayList<>();
-                    for (Room room : hotel.getHotelRooms()) {
-                        if(reservationProvider.checkReservationForRoomBetweenDate(room.getId(), startDateTimestamp, endDateTimestamp))  {
-                            freeRooms.add(room);
-                            if(!result) result = true;
-                        }
-                    }
-                    if(result) {
-                        hotel.setHotelRooms(freeRooms);
-                        hotelFreeAtDate.add(hotel);
-                    }
-                }
-            }
-
-            if(hotelFreeAtDate.size() == 0) return null;
-            else return hotelFreeAtDate;
-
-        } catch (ParseException e) {
-            System.out.println("Wrong date format");
-            return null;
-        }
-    }
-
     public static List<Room> getFreeRoomsByHotelId(int hotelId, String startDate, String endDate) {
         HotelProvider hotelProvider = new HotelProvider();
         ReservationProvider reservationProvider = new ReservationProvider();
@@ -262,6 +209,22 @@ public class DbConnector {
             }
     }
 
+    public static List<Room> filterOccupiedRooms(int hotelId, List<Room> freeRooms) {
+        List<Room> allHotelRooms =  DbConnector.getAllHotelRooms(hotelId);
+        List<Room> occupiedRooms = new ArrayList<>();
+
+        for (Room room : allHotelRooms) {
+            boolean isFree = false;
+            for (Room freeRoom : freeRooms) {
+                if (room.getId() == freeRoom.getId()) {
+                    isFree = true;
+                    break;
+                }
+            }
+            if(!isFree) occupiedRooms.add(room);
+        }
+        return occupiedRooms;
+    }
 
     public static Hotel getHotelWithRoomsByHotelId(int id) {
         RoomProvider roomProvider = new RoomProvider();
@@ -269,8 +232,6 @@ public class DbConnector {
     }
 
     public static List<Hotel> getAllHotelsWithRoomsByOwnerId(int id) {
-        ReservationProvider reservationProvider = new ReservationProvider();
-        HotelProvider hotelProvider = new HotelProvider();
 
         List<Hotel> hotels = getAllUserHotel(id);
         for (Hotel hotel : hotels) {
@@ -281,6 +242,23 @@ public class DbConnector {
         }
 
         if(hotels != null && hotels.size() != 0) {
+            return hotels;
+        } else {
+            return null;
+        }
+    }
+
+    public static List<Hotel> getAllHotelsWithRooms() {
+
+        List<Hotel> hotels = getAllHotels();
+        for (Hotel hotel : hotels) {
+            List<Room> hotelRooms = getAllHotelRooms(hotel.getId());
+            if(hotelRooms.size() != 0) {
+                hotel.setHotelRooms(hotelRooms);
+            }
+        }
+
+        if(hotels.size() != 0) {
             return hotels;
         } else {
             return null;
@@ -312,7 +290,7 @@ public class DbConnector {
 
         for (Reservation reservation : reservations) {
             User user = loadUserById(reservation.getUserId());
-            Room room = getRoomById(reservation.getId());
+            Room room = getRoomById(reservation.getRoomId());
             Hotel hotel = new Hotel();
             if(room.getHotelId() != 0) {
                 hotel = getHotelById(room.getHotelId());
@@ -378,140 +356,48 @@ public class DbConnector {
 
     public static void sendOfferToUser(int userId) {
         OfferProvider offerProvider = new OfferProvider();
+        SendOfferService sendOfferService = new SendOfferService();
         long diff = System.currentTimeMillis() - offerProvider.getTimestampByUserId(userId);
 
         if (diff > 0) {
             long diffInDays = TimeUnit.MILLISECONDS.toDays(
                     System.currentTimeMillis() - diff);
             if(diffInDays >= 1) {
-                //wyslij maila
+                sendOfferService.sendEmailWithOffer(userId);
             }
         }
     }
 
     //do stanu zajetosci pokoi
-    public static List<Reservation> getReservationForCurrentDayByOwnerId(int id) {
+    public static List<FreeAndOccupiedRooms> divideFreeAndOccupiedHotelRooms(int ownerId) {
         ReservationProvider reservationProvider = new ReservationProvider();
-        List<Hotel> hotelsWithRooms = getAllHotelsWithRoomsByOwnerId(id);
-        List<Reservation> reservations = new ArrayList<>();
+        List<Hotel> hotelsWithRooms = getAllHotelsWithRoomsByOwnerId(ownerId);
+        List<FreeAndOccupiedRooms> freeAndOccupiedRoomsList = new ArrayList<>();
 
         for (Hotel hotel : hotelsWithRooms) {
-            if(hotel.getHotelRooms() != null && hotel.getHotelRooms().size() != 0)
+            if(hotel.getHotelRooms() != null && hotel.getHotelRooms().size() != 0) {
+                FreeAndOccupiedRooms freeAndOccupiedRooms = new FreeAndOccupiedRooms();
+                freeAndOccupiedRooms.setName(hotel.getName());
+                freeAndOccupiedRooms.setCity(hotel.getCity());
+
                 for (Room room : hotel.getHotelRooms()) {
                     List<Reservation> tmpReservations = reservationProvider.getReservationsForRoomInCurrentDay(room.getId());
-                    if(tmpReservations != null && tmpReservations.size() != 0)
-                        reservations = Stream.concat(reservations.stream(), tmpReservations.stream())
-                                .collect(Collectors.toList());
+                    if (tmpReservations == null || tmpReservations.size() == 0) {
+                        freeAndOccupiedRooms.getFreeRooms().add(room);
+                    } else {
+                        freeAndOccupiedRooms.getOccupiedRooms().add(room);
+                    }
                 }
+
+                freeAndOccupiedRoomsList.add(freeAndOccupiedRooms);
+            }
         }
 
-        if(reservations.size() != 0) return reservations;
+        if(freeAndOccupiedRoomsList.size() != 0) return freeAndOccupiedRoomsList;
         else return null;
     }
 
     public static void main(String[] args) {
         createBasicAccounts();
-       // DbConnector.createDatabase();
-  //     addReservation(2, 3, "2021-02-05", "2021-02-10", false);
-
-   /*     getAllHotelsByCityAndReservationDate("Zakopane", "2021-02-02", "2021-02-06");
-        getAllHotelsByCityAndReservationDate("Zakopane", "2021-02-06", "2021-02-11");
-        getAllHotelsByCityAndReservationDate("Zakopane", "2021-02-02", "2021-02-11");
-        getAllHotelsByCityAndReservationDate("Zakopane", "2021-02-06", "2021-02-09");
-        getAllHotelsByCityAndReservationDate("Zakopane", "2021-02-10", "2021-02-15");
-        getAllHotelsByCityAndReservationDate("Zakopane", "2021-02-15", "2021-02-20"); */
-    //    addReservation(1, 3, "2021-01-06", "2021-01-07", false);
-    //    addReservation(1, 3, "2021-01-06", "2021-01-07", false);
-    //    addReservation(1, 3, "2021-01-06", "2021-01-07", false);
-       // addReservation(1,1, "2019-06-01", "2019-06-01", false);
-        // Rejestracja uzytkownika
-    /*    RegisterService registerService = new RegisterService();
-        User user = new User("mitela25@gmail.com", "123456", Privilege.ORDINARY,"Adam","Kowalski", true, 1234);
-        registerService.registerUserAndSendToken(user); */
-
-        // Weryfikacja tokenu i zmiana potwierdzenia na potwierdzony
-        //  int result = registerService.verifyUserToken(user.getLogin(), "4e0846be-14f3-4b54-8816-138dc5597a62");
-        // System.out.println(System.getProperty("catalina.base"));
-        // addUser(user);
-        // authenticateUser(user);
-        //  createDatabase();
-        //    User user = new User("login", "password", Privilege.ORDINARY, true, System.currentTimeMillis());
-        //Hotel hotel = new Hotel("zielony dom", "mickiewicza", "ZG", System.currentTimeMillis());
-        //Hotel hotel2 = new Hotel("zielony dom", "mickiewicza", "ZG", System.currentTimeMillis());
-        //Hotel hotel3 = new Hotel("zielony dom", "mickiewicza", "ZG", System.currentTimeMillis());
-        //     addUser(user);
-        //addHotel(hotel, user.getId());
-
-        //TEST DODAWANIA I ŁADOWANIA WSZYSTKICH HOTELI USERA
-    /*   RegisterService registerService = new RegisterService();
-        User user = new User("msdirer@gmail.com", "123456", Privilege.ORDINARY,"Adam","Kowalski", true, 1234);
-        registerService.registerUserAndSendToken(user);
-
-        int userId = loadUserByEmail(user.getLogin()).getId();
-        user.setId(userId);
-
-        Hotel hotel = new Hotel("zielony dom", "mickiewicza", "ZG", System.currentTimeMillis());
-        Hotel hotel2 = new Hotel("zolty dom", "mickiewicza", "ZG", System.currentTimeMillis());
-        Hotel hotel3 = new Hotel("rozowy dom", "mickiewicza", "ZG", System.currentTimeMillis());
-
-        addHotel(hotel, user.getId());
-        addHotel(hotel2, user.getId());
-        addHotel(hotel3, user.getId());
-
-        List <Hotel> hotels = getAllUserHotel(user.getId());
-
-        for (Hotel h: hotels) {
-            System.out.println(h.toString());
-        } */
-
-        //DODAWANIE POKOJU
-      /*  Room room = new Room();
-        room.setCapacity(2);
-        room.setPrice(30);
-        room.setTimestamp(System.currentTimeMillis());
-        room.setPicturePath("pasdsth");
-        room.setHotelId(hotels.get(0).getId());
-
-        addRoom(room);
-
-        Room room2 = new Room();
-        room2.setCapacity(5);
-        room2.setPrice(40);
-        room2.setTimestamp(System.currentTimeMillis());
-        room2.setPicturePath("pathdsds");
-        room2.setHotelId(hotels.get(0).getId());
-
-        addRoom(room2);
-
-        //ŁADOWANIE WSZYSTKICH USEROW
-      /*  List <User> allUsers = getAllUser();
-        for (User u : allUsers) {
-            System.out.println(u.toString());
-        } *
-       */
-
-      //ŁADOWANIE WSZYSTKICH POKOI HOTELU
-      /*  List<Room> rooms = getAllHotelRooms(hotels.get(0).getId());
-
-        for (Room r: rooms) {
-            System.out.println(r.toString());
-        } */
-
-      //PRZYKLAD UZYCIA LISTY Z PRIVILEGAMI
-   /*   List <Privilege> list = Privilege.getAllPrivileges();
-        for (Privilege p: list) {
-            System.out.println(p.toString());
-            System.out.println(p.getValue());
-        } */
-
-      //  WYNIK:
-      //  ORDINARY
-      //  1
-       // RECEPTIONIST
-      //  2
-      //  OWNER
-      //  3
-      //  ADMIN
-      //  4
     }
 }

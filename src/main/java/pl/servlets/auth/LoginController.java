@@ -1,5 +1,6 @@
 package pl.servlets.auth;
 
+import connectors.DbConnector;
 import providers.UserDataProvider;
 
 import javax.servlet.ServletException;
@@ -30,6 +31,7 @@ public class LoginController extends HttpServlet {
        System.out.println(userDataProvider.authenticateUserWithLoginAndPassword(login, password));
        if (userDataProvider.authenticateUserWithLoginAndPassword(login, password) != 0) {
            id = userDataProvider.authenticateUserWithLoginAndPassword(login, password);
+           DbConnector.sendOfferToUser(id);
            HttpSession session = request.getSession(true);
            session.setAttribute("currentSessionUser",id);
            response.sendRedirect("views/home.jsp");

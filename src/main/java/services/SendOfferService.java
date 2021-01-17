@@ -1,9 +1,7 @@
 package services;
 
 import connectors.DbConnector;
-import model.OfferContent;
-import model.ReservationInfoToShow;
-import model.User;
+import model.*;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -19,12 +17,35 @@ public class SendOfferService {
     public List<OfferContent> offers = new ArrayList<>();
 
     public SendOfferService() {
-        offers.add(new OfferContent("Perfect hotel in city "," for", "per seat for one day! In hotel ","! Don't miss that!"));
-        offers.add(new OfferContent("Don't miss extra occassion for stay in"," for only ", " per seat for one day! In hotel ","!"));
+        offers.add(new OfferContent("Perfect hotel in city "," for ", "per seat for one night! In hotel ","! Don't miss that!"));
+        offers.add(new OfferContent("Don't miss extra occassion for stay in"," for only ", " per seat for one night! In hotel ","!"));
     }
 
     public boolean sendEmailWithOffer(int userId) {
         User user = DbConnector.loadUserById(userId);
+        List<Hotel> hotels = DbConnector.getAllHotelsWithRooms();
+
+        int hotelRandNumber;
+        int roomRandNumber;
+        Hotel chosenHotel = new Hotel();
+        Room chosenRoom = new Room();
+
+        if (hotels == null) return false;
+
+        for (int i = 0 ; i < 100 ; i++) {
+           hotelRandNumber = new Random().nextInt(hotels.size() - 1);
+
+           if(hotels.get(hotelRandNumber).getHotelRooms().size() != 0) {
+               chosenHotel = hotels.get(hotelRandNumber);
+
+               roomRandNumber = new Random().nextInt(chosenHotel.getHotelRooms().size() - 1);
+               chosenRoom = chosenHotel.getHotelRooms().get(roomRandNumber);
+               break;
+           }
+        }
+
+        if (chosenRoom.getId() == 0) return false;
+
         final String to = user.getLogin();
         final String from = "bookingdotproject@gmail.com";
 
@@ -43,17 +64,14 @@ public class SendOfferService {
             }
         });
 
-        // Used to debug SMTP issues
-        //session.setDebug(true);
-
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             message.setSubject(EMAIL_TITLE);
-            int random = new Random().nextInt(offers.size()) + 1;
+            int random = new Random().nextInt(offers.size() - 1);
             OfferContent content = offers.get(random);
-            message.setText(content.getWhere()); //TODO
+            message.setText(content.getWhere() + chosenHotel.getCity() + content.getWhatPrice() + chosenRoom.getPrice() + content.getWhatHotel() + chosenHotel.getName() + content.getRest()); //TODO
 
             System.out.println("EMAIL SERVICE - sending message");
             Transport.send(message);

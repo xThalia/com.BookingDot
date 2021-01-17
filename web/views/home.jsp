@@ -25,8 +25,13 @@
 <%--          <p id="copyright">Copyright 2020, com.BookingDot</p>--%>
         </jsp:attribute>
     <jsp:body>
-        <div class="container">
-            <div class="row justify-content-center">
+        <div class="container" style="margin-top: 100px;">
+            <div style="alignment: center; text-align: center; color: white; font-weight: bold">
+            <h1> Welcome to the most amazing booking system in the world!</h1>
+            <h3> Search your dreamed up hotel and room via Search tab.</h3>
+            <h3> ... then just BOOK!</h3>
+            </div>
+            <div class="row justify-content-center" style="margin-top: 100px;">
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">Dashboard</div>
@@ -36,7 +41,6 @@
                                 <div class="alert alert-success" role="alert">
                                     User: ${user.firstName}
                                           ${user.lastName}
-                                    Successful!
                                 </div>
                             </c:if>
 
