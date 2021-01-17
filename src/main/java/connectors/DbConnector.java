@@ -352,6 +352,7 @@ public class DbConnector {
         List<Hotel> hotelsWithRooms = getAllHotelsWithRoomsByOwnerId(ownerId);
         List<FreeAndOccupiedRooms> freeAndOccupiedRoomsList = new ArrayList<>();
 
+        if(hotelsWithRooms == null) return null;
         for (Hotel hotel : hotelsWithRooms) {
             if(hotel.getHotelRooms() != null && hotel.getHotelRooms().size() != 0) {
                 FreeAndOccupiedRooms freeAndOccupiedRooms = new FreeAndOccupiedRooms();
