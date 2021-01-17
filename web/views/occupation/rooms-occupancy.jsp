@@ -11,7 +11,7 @@
             <c:redirect url="/views/auth/login.jsp"/>
         </c:if>
         <div class="container">
-            <h3 class="text-center">Occupancy of rooms</h3>
+            <h3 class="text-center">Availability of rooms</h3>
             <div class="row justify-content-center align-items-center">
             <c:if test="${emptyList == 'false'}">
                 <c:forEach items="${freeAndOccupiedRoomsList}" var="freeAndOccupiedRooms">
