@@ -159,7 +159,7 @@ public class DbConnector {
 
             for (Hotel hotel: hotelsInCity){
                 boolean result;
-                if(hotel.getHotelRooms() != null) {
+                if(hotel.getHotelRooms() != null && hotel.getHotelRooms().size() != 0) {
                     result = false;
                     for (Room room : hotel.getHotelRooms()) {
                         if(reservationProvider.checkReservationForRoomBetweenDate(room.getId(), startDateTimestamp, endDateTimestamp))  {
