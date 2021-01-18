@@ -38,10 +38,15 @@ public class SendOfferService {
 
            if(hotels.get(hotelRandNumber).getHotelRooms().size() != 0) {
                chosenHotel = hotels.get(hotelRandNumber);
-
-               roomRandNumber = new Random().nextInt(chosenHotel.getHotelRooms().size() - 1);
-               chosenRoom = chosenHotel.getHotelRooms().get(roomRandNumber);
-               break;
+            if(chosenHotel.getHotelRooms().isEmpty())
+            {
+                break;
+            }
+            else {
+                roomRandNumber = new Random().nextInt(chosenHotel.getHotelRooms().size() - 1);
+                chosenRoom = chosenHotel.getHotelRooms().get(roomRandNumber);
+                break;
+            }
            }
         }
 
