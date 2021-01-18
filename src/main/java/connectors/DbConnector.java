@@ -157,6 +157,7 @@ public class DbConnector {
         Timestamp endDateTimestamp = new Timestamp(endDateConverted.getTime());
         List<Hotel> hotelFreeAtDate = new ArrayList<>();
 
+            if (hotelsInCity == null) return null;
             for (Hotel hotel: hotelsInCity){
                 boolean result;
                 if(hotel.getHotelRooms() != null && hotel.getHotelRooms().size() != 0) {
