@@ -34,14 +34,16 @@ public class SendOfferService {
         if (hotels == null) return false;
 
         for (int i = 0 ; i < 100 ; i++) {
-           hotelRandNumber = new Random().nextInt(hotels.size() - 1);
+           hotelRandNumber = (int)((Math.random() * hotels.size()) - 1);
 
            if(hotels.get(hotelRandNumber).getHotelRooms().size() != 0) {
                chosenHotel = hotels.get(hotelRandNumber);
 
-               roomRandNumber = new Random().nextInt(chosenHotel.getHotelRooms().size() - 1);
-               chosenRoom = chosenHotel.getHotelRooms().get(roomRandNumber);
-               break;
+               if(chosenHotel.getHotelRooms() != null && chosenHotel.getHotelRooms().size() != 0) {
+                   roomRandNumber = (int) ((Math.random() * chosenHotel.getHotelRooms().size()) - 1);
+                   chosenRoom = chosenHotel.getHotelRooms().get(roomRandNumber);
+                   break;
+               }
            }
         }
 
