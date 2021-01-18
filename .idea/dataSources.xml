@@ -17,7 +17,7 @@
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:/Program Files/Apache Software Foundation/Tomcat 9.0/bin/database.sqlite</jdbc-url>
+      <jdbc-url>jdbc:sqlite:D:/apache-tomcat-9.0.39/bin/database.sqlite</jdbc-url>
     </data-source>
   </component>
 </project>
