@@ -9,6 +9,7 @@
         <entry key="file://$PROJECT_DIR$/web/views/auth/register.jsp" value="file://$PROJECT_DIR$/web/views/auth" />
         <entry key="file://$PROJECT_DIR$/web/views/auth/token.jsp" value="file://$PROJECT_DIR$/web/views/auth" />
         <entry key="file://$PROJECT_DIR$/web/views/hotel/hotels.jsp" value="file://$PROJECT_DIR$/web/views/hotel" />
+        <entry key="file://$PROJECT_DIR$/web/views/reservation/search.jsp" value="file://$PROJECT_DIR$/web/views/reservation" />
       </map>
     </option>
   </component>

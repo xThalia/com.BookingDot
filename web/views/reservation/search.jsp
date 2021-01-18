@@ -17,11 +17,11 @@
                     </div>
                     <div class="mb-3" style="width: 26%; margin-right: 2%;">
                         <label for="datepicker" class="form-label">Check-in</label>
-                        <input type="text" class="form-control" value="${startDate}" name="datepicker" id="datepicker">
+                        <input type="text" class="form-control" name="datepicker" id="datepicker">
                     </div>
                     <div class="mb-3" style="width: 26%; margin-right: 2%;">
                         <label for="datepicker2" class="form-label">Check-out</label>
-                        <input type="text" class="form-control" value="${endDate}" name="datepicker2" id="datepicker2">
+                        <input type="text" class="form-control" name="datepicker2" id="datepicker2">
                     </div>
                     <div class="mb-3" style="width: 12%; margin-right: 2%;">
                         <button type="submit" class="btn btn-primary" style="height: 100%;">Search</button>
@@ -77,25 +77,31 @@
             </div>
         </div>
         <script>
+            let todayDate = new Date().toISOString().slice(0,10);
+            let tommorowDate = new Date();
+            tommorowDate.setDate(tommorowDate.getDate() + 1);
+            tommorowDate = tommorowDate.toISOString().slice(0,10);
             $(document).ready(function(){
                 $('#datepicker').datepicker({
+                    startDate: todayDate,
                     format: "yyyy-mm-dd",
                     maxViewMode: 2,
                     todayBtn: "linked",
                     weekStart: 1,
                     minDate: 0,
                     daysOfWeekHighlighted: "0,6",
-                    autoclose: true
-                });
+                    autoclose: true,
+                }).val(todayDate);
                 $('#datepicker2').datepicker({
+                    startDate: tommorowDate,
                     format: "yyyy-mm-dd",
                     maxViewMode: 2,
                     todayBtn: "linked",
                     weekStart: 1,
                     minDate: 1,
                     daysOfWeekHighlighted: "0,6",
-                    autoclose: true
-                });
+                    autoclose: true,
+                }).val(tommorowDate);
             });
         </script>
     </jsp:body>
