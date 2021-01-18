@@ -18,15 +18,15 @@
                     <input type="hidden" name="hotelId" value="${hotelId}">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" value="${room.getName()}" aria-describedby="name">
+                        <input type="text" class="form-control" id="name" name="name" value="${room.getName()}" aria-describedby="name" required>
                     </div>
                     <div class="mb-3">
                         <label for="capacity" class="form-label">Capacity</label>
-                        <input type="number" class="form-control" id="capacity" name="capacity" value="${room.getCapacity()}" aria-describedby="capacity">
+                        <input type="number" class="form-control" id="capacity" name="capacity" value="${room.getCapacity()}" aria-describedby="capacity" required>
                     </div>
                     <div class="mb-3">
                         <label for="price" class="form-label">Price</label>
-                        <input type="number" class="form-control" id="price" name="price" value="${room.getPrice()}" aria-describedby="price">
+                        <input type="number" class="form-control" id="price" name="price" value="${room.getPrice()}" aria-describedby="price" required>
                     </div>
                     <div class="mb-3">
                         <label for="picture" class="form-label">Picture</label>

@@ -32,7 +32,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath}/home.jsp">Home</a>
                     </li>
-                    <% if(session.getAttribute("currentSessionUser") == null) {%>
+                    <%if(session.getAttribute("currentSessionUser") == null) {%>
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/token">Token verify</a>
                     </li>
@@ -40,16 +40,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/search">Search</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false">
-                            Dropdown link
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
+                    <% if(session.getAttribute("currentSessionUser") != null) {
+                        User user = DbConnector.loadUserById((int)session.getAttribute("currentSessionUser"));
+                    if(user.getUserPrivilege().getValue() == 3){
+                    %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/addHotel">Add hotel</a>
                     </li>
+                    <%}}%>
                 </ul>
 
                 <% if(session.getAttribute("currentSessionUser") == null) {%>
@@ -74,7 +72,6 @@
                             %>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarUserMenu">
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/profile.jsp">Profile</a></li>
                             <% if(user.getUserPrivilege().getValue() == 3) {%>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/hotels">Manage your Hotels</a></li>
                             <%}%>
