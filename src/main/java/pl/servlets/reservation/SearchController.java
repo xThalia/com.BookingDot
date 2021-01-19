@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.List;
 
 public class SearchController extends HttpServlet {
@@ -17,6 +21,7 @@ public class SearchController extends HttpServlet {
         HttpSession session = request.getSession();
 
         List<Hotel> hotelList = DbConnector.getAllHotels();
+        String startDate, endDate;
         request.setAttribute("hotelList", hotelList);
 
         if (hotelList.isEmpty()) {
@@ -24,8 +29,13 @@ public class SearchController extends HttpServlet {
         } else {
             request.setAttribute("emptyList", "false");
         }
-        request.setAttribute("startDate", "2021-01-07");
-        request.setAttribute("endDate", "2021-01-09");
+        startDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(Calendar.getInstance().getTime());
+        cal.add(Calendar.DATE, 1);
+        endDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+        request.setAttribute("startDate", startDate);
+        request.setAttribute("endDate", endDate);
         request.getRequestDispatcher("views/reservation/search.jsp").forward(request, response);
     }
 }
